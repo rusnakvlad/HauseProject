@@ -6,7 +6,7 @@ using DataAccesLayer.Enteties;
 
 namespace DataAccesLayer.Interfaces
 {
-    interface IForCompareRepository : IGenericRepository<ForCompare>
+    public interface IForCompareRepository
     {
         
     }

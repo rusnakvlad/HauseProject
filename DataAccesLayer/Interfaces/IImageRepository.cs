@@ -5,7 +5,7 @@ using DataAccesLayer.Enteties;
 
 namespace DataAccesLayer.Interfaces
 {
-    interface IImageRepository : IGenericRepository<Image>
+    public interface IImageRepository
     {
     }
 }

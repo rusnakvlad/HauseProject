@@ -11,8 +11,15 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using DataAccesLayer.Repositories;
+using BuisnesLogicLayer.Services;
+using BuisnesLogicLayer.Interfaces;
+using DataAccesLayer.Interfaces;
+using DataAccesLayer;
+using DataAccesLayer.EF;
+using BuisnesLogicLayer.DTO;
 
-namespace PresentationLayer
+namespace HauseAPI
 {
     public class Startup
     {
@@ -26,11 +33,23 @@ namespace PresentationLayer
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
             services.AddControllers();
+/*
+            #region Repositories
+            services.AddTransient<IUserRepository, UserRepository>();
+            #endregion
+
+            #region Services
+            services.AddTransient<IUserServices, UserServices>();
+            #endregion
+
+            services.AddTransient<IUnitOfWork, UnitOfWork>();
+*/
+            services.AddDbContext<AppDBContext>();
+
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "PresentationLayer", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "HauseAPI", Version = "v1" });
             });
         }
 
@@ -41,7 +60,7 @@ namespace PresentationLayer
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "PresentationLayer v1"));
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "HauseAPI v1"));
             }
 
             app.UseHttpsRedirection();

@@ -7,7 +7,6 @@ using System.ComponentModel.DataAnnotations;
 
 namespace DataAccesLayer.Enteties
 {
-    [Display]
     public class Ad
     {
         public User user { get; set; }
@@ -32,6 +31,7 @@ namespace DataAccesLayer.Enteties
         public int RoomNumber { get; set; }
         public int HouseYear { get; set; }
         public bool Pool { get; set; }
+        public bool Balkon { get; set; }
         public bool PurchaseOportunity { get; set; }
         public bool Status { get; set; }
         public string Description { get; set; }
@@ -40,7 +40,7 @@ namespace DataAccesLayer.Enteties
             string HouseNumber, string HouseType, int AreaOfHouse, int FloorAmount, int RoomNumber, int HouseYear,
             bool Pool, bool PurchaseOportunity, bool Status, string Description)
         {
-            this.Id = Id;
+            this.ID = Id;
             this.OwnerId = OwnerId;
             this.Price = Price;
             this.Region = Region;
@@ -59,6 +59,6 @@ namespace DataAccesLayer.Enteties
             this.Description = Description;
         }
 
-        public Ads() { }
+        public Ad() { }
     }
 }

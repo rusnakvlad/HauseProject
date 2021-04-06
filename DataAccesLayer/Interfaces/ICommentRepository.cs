@@ -6,8 +6,8 @@ using DataAccesLayer.Enteties;
 
 namespace DataAccesLayer.Interfaces
 {
-    interface ICommentRepository : IGenericRepository<Comment>
+    public interface ICommentRepository
     {
-        
+        public IEnumerable<Comment> GetComments();
     }
 }

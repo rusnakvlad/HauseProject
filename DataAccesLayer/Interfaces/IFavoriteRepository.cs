@@ -5,7 +5,7 @@ using DataAccesLayer.Enteties;
 
 namespace DataAccesLayer.Interfaces
 {
-    interface IFavoriteRepository : IGenericRepository<Favorite>
+    public interface IFavoriteRepository
     {
     }
 }

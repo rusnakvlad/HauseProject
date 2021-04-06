@@ -7,8 +7,7 @@ using DataAccesLayer.EF;
 
 namespace DataAccesLayer.Repositories
 {
-    public class TagRepository : BaseRepository<Tag>, ITagRepository
+    public class TagRepository : ITagRepository
     {
-        public TagRepository(AppDBContext context) : base(context) { }
     }
 }

@@ -8,20 +8,34 @@ using System.Linq;
 
 namespace DataAccesLayer.Repositories
 {
-    public class UserRepository : BaseRepository<User>, IUserRepository
+    public class UserRepository : IUserRepository
     {
-        public UserRepository(AppDBContext context) : base(context) { }
+        private AppDBContext context;
+        public UserRepository(AppDBContext context) => this.context = context;
 
-        public IQueryable<User> GetAllUsers()
+        public void AddNewUser(User user)
         {
-            var users = context.Users.ToList();
-            return (IQueryable<User>)users;
+            context.Users.Add(user);
+        }
+
+        public void DeleteUser(User user)
+        {
+            context.Users.Remove(user);
+        }
+
+        public IEnumerable<User> GetAllUsers()
+        {
+            return context.Users.ToList();
         }
 
         public User GetUserById(int id)
         {
-            var user = context.Users.FirstOrDefault(user => user.ID == id);
-            return user;
+            return context.Users.ToList().Where(u => u.ID == id).FirstOrDefault();
+        }
+
+        public void UpdateUser(User user)
+        {
+            context.Users.Update(user);
         }
     }
 }

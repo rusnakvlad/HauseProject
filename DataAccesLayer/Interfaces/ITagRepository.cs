@@ -5,7 +5,7 @@ using DataAccesLayer.Enteties;
 
 namespace DataAccesLayer.Interfaces
 {
-    interface ITagRepository : IGenericRepository<Tag>
+    public interface ITagRepository 
     {
 
     }

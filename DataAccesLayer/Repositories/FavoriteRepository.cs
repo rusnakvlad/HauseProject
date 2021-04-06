@@ -7,8 +7,7 @@ using DataAccesLayer.Interfaces;
 using DataAccesLayer.EF;
 namespace DataAccesLayer.Repositories
 {
-    public class FavoriteRepository : BaseRepository<Favorite>, IFavoriteRepository
+    public class FavoriteRepository : IFavoriteRepository
     {
-        public FavoriteRepository(AppDBContext context) : base (context) { }
     }
 }

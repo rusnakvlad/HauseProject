@@ -21,7 +21,7 @@ namespace DataAccesLayer.Enteties
 
         public Comment(int UserId, int AdId, DateTime DateOfComment, string Text)
         {
-            this.UserId = UserId;
+            this.UserID = UserId;
             this.AdId = AdId;
             this.DateOfComment = DateOfComment;
             this.Text = Text;

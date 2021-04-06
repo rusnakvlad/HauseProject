@@ -7,8 +7,7 @@ using DataAccesLayer.EF;
 
 namespace DataAccesLayer.Repositories
 {
-    public class ForCompareRepository : BaseRepository<ForCompare>, IForCompareRepository
+    public class ForCompareRepository : IForCompareRepository
     {
-        public ForCompareRepository(AppDBContext context) : base(context) { }
     }
 }

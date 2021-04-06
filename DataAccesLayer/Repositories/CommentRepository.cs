@@ -4,11 +4,18 @@ using System.Text;
 using DataAccesLayer.Enteties;
 using DataAccesLayer.Interfaces;
 using DataAccesLayer.EF;
+using System.Linq;
 
 namespace DataAccesLayer.Repositories
 {
-    public class CommentRepository : BaseRepository<Comment>, ICommentRepository
+    public class CommentRepository : ICommentRepository
     {
-        public CommentRepository(AppDBContext context) : base(context) { }
+        private AppDBContext context;
+        public CommentRepository(AppDBContext context) => this.context = context;
+
+        public IEnumerable<Comment> GetComments()
+        {
+            return context.Comments.ToList();
+        }
     }
 }

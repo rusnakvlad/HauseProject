@@ -15,7 +15,7 @@ namespace DataAccesLayer.EF
         public DbSet<ForCompare> ForCompares { get; set; }
         public DbSet<Ad> Ads { get; set; }
         public DbSet<Tag> Tags { get; set; }
-        //public DbSet<Image> Images { get; set; }
+        public DbSet<Image> Images { get; set; }
 
         // On creating an instance of ApplicationContext, program check if there is
         // a data base with the name from connection string, and if not create this DB
@@ -28,8 +28,9 @@ namespace DataAccesLayer.EF
         // Make connection to DB using method UseSqlServer
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Server = (localdb)\\mssqllocaldb; Database = helloappdb; Trusted_Connection = True;");
+            optionsBuilder.UseSqlServer("Server = (localdb)\\mssqllocaldb; Database = UAHP; Trusted_Connection = True;");
         }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

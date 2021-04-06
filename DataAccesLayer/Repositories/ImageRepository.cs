@@ -7,8 +7,7 @@ using DataAccesLayer.EF;
 
 namespace DataAccesLayer.Repositories
 {
-    public class ImageRepository : BaseRepository<Image>, IImageRepository
+    public class ImageRepository : IImageRepository
     {
-        public ImageRepository (AppDBContext context) : base(context) { }
     }
 }

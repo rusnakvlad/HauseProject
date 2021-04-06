@@ -26,6 +26,8 @@ namespace DataAccesLayer.Enteties
 
         public bool AdminRights { get; set; }
 
+        public string Password { get; set; }
+
 
         public User(int id, string name, string surname, string phone, string email, bool adminRights)
         {

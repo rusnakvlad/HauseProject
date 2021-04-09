@@ -13,9 +13,29 @@ namespace DataAccesLayer.Repositories
         private AppDBContext context;
         public CommentRepository(AppDBContext context) => this.context = context;
 
+        public void AddNewComment(Comment comment)
+        {
+            context.Comments.Add(comment);
+            context.SaveChanges();
+        }
+
         public IEnumerable<Comment> GetComments()
         {
             return context.Comments.ToList();
         }
+
+        public IEnumerable<Comment> GetCommentsByAdId(int adId)
+        {
+            return context.Comments.ToList().Where(coment => coment.AdId == adId);
+        }
+
+        public void RemoveCommentByUserIdAndAdId(int userId,int adId)
+        {
+            var commentToRemove = context.Comments.ToList().Where(coment => coment.UserID == userId && coment.AdId == adId).FirstOrDefault();
+            context.Comments.Remove(commentToRemove);
+            context.SaveChanges();
+        }
+
+        
     }
 }

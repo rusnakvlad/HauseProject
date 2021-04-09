@@ -15,5 +15,6 @@ namespace BuisnesLogicLayer.Interfaces
         public void LogIn(UserLogInDTO userLogInDTO);
         public void LogOut();
         public UserProfileDTO GetUserProfileById(int id);
+        public User GetUserByAdId(int adId);
     }
 }

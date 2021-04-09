@@ -7,6 +7,7 @@ namespace DataAccesLayer.Interfaces
 {
     public interface ITagRepository 
     {
-
+        public IEnumerable<Tag> GetTagsFromAdByAdsId(int adId);
+        public void AddNewTag(Tag tag);
     }
 }

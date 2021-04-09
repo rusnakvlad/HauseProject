@@ -16,7 +16,6 @@ namespace DataAccesLayer.EF
         public DbSet<Ad> Ads { get; set; }
         public DbSet<Tag> Tags { get; set; }
         public DbSet<Image> Images { get; set; }
-
         // On creating an instance of ApplicationContext, program check if there is
         // a data base with the name from connection string, and if not create this DB
         public AppDBContext()

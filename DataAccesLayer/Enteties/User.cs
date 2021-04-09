@@ -29,7 +29,7 @@ namespace DataAccesLayer.Enteties
         public string Password { get; set; }
 
 
-        public User(int id, string name, string surname, string phone, string email, bool adminRights)
+        public User(int id, string name, string surname, string phone, string email, bool adminRights,string password)
         {
             ID = id;
             Name = name;
@@ -37,6 +37,7 @@ namespace DataAccesLayer.Enteties
             Phone = phone;
             Email = email;
             AdminRights = adminRights;
+            Password = password;
         }
 
         public User() { }

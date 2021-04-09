@@ -16,11 +16,13 @@ namespace DataAccesLayer.Repositories
         public void AddNewUser(User user)
         {
             context.Users.Add(user);
+            context.SaveChanges();
         }
 
         public void DeleteUser(User user)
         {
             context.Users.Remove(user);
+            context.SaveChanges();
         }
 
         public IEnumerable<User> GetAllUsers()
@@ -36,6 +38,7 @@ namespace DataAccesLayer.Repositories
         public void UpdateUser(User user)
         {
             context.Users.Update(user);
+            context.SaveChanges();
         }
     }
 }

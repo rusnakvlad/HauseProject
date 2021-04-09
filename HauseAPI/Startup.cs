@@ -34,17 +34,7 @@ namespace HauseAPI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-/*
-            #region Repositories
-            services.AddTransient<IUserRepository, UserRepository>();
-            #endregion
 
-            #region Services
-            services.AddTransient<IUserServices, UserServices>();
-            #endregion
-
-            services.AddTransient<IUnitOfWork, UnitOfWork>();
-*/
             services.AddDbContext<AppDBContext>();
 
             services.AddSwaggerGen(c =>

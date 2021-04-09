@@ -9,5 +9,8 @@ namespace DataAccesLayer.Interfaces
     public interface IAdRepository
     {
         public IEnumerable<Ad> GetAds();
+        public Ad GetAddById(int id);
+        public void AddNewAd(Ad ad);
+        
     }
 }

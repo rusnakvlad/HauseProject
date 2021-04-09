@@ -7,5 +7,10 @@ namespace DataAccesLayer.Interfaces
 {
     public interface IFavoriteRepository
     {
+        public IEnumerable<Favorite> GetAllFavoritesByUserId(int userId);
+
+        public void AddNewFavorite(Favorite favorite);
+
+        public void RemoveFavorite(int userId, int adId);
     }
 }

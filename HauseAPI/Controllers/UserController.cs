@@ -17,10 +17,18 @@ namespace HauseAPI.Controllers
         private readonly IUserServices userServices = new UserServices();
        // public UserController(IUserServices userServices) => this.userServices = userServices;
 
+        // get user by id
         [HttpGet("/user/{id}")]
         public UserProfileDTO GetUserProfileDTOById(int id)
         {
            return userServices.GetUserProfileById(id);
+        }
+
+        // register new user
+        [HttpPost]
+        public void RegisterUser([FromBody]UserRegisterDTO userRegisterDTO)
+        {
+            userServices.RegisterUser(userRegisterDTO);
         }
     }
 }

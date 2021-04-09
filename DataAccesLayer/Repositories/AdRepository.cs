@@ -13,6 +13,17 @@ namespace DataAccesLayer.Repositories
         private AppDBContext context;
         public AdRepository(AppDBContext context) => this.context = context;
 
+        public Ad GetAddById(int id)
+        {
+            return context.Ads.ToList().Where(ad => ad.ID == id).FirstOrDefault();
+        }
+
+        public void AddNewAd(Ad ad)
+        {
+            context.Ads.Add(ad);
+            context.SaveChanges();
+        }
+
         public IEnumerable<Ad> GetAds()
         {
             return context.Ads.ToList();

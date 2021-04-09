@@ -2,15 +2,16 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace DataAccesLayer.Interfaces
 {
     public interface IGenericRepository<T> where T : class
     {
-        IQueryable<T> GetAll();
+        IEnumerable<T> GetAll();
         T GetById(int id);
-        T Create(T entity);
-        T Update(T entity);
-        bool Delete(T entity);
+        void Add(T entity);
+        void Update(T entity);
+        void Delete(T entity);
     }
 }

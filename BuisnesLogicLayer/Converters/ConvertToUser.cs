@@ -16,7 +16,8 @@ namespace BuisnesLogicLayer.Converters
                 Surname = registerDTO.Surname,
                 Phone = registerDTO.Phone,
                 Email = registerDTO.Email,
-                AdminRights = false
+                AdminRights = false,
+                Password = registerDTO.Password
             };
         }
     }

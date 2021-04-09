@@ -1,23 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
+using DataAccesLayer.Enteties;
 
-namespace DataAccesLayer.Enteties
+namespace BuisnesLogicLayer.DTO
 {
-    public class Ad
+    public class CreateAdDTO
     {
-        public User user { get; set; }
-        public List<Comment> comments { get; set; }
-        public List<Favorite> favorites { get; set; }
-        public List<ForCompare> forCompares { get; set; }
-        public List<Tag> tags { get; set; }
-        public List<Image> images { get; set; }
-//=======================================================================//
-
-        public int ID { get; set; }
         public int OwnerId { get; set; }
         public int Price { get; set; }
         public string Region { get; set; }
@@ -35,8 +26,5 @@ namespace DataAccesLayer.Enteties
         public bool PurchaseOportunity { get; set; }
         public bool Status { get; set; }
         public string Description { get; set; }
-//=======================================================================//
-
-        public Ad() { }
     }
 }

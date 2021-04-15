@@ -8,16 +8,10 @@ using System.Linq;
 
 namespace DataAccesLayer.Repositories
 {
-    public class TagRepository : ITagRepository
+    public class TagRepository :GenericRepository<Tag>, ITagRepository
     {
         private AppDBContext context;
-        public TagRepository(AppDBContext context) => this.context = context;
-
-        public void AddNewTag(Tag tag)
-        {
-            context.Tags.Add(tag);
-            context.SaveChanges();
-        }
+        public TagRepository(AppDBContext context) : base(context) => this.context = context;
 
         public IEnumerable<Tag> GetTagsFromAdByAdsId(int adId)
         {

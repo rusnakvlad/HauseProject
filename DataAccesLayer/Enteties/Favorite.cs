@@ -10,8 +10,8 @@ namespace DataAccesLayer.Enteties
     {
         public Ad ad { get; set; }
         public User user { get; set; }
-        [Required]
-        public int ID { get; set; }
+       //[Required]
+       //public int ID { get; set; }
         [Required]
         public int UserID { get; set; }
         [Required]

@@ -6,11 +6,8 @@ using DataAccesLayer.Enteties;
 
 namespace DataAccesLayer.Interfaces
 {
-    public interface IAdRepository
+    public interface IAdRepository : IGenericRepository<Ad>
     {
-        public IEnumerable<Ad> GetAds();
-        public Ad GetAddById(int id);
-        public void AddNewAd(Ad ad);
         
     }
 }

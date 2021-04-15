@@ -7,8 +7,9 @@ using DataAccesLayer.Enteties;
 
 namespace BuisnesLogicLayer.DTO
 {
-    public class CreateAdDTO
+    public class AdEdit
     {
+        public int ID { get; set; }
         public int OwnerId { get; set; }
         public int Price { get; set; }
         public string Region { get; set; }
@@ -26,5 +27,7 @@ namespace BuisnesLogicLayer.DTO
         public bool PurchaseOportunity { get; set; }
         public bool Status { get; set; }
         public string Description { get; set; }
+        public List<TagDTO> tags { get; set; }
+        public List<ImageDTO> images { get; set; }
     }
 }

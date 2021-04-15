@@ -9,9 +9,22 @@ namespace BuisnesLogicLayer.Interfaces
 {
     public interface ICommentServices
     {
-        public IEnumerable<CommentDTO> GetCommentsByAdId(int adId);
-        public void AddNewComment(CommentDTO commentDTO);
+        /*--------------------Common Methods from Generic repository--------------------*/
+        public IEnumerable<CommentCreateDTO> GetAllComments();
+
+        public CommentCreateDTO GetCommentById(int id);
+
+        public void AddNewComment(CommentCreateDTO commentDTO);
+
+        public void UpdateComment(CommentInfoAndEditIDTO commentEditDTO);
+
+        public void DeleteCommentById(int id);
+
+        /*------------------------------Individual methods------------------------------*/
+        public IEnumerable<CommentCreateDTO> GetCommentsByAdId(int adId);
+
         public void RemoveCommentByUserIdAndAdId(int userId, int adId);
-        public IEnumerable<CommentDTO> GetAllComments();
+        
+        
     }
 }

@@ -6,12 +6,7 @@ using DataAccesLayer.Enteties;
 
 namespace DataAccesLayer.Interfaces
 {
-    public interface IUserRepository
+    public interface IUserRepository : IGenericRepository<User>
     {
-        IEnumerable<User> GetAllUsers();
-        User GetUserById(int id);
-        void DeleteUser(User user);
-        void AddNewUser(User user);
-        void UpdateUser(User user);
     }
 }

@@ -8,37 +8,9 @@ using System.Linq;
 
 namespace DataAccesLayer.Repositories
 {
-    public class UserRepository : IUserRepository
+    public class UserRepository : GenericRepository<User>, IUserRepository
     {
         private AppDBContext context;
-        public UserRepository(AppDBContext context) => this.context = context;
-
-        public void AddNewUser(User user)
-        {
-            context.Users.Add(user);
-            context.SaveChanges();
-        }
-
-        public void DeleteUser(User user)
-        {
-            context.Users.Remove(user);
-            context.SaveChanges();
-        }
-
-        public IEnumerable<User> GetAllUsers()
-        {
-            return context.Users.ToList();
-        }
-
-        public User GetUserById(int id)
-        {
-            return context.Users.ToList().Where(u => u.ID == id).FirstOrDefault();
-        }
-
-        public void UpdateUser(User user)
-        {
-            context.Users.Update(user);
-            context.SaveChanges();
-        }
+        public UserRepository(AppDBContext context) : base(context) => this.context = context;
     }
 }

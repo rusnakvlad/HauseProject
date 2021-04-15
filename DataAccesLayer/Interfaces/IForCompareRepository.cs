@@ -6,10 +6,9 @@ using DataAccesLayer.Enteties;
 
 namespace DataAccesLayer.Interfaces
 {
-    public interface IForCompareRepository
+    public interface IForCompareRepository : IGenericRepository<ForCompare>
     {
         public IEnumerable<ForCompare> GetAllComparesByUserId(int userId);
-        public void RemoveCopare(int userId, int AdId);
-        public void AddNewCompare(ForCompare forCompare);
+        public void RemoveCopareByUserIdAndAdId(int userId, int AdId);
     }
 }

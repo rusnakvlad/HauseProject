@@ -5,10 +5,8 @@ using DataAccesLayer.Enteties;
 
 namespace DataAccesLayer.Interfaces
 {
-    public interface IImageRepository
+    public interface IImageRepository : IGenericRepository<Image>
     {
-        public void AddNewImage(Image image);
-        public void RemoveImageById(int imageId);
         public IEnumerable<Image> GetAllAdsImagesByAdId(int adId);
     }
 }

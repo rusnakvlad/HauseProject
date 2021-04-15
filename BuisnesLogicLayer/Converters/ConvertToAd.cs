@@ -10,7 +10,7 @@ namespace BuisnesLogicLayer.Converters
 {
     public static class ConvertToAd
     {
-        public static Ad FromCreateAddInfoDTO(CreateAdDTO createAdDTO)
+        public static Ad FromCreateAddInfoDTO(AdCreateDTO createAdDTO)
         {
             return new Ad()
             {
@@ -31,8 +31,35 @@ namespace BuisnesLogicLayer.Converters
                 PurchaseOportunity = createAdDTO.PurchaseOportunity,
                 Status = createAdDTO.Status,
                 Description = createAdDTO.Description,
-               // images = createAdDTO.Images,
-               // tags = createAdDTO.Tags
+                images = ConvertToImageList.FromImageDTOList(createAdDTO.images),
+                tags = ConvertToTagList.FromTagDTOList(createAdDTO.tags)
+            };
+        }
+
+        public static Ad FromEditAddInfoDTO(AdEdit editAdDTO)
+        {
+            return new Ad()
+            {
+                ID = editAdDTO.ID,
+                OwnerId = editAdDTO.OwnerId,
+                Price = editAdDTO.Price,
+                Region = editAdDTO.Region,
+                District = editAdDTO.District,
+                City = editAdDTO.City,
+                Street = editAdDTO.Street,
+                HouseNumber = editAdDTO.HouseNumber,
+                HouseType = editAdDTO.HouseType,
+                AreaOfHouse = editAdDTO.AreaOfHouse,
+                FloorAmount = editAdDTO.FloorAmount,
+                RoomNumber = editAdDTO.RoomNumber,
+                HouseYear = editAdDTO.HouseYear,
+                Pool = editAdDTO.Pool,
+                Balkon = editAdDTO.Balkon,
+                PurchaseOportunity = editAdDTO.PurchaseOportunity,
+                Status = editAdDTO.Status,
+                Description = editAdDTO.Description,
+                images = (List<Image>)ConvertToImageList.FromImageDTOList(editAdDTO.images),
+                tags = (List<Tag>)ConvertToTagList.FromTagDTOList(editAdDTO.tags)
             };
         }
     }

@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DataAccesLayer.Enteties;
 
 namespace BuisnesLogicLayer.DTO
 {
     public class AdInfoDTO
     {
         public int Id { get; set; }
+        public int OwnerId { get; set; }
         public int Price { get; set; }
         public string Region { get; set; }
         public string District { get; set; }
@@ -27,5 +29,7 @@ namespace BuisnesLogicLayer.DTO
         public string Description { get; set; }
         public string OwnerEmail { get; set; }
         public string OwnerPhone { get; set; }
+        public List<TagDTO> tags { get; set; }
+        public List<ImageDTO> images { get; set; }
     }
 }

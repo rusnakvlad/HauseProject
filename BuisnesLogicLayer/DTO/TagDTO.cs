@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DataAccesLayer.Interfaces
+namespace BuisnesLogicLayer.DTO
 {
-    interface IAdTagRepository
+    public class TagDTO
     {
+        public string _Tag { get; set; }
     }
 }

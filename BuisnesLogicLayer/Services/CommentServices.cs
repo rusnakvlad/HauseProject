@@ -24,17 +24,13 @@ namespace BuisnesLogicLayer.Services
                new TagRepository(new AppDBContext()),
                new UserRepository(new AppDBContext())
                );
-        public void AddNewComment(CommentDTO commentDTO)
+        /*--------------------Common Methods from Generic repository--------------------*/
+        public IEnumerable<CommentCreateDTO> GetAllComments()
         {
-            Database.CommentRepository.AddNewComment(ConvertToComment.FromCommentDTO(commentDTO));
-        }
-
-        public IEnumerable<CommentDTO> GetAllComments()
-        {
-            var comments = Database.CommentRepository.GetComments();
+            var comments = Database.CommentRepository.GetAll();
             foreach (var comment in comments)
             {
-                yield return new CommentDTO()
+                yield return new CommentCreateDTO()
                 {
                     AdId = comment.AdId,
                     UserID = comment.UserID,
@@ -44,12 +40,40 @@ namespace BuisnesLogicLayer.Services
             }
         }
 
-        public IEnumerable<CommentDTO> GetCommentsByAdId(int adId)
+        public CommentCreateDTO GetCommentById(int id)
+        {
+            var comment = Database.CommentRepository.GetById(id);
+            return new CommentCreateDTO
+            {
+                AdId = comment.AdId,
+                UserID = comment.UserID,
+                DateOfComment = comment.DateOfComment,
+                Text = comment.Text
+            };
+        }
+
+        public void AddNewComment(CommentCreateDTO commentDTO)
+        {
+            Database.CommentRepository.Add(ConvertToComment.FromCommentDTO(commentDTO));
+        }
+
+        public void DeleteCommentById(int id)
+        {
+            Database.CommentRepository.DeleteById(id);
+        }
+
+        public void UpdateComment(CommentInfoAndEditIDTO commentEditDTO)
+        {
+            Database.CommentRepository.Update(ConvertToComment.FromCommentEditDTO(commentEditDTO));
+        }
+
+        /*------------------------------Individual methods------------------------------*/
+        public IEnumerable<CommentCreateDTO> GetCommentsByAdId(int adId)
         {
             var comments = Database.CommentRepository.GetCommentsByAdId(adId);
             foreach (var comment in comments)
             {
-                yield return new CommentDTO()
+                yield return new CommentCreateDTO()
                 {
                     AdId = comment.AdId,
                     UserID = comment.UserID,

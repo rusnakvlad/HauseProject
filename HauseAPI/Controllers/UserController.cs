@@ -15,20 +15,39 @@ namespace HauseAPI.Controllers
     public class UserController : Controller
     {
         private readonly IUserServices userServices = new UserServices();
-       // public UserController(IUserServices userServices) => this.userServices = userServices;
 
-        // get user by id
+        // Get All Users Profiles
+        [HttpGet]
+        public IEnumerable<UserProfileDTO> GetAllUsersProfiles()
+        {
+            return userServices.GetAllUsersProfiles();
+        }
+        // Get User Profile by id
         [HttpGet("/user/{id}")]
         public UserProfileDTO GetUserProfileDTOById(int id)
         {
            return userServices.GetUserProfileById(id);
         }
 
-        // register new user
+        // Register(Add) new user
         [HttpPost]
         public void RegisterUser([FromBody]UserRegisterDTO userRegisterDTO)
         {
             userServices.RegisterUser(userRegisterDTO);
+        }
+
+        // Delete user by id
+        [HttpDelete("{id}")]
+        public void DeleteUserById(int id)
+        {
+            userServices.DeleteUserById(id);
+        }
+
+        // Edit user
+        [HttpPut]
+        public void EditUser([FromBody] UserEditDTO userEditDTO)
+        {
+            userServices.UpdateUser(userEditDTO);
         }
     }
 }

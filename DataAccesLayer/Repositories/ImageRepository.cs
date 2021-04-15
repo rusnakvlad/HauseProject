@@ -8,16 +8,11 @@ using System.Linq;
 
 namespace DataAccesLayer.Repositories
 {
-    public class ImageRepository : IImageRepository
+    public class ImageRepository : GenericRepository<Image>, IImageRepository
     {
         private AppDBContext context;
-        public ImageRepository(AppDBContext context) => this.context = context;
+        public ImageRepository(AppDBContext context) : base(context) => this.context = context;
 
-        public void AddNewImage(Image image)
-        {
-            context.Images.Add(image);
-            context.SaveChanges();
-        }
 
         public IEnumerable<Image> GetAllAdsImagesByAdId(int adId)
         {

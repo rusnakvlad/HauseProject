@@ -6,12 +6,9 @@ using DataAccesLayer.Enteties;
 
 namespace DataAccesLayer.Interfaces
 {
-    public interface ICommentRepository
+    public interface ICommentRepository : IGenericRepository<Comment>
     {
         public IEnumerable<Comment> GetCommentsByAdId(int adId);
-        public void AddNewComment(Comment comment);
         public void RemoveCommentByUserIdAndAdId(int userId,int adId);
-
-        public IEnumerable<Comment> GetComments();
     }
 }

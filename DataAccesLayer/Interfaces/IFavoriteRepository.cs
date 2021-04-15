@@ -5,12 +5,10 @@ using DataAccesLayer.Enteties;
 
 namespace DataAccesLayer.Interfaces
 {
-    public interface IFavoriteRepository
+    public interface IFavoriteRepository : IGenericRepository<Favorite>
     {
         public IEnumerable<Favorite> GetAllFavoritesByUserId(int userId);
 
-        public void AddNewFavorite(Favorite favorite);
-
-        public void RemoveFavorite(int userId, int adId);
+        public void RemoveFavoriteByUserIdAndAdId(int userId, int adId);
     }
 }

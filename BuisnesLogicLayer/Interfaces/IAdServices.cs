@@ -9,7 +9,18 @@ namespace BuisnesLogicLayer.Interfaces
 {
     public interface IAdServices
     {
-        public void AddNewAd(CreateAdDTO createAdDTO);
+        /*--------------------Common Methods from Generic repository--------------------*/
+        public IEnumerable<AdInfoDTO> GetAllAds();
+
         public AdInfoDTO GetAdById(int id);
+
+        public void AddNewAd(AdCreateDTO createAdDTO);
+
+        public void DeleteAdById(int id);
+
+        public void UpdateAd(AdEdit editAdDTO);
+
+        /*------------------------------Individual methods------------------------------*/
+
     }
 }

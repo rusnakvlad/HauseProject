@@ -30,6 +30,13 @@ namespace DataAccesLayer.Repositories
             context.SaveChanges();
         }
 
+        public void DeleteById(int id)
+        {
+            var entityToDelete = context.Set<TEntity>().Find(id);
+            context.Set<TEntity>().Remove(entityToDelete);
+            context.SaveChanges();
+        }
+
         public IEnumerable<TEntity> GetAll()
         {
             return context.Set<TEntity>().ToList();

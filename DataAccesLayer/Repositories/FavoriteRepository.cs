@@ -7,23 +7,17 @@ using System.Linq;
 using DataAccesLayer.EF;
 namespace DataAccesLayer.Repositories
 {
-    public class FavoriteRepository : IFavoriteRepository
+    public class FavoriteRepository : GenericRepository<Favorite>, IFavoriteRepository
     {
         public AppDBContext context;
-        public FavoriteRepository(AppDBContext context) => this.context = context;
+        public FavoriteRepository(AppDBContext context) : base(context) => this.context = context;
 
         public IEnumerable<Favorite> GetAllFavoritesByUserId(int userId)
         {
             return context.Favorites.ToList().Where(fav => fav.UserID == userId);
         }
 
-        public void AddNewFavorite(Favorite favorite)
-        {
-            context.Favorites.Add(favorite);
-            context.SaveChanges();
-        }
-
-        public void RemoveFavorite(int userId, int adId)
+        public void RemoveFavoriteByUserIdAndAdId(int userId, int adId)
         {
             var favTemp = context.Favorites.ToList().Where(fav => fav.UserID == userId && fav.AdID == adId).FirstOrDefault();
             context.Favorites.Remove(favTemp);

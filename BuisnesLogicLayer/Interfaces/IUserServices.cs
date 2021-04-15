@@ -9,12 +9,15 @@ namespace BuisnesLogicLayer.Interfaces
 {
     public interface IUserServices
     {
-        public void RegisterUser(UserRegisterDTO userRegisterDTO); // create a new user and add to DB
-        public void DeleteUser(UserProfileDTO userInfoDTO);
-        public void EditUser(UserProfileDTO userInfoDTO);
+        /*--------------------Common Methods from Generic repository--------------------*/
+        public IEnumerable<UserProfileDTO> GetAllUsersProfiles();
+        public UserProfileDTO GetUserProfileById(int id);
+        public void RegisterUser(UserRegisterDTO userRegisterDTO); // AddNewUser
+        public void DeleteUserById(int id);
+        public void UpdateUser(UserEditDTO userEditDTO);
+
+        /*------------------------------Individual methods------------------------------*/
         public void LogIn(UserLogInDTO userLogInDTO);
         public void LogOut();
-        public UserProfileDTO GetUserProfileById(int id);
-        public User GetUserByAdId(int adId);
     }
 }

@@ -23,31 +23,37 @@ namespace BuisnesLogicLayer.Services
             new TagRepository(new AppDBContext()),
             new UserRepository(new AppDBContext())        
             );
-
-        public void DeleteUser(UserProfileDTO userInfoDTO)
+        /*--------------------Common Methods from Generic repository--------------------*/
+        public IEnumerable<UserProfileDTO> GetAllUsersProfiles()
         {
-            throw new NotImplementedException();
-        }
+            var users = Database.UserRepository.GetAll();
 
-        public void EditUser(UserProfileDTO userInfoDTO)
-        {
-            throw new NotImplementedException();
-        }
-
-        public User GetUserByAdId(int adId)
-        {
-            var ad = Database.AdRepository.GetAddById(adId);
-            var owenerOfAd = Database.UserRepository.GetUserById(ad.OwnerId);
-            return owenerOfAd;
+            foreach (var user in users)
+            {
+                var comments = Database.CommentRepository.GetAll().Where(comment => comment.UserID == user.ID).Count();
+                var ads = Database.AdRepository.GetAll().Where(ad => ad.OwnerId == user.ID).Count();
+                yield return new UserProfileDTO
+                {
+                    Id = user.ID,
+                    Name = user.Name,
+                    Surname = user.Surname,
+                    Phone = user.Phone,
+                    Email = user.Email,
+                    AdsAmount = ads,
+                    ComentsAmount = comments,
+                    Password = user.Password
+                };
+            }
         }
 
         public UserProfileDTO GetUserProfileById(int id)
         {
-            var user = Database.UserRepository.GetUserById(id);
-            var comments = Database.CommentRepository.GetComments().Where(comment => comment.UserID == id).Count();
-            var ads = Database.AdRepository.GetAds().Where(ad => ad.OwnerId == id).Count();
+            var user = Database.UserRepository.GetById(id);
+            var comments = Database.CommentRepository.GetAll().Where(comment => comment.UserID == id).Count();
+            var ads = Database.AdRepository.GetAll().Where(ad => ad.OwnerId == id).Count();
             return new UserProfileDTO()
             {
+                Id = user.ID,
                 Name = user.Name,
                 Surname = user.Surname,
                 Phone = user.Phone,
@@ -58,6 +64,22 @@ namespace BuisnesLogicLayer.Services
             };
         }
 
+        public void RegisterUser(UserRegisterDTO userRegisterDTO)
+        {
+            Database.UserRepository.Add(ConvertToUser.FromRgisterDTO(userRegisterDTO));
+        }
+
+        public void DeleteUserById(int id)
+        {
+            Database.UserRepository.DeleteById(id);
+        }
+
+        public void UpdateUser(UserEditDTO userEditDTO)
+        {
+            Database.UserRepository.Update(ConvertToUser.FromUserEditDTO(userEditDTO));
+        }
+        /*------------------------------Individual methods------------------------------*/
+
         public void LogIn(UserLogInDTO userLogInDTO)
         {
             throw new NotImplementedException();
@@ -66,11 +88,6 @@ namespace BuisnesLogicLayer.Services
         public void LogOut()
         {
             throw new NotImplementedException();
-        }
-
-        public void RegisterUser(UserRegisterDTO userRegisterDTO)
-        {
-            Database.UserRepository.AddNewUser(ConvertToUser.FromRgisterDTO(userRegisterDTO));
         }
     }
 }

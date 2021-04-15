@@ -8,21 +8,10 @@ using System.Linq;
 
 namespace DataAccesLayer.Repositories
 {
-    public class CommentRepository : ICommentRepository
+    public class CommentRepository : GenericRepository<Comment>, ICommentRepository
     {
         private AppDBContext context;
-        public CommentRepository(AppDBContext context) => this.context = context;
-
-        public void AddNewComment(Comment comment)
-        {
-            context.Comments.Add(comment);
-            context.SaveChanges();
-        }
-
-        public IEnumerable<Comment> GetComments()
-        {
-            return context.Comments.ToList();
-        }
+        public CommentRepository(AppDBContext context) : base(context)=> this.context = context;
 
         public IEnumerable<Comment> GetCommentsByAdId(int adId)
         {

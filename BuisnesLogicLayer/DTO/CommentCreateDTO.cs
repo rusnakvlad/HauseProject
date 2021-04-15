@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BuisnesLogicLayer.DTO
 {
-    public class CommentDTO
+    public class CommentCreateDTO
     {
         public int UserID { get; set; }
         public int AdId { get; set; }

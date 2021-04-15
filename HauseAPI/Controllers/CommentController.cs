@@ -14,29 +14,38 @@ namespace HauseAPI.Controllers
     public class CommentController : Controller
     {
         private readonly ICommentServices commentServices = new CommentServices();
-
-        [HttpGet("/comment/{adId}")]
-        public IEnumerable<CommentDTO> GetCommentsByAdId(int adId)
-        {
-           return commentServices.GetCommentsByAdId(adId);
-        }
-
+        // Get all comments
         [HttpGet]
-        public IEnumerable<CommentDTO> GetAllComments()
-        {
-            return commentServices.GetAllComments();
-        }
+        public IEnumerable<CommentCreateDTO> GetAllComments() => commentServices.GetAllComments();
+        
 
+        [HttpGet("/Comment/{id}")]
+        public CommentCreateDTO GetCommentById(int id) => commentServices.GetCommentById(id);
+        
+
+        // Get comments by adId
+        [HttpGet("/Comment/ad/{adId}")]
+        public IEnumerable<CommentCreateDTO> GetCommentsByAdId(int adId) => commentServices.GetCommentsByAdId(adId);
+        
+
+        // Add new comment
         [HttpPost]
-        public void AddNewComment([FromBody] CommentDTO commentDTO)
-        {
-            commentServices.AddNewComment(commentDTO);
-        }
+        public void AddNewComment([FromBody] CommentCreateDTO commentDTO) => commentServices.AddNewComment(commentDTO);
+        
 
-        [HttpDelete("/comment/{userId}/{adId}")]
-        public void RemoveCommentByUserIdAndAdId(int userId, int adId)
-        {
-            commentServices.RemoveCommentByUserIdAndAdId(userId, adId);
-        }
+        // Delete comment by ID
+        [HttpDelete("/Comment/{id}")]
+        public void RemoveCommentById(int id) => commentServices.DeleteCommentById(id);
+        
+
+        // Delete comment by userId and adId
+        [HttpDelete("/Comment/{userId}/{adId}")]
+        public void RemoveCommentByUserIdAndAdId(int userId, int adId) => commentServices.RemoveCommentByUserIdAndAdId(userId, adId);
+        
+
+        // Edit comment
+        [HttpPut]
+        public void UpdateComment([FromBody] CommentInfoAndEditIDTO commentEditDTO) => commentServices.UpdateComment(commentEditDTO);
+        
     }
 }

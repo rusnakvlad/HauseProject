@@ -58,8 +58,8 @@ namespace BuisnesLogicLayer.Converters
                 PurchaseOportunity = editAdDTO.PurchaseOportunity,
                 Status = editAdDTO.Status,
                 Description = editAdDTO.Description,
-                images = (List<Image>)ConvertToImageList.FromImageDTOList(editAdDTO.images),
-                tags = (List<Tag>)ConvertToTagList.FromTagDTOList(editAdDTO.tags)
+                //images = ConvertToImageList.FromImageDTOList(editAdDTO.images),
+                //tags = ConvertToTagList.FromTagDTOList(editAdDTO.tags)
             };
         }
     }

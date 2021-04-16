@@ -36,7 +36,7 @@ namespace HauseAPI
             services.AddControllers();
 
             services.AddDbContext<AppDBContext>();
-
+           // AppDBContext app = new AppDBContext();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "HauseAPI", Version = "v1" });

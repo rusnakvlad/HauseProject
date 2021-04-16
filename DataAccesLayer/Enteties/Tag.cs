@@ -7,7 +7,7 @@ namespace DataAccesLayer.Enteties
 {
     public class Tag
     {
-        public List<Ad> ads { get; set; }
+        public IEnumerable<Ad> ads { get; set; }
         [Required]
         [MaxLength(50)]
         public string Tag_ { get; set; }

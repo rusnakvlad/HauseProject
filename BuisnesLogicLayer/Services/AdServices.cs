@@ -29,7 +29,7 @@ namespace BuisnesLogicLayer.Services
         public IEnumerable<AdInfoDTO> GetAllAds()
         {
             var allAds = Database.AdRepository.GetAll();
-
+            
             foreach (var ad in allAds)
             {
                 List<TagDTO> tagsDTOs = new ();
@@ -41,7 +41,6 @@ namespace BuisnesLogicLayer.Services
                 // Get Images
                 foreach (var item in ad.images)
                     imageDTOs.Add(new ImageDTO() { ImageURL = item.ImageUrl });
-                
 
                 var owenerOfAd = Database.UserRepository.GetById(ad.OwnerId);
                 yield return new AdInfoDTO()
@@ -126,6 +125,17 @@ namespace BuisnesLogicLayer.Services
         public void UpdateAd(AdEdit editAdDTO)
         {
             Database.AdRepository.Update(ConvertToAd.FromEditAddInfoDTO(editAdDTO));
+            
+        }
+
+        public void SetFavorite(int userId, int adId)
+        {
+            Database.FavoriteRepository.Add(new Favorite(userId, adId));
+        }
+
+        public void SetForCompare(int userId, int adId)
+        {
+            Database.ForCompareRepository.Add(new ForCompare(userId, adId));
         }
 
         /*------------------------------Individual methods------------------------------*/

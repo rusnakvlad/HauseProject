@@ -36,7 +36,6 @@ namespace HauseAPI.Controllers
         // edit ad by id
         [HttpPut]
         public void EditAd([FromBody] AdEdit editAdDTO) => adService.UpdateAd(editAdDTO); 
-        
 
     }
 }

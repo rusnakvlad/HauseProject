@@ -10,11 +10,11 @@ namespace DataAccesLayer.Enteties
     public class Ad
     {
         public User user { get; set; }
-        public List<Comment> comments { get; set; }
-        public List<Favorite> favorites { get; set; }
-        public List<ForCompare> forCompares { get; set; }
-        public List<Tag> tags { get; set; }
-        public List<Image> images { get; set; }
+        public IEnumerable<Comment> comments { get; set; }
+        public IEnumerable<Favorite> favorites { get; set; }
+        public IEnumerable<ForCompare> forCompares { get; set; }
+        public IEnumerable<Tag> tags { get; set; }
+        public IEnumerable<Image> images { get; set; }
 //=======================================================================//
 
         public int ID { get; set; }

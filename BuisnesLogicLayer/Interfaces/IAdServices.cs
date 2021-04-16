@@ -21,6 +21,9 @@ namespace BuisnesLogicLayer.Interfaces
         public void UpdateAd(AdEdit editAdDTO);
 
         /*------------------------------Individual methods------------------------------*/
+        public void SetFavorite(int userId, int adId);
+
+        public void SetForCompare(int userId, int adId);
 
     }
 }

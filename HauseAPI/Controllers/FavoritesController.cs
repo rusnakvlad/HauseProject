@@ -12,7 +12,10 @@ namespace HauseAPI.Controllers
     [Route("[controller]")]
     public class FavoritesController : Controller
     {
-        private readonly IFavoritesServices favoritesServices  = new FavoritesServices();
+        private readonly IFavoritesServices favoritesServices;
+
+        public FavoritesController(IFavoritesServices favoritesServices) => this.favoritesServices = favoritesServices;
+
         // get all user favoritres by user and ad id
         [HttpGet("{userId}/{adId}")]
         public IEnumerable<AdShortInfoDTO> GetUserFavoritesAds(int userId)

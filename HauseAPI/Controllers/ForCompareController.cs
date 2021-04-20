@@ -13,7 +13,9 @@ namespace HauseAPI.Controllers
     [Route("[controller]")]
     public class ForCompareController : Controller
     {
-        private readonly IForCompareServices forCompareServices = new ForcompareServices();
+        private readonly IForCompareServices forCompareServices;
+
+        public ForCompareController(IForCompareServices forCompareServices) => this.forCompareServices = forCompareServices;
         // get all user compares by user and ad id
         [HttpGet("{userId}/{adId}")]
         public IEnumerable<ForCompareDTO> GetUserFavoritesAds(int userId)

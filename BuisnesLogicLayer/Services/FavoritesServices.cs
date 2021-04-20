@@ -15,15 +15,9 @@ namespace BuisnesLogicLayer.Services
 {
     public class FavoritesServices : IFavoritesServices
     {
-        private IUnitOfWork Database = new UnitOfWork(
-           new AdRepository(new AppDBContext()),
-           new CommentRepository(new AppDBContext()),
-           new FavoriteRepository(new AppDBContext()),
-           new ForCompareRepository(new AppDBContext()),
-           new ImageRepository(new AppDBContext()),
-           new TagRepository(new AppDBContext()),
-           new UserRepository(new AppDBContext())
-           );
+        private IUnitOfWork Database;
+
+        public FavoritesServices(IUnitOfWork unitOfWork) => Database = unitOfWork;
 
         public IEnumerable<AdShortInfoDTO> GetAllFavoritesByUserId(int userId)
         {

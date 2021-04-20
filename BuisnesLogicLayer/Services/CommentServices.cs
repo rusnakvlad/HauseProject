@@ -15,15 +15,8 @@ namespace BuisnesLogicLayer.Services
 {
     public class CommentServices : ICommentServices
     {
-        private IUnitOfWork Database = new UnitOfWork(
-               new AdRepository(new AppDBContext()),
-               new CommentRepository(new AppDBContext()),
-               new FavoriteRepository(new AppDBContext()),
-               new ForCompareRepository(new AppDBContext()),
-               new ImageRepository(new AppDBContext()),
-               new TagRepository(new AppDBContext()),
-               new UserRepository(new AppDBContext())
-               );
+        private IUnitOfWork Database;
+        public CommentServices(IUnitOfWork unitOfWork) => Database = unitOfWork;
         /*--------------------Common Methods from Generic repository--------------------*/
         public IEnumerable<CommentCreateDTO> GetAllComments()
         {

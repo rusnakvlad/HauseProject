@@ -13,7 +13,9 @@ namespace HauseAPI.Controllers
     [Route("[controller]")]
     public class CommentController : Controller
     {
-        private readonly ICommentServices commentServices = new CommentServices();
+        private readonly ICommentServices commentServices;
+
+        public CommentController(ICommentServices commentServices) => this.commentServices = commentServices;
         // Get all comments
         [HttpGet]
         public IEnumerable<CommentCreateDTO> GetAllComments() => commentServices.GetAllComments();

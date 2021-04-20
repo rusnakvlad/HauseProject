@@ -12,7 +12,9 @@ namespace HauseAPI.Controllers
     [Route("[controller]")]
     public class AdController : Controller
     {
-        private readonly IAdServices adService = new AdServices();
+        private readonly IAdServices adService;
+
+        public AdController(IAdServices adServices) => adService = adServices;
 
         // get all ads
         [HttpGet]

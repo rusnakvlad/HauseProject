@@ -17,7 +17,7 @@ namespace BuisnesLogicLayer.Interfaces
         public void UpdateUser(UserEditDTO userEditDTO);
 
         /*------------------------------Individual methods------------------------------*/
-        public void LogIn(UserLogInDTO userLogInDTO);
+        public bool LogIn(UserLogInDTO userLogInDTO);
         public void LogOut();
     }
 }

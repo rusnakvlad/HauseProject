@@ -15,15 +15,9 @@ namespace BuisnesLogicLayer.Services
 {
     public class ForcompareServices : IForCompareServices
     {
-        private IUnitOfWork Database = new UnitOfWork(
-           new AdRepository(new AppDBContext()),
-           new CommentRepository(new AppDBContext()),
-           new FavoriteRepository(new AppDBContext()),
-           new ForCompareRepository(new AppDBContext()),
-           new ImageRepository(new AppDBContext()),
-           new TagRepository(new AppDBContext()),
-           new UserRepository(new AppDBContext())
-           );
+        private IUnitOfWork Database;
+
+        public ForcompareServices(IUnitOfWork unitOfWork) => Database = unitOfWork;
 
         public IEnumerable<ForCompareDTO> GetAllComparesByUserId(int userId)
         {

@@ -14,7 +14,9 @@ namespace HauseAPI.Controllers
     [Route("[controller]")]
     public class UserController : Controller
     {
-        private readonly IUserServices userServices = new UserServices();
+        private readonly IUserServices userServices;
+        
+        public UserController(IUserServices userServices) => this.userServices = userServices;
 
         // Get All Users Profiles
         [HttpGet]

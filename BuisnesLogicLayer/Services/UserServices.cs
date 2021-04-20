@@ -14,15 +14,9 @@ namespace BuisnesLogicLayer.Services
 {
     public class UserServices : IUserServices
     {
-        private IUnitOfWork Database = new UnitOfWork(
-            new AdRepository(new AppDBContext()),
-            new CommentRepository(new AppDBContext()),
-            new FavoriteRepository(new AppDBContext()),
-            new ForCompareRepository(new AppDBContext()),
-            new ImageRepository(new AppDBContext()),
-            new TagRepository(new AppDBContext()),
-            new UserRepository(new AppDBContext())        
-            );
+        private IUnitOfWork Database;
+
+        public UserServices(IUnitOfWork unitOfWork) => Database = unitOfWork;
         /*--------------------Common Methods from Generic repository--------------------*/
         public IEnumerable<UserProfileDTO> GetAllUsersProfiles()
         {
@@ -80,9 +74,14 @@ namespace BuisnesLogicLayer.Services
         }
         /*------------------------------Individual methods------------------------------*/
 
-        public void LogIn(UserLogInDTO userLogInDTO)
+        public bool LogIn(UserLogInDTO userLogInDTO)
         {
-            throw new NotImplementedException();
+            var user = Database.UserRepository.GetAll().ToList().Where(u => u.Email == userLogInDTO.Email).FirstOrDefault();
+            if (user.Password == userLogInDTO.Password)
+            {
+                return true;
+            }
+            return false;
         }
 
         public void LogOut()

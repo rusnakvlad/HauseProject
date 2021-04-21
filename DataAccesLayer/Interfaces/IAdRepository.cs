@@ -23,9 +23,5 @@ namespace DataAccesLayer.Interfaces
         IEnumerable<Ad> GetAdsByUserId(int adId);
 
         IEnumerable<Ad> GetAdsByOptions(Dictionary<string, string> filter);
-
-        void SetFavorite(int userId, int adId);
-
-        void SetForCompare(int userId, int adId);
     }
 }

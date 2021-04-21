@@ -16,6 +16,22 @@ namespace DataAccesLayer.Repositories
 
         public void Add(Ad entity)
         {
+            // delte dubilcate tags
+            //List<Tag> tags = new List<Tag>(); // dublicate tags
+            //foreach (var item in entity.tags)
+            //{
+            //    if (context.Tags.ToList().Any(e => e.Tag_ == item.Tag_))
+            //       tags.Add(item); // all dubicates    
+            //}
+
+            //foreach (var item in tags)
+            //{
+            //    if (context.Tags.ToList().Any(e => e.Tag_ == item.Tag_))
+            //    {
+            //        context.Tags.Remove(item);
+            //        context.SaveChanges();
+            //    }
+            //}
             context.Ads.Add(entity);
             context.SaveChanges();
         }
@@ -63,19 +79,10 @@ namespace DataAccesLayer.Repositories
                         .FirstOrDefault();
         }
 
-        public void SetFavorite(int userId, int adId)
+        public void Update(Ad ad)
         {
-            context.Favorites.Add(new Favorite(userId, adId));
-        }
-
-        public void SetForCompare(int userId, int adId)
-        {
-            context.ForCompares.Add(new ForCompare(userId, adId));
-        }
-
-        public void Update(Ad entity)
-        {
-            context.Ads.Update(entity);
+            context.Ads.Update(ad);
+            context.SaveChanges();
         }
     }
 }

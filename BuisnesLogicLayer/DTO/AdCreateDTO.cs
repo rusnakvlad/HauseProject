@@ -27,6 +27,6 @@ namespace BuisnesLogicLayer.DTO
         public bool Status { get; set; }
         public string Description { get; set; }
         public List<TagDTO> tags { get; set; }
-        public List<ImageDTO> images { get; set; }
+        public List<ImageCreateDTO> images { get; set; }
     }
 }

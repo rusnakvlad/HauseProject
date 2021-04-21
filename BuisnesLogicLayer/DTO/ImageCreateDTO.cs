@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace BuisnesLogicLayer.DTO
 {
-    public class ImageDTO
+    public class ImageCreateDTO
     {
-        public string ImageURL { get; set; }
+        public string ImageUrl { get; set; }
     }
 }

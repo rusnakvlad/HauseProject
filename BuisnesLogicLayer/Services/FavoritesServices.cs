@@ -42,6 +42,11 @@ namespace BuisnesLogicLayer.Services
         {
             Database.FavoriteRepository.RemoveFavoriteByUserIdAndAdId(userId, adId);
         }
+
+        public void SetFavorite(int userId, int adId)
+        {
+            Database.FavoriteRepository.Add(new Favorite(userId, adId));
+        }
     }
 }
 

@@ -21,10 +21,10 @@ namespace BuisnesLogicLayer.Services
 
         public IEnumerable<ForCompareDTO> GetAllComparesByUserId(int userId)
         {
-            var favorites = Database.FavoriteRepository.GetAllFavoritesByUserId(userId);
-            foreach (var favorite in favorites)
+            var forCompares = Database.ForCompareRepository.GetAllComparesByUserId(userId);
+            foreach (var coparasion in forCompares)
             {
-                var ad = Database.AdRepository.GetById(favorite.AdID);
+                var ad = Database.AdRepository.GetById(coparasion.AdID);
                 yield return new ForCompareDTO()
                 {
                     Id = ad.ID,
@@ -51,6 +51,11 @@ namespace BuisnesLogicLayer.Services
         public void RemoveCopareByUserIdAndAdId(int userId, int AdId)
         {
             Database.ForCompareRepository.RemoveCopareByUserIdAndAdId(userId, AdId);
+        }
+
+        public void SetForCompare(int userId, int adId)
+        {
+            Database.ForCompareRepository.Add(new ForCompare(userId, adId));
         }
     }
 }

@@ -12,32 +12,32 @@ namespace HauseAPI.Controllers
     [Route("[controller]")]
     public class AdController : Controller
     {
-        private readonly IAdServices adService;
+        private readonly IAdServices adServices;
 
-        public AdController(IAdServices adServices) => adService = adServices;
+        public AdController(IAdServices adServices) => this.adServices = adServices;
 
         // get all ads
         [HttpGet]
-        public IEnumerable<AdInfoDTO> GetAllAds() => adService.GetAllAds();
+        public IEnumerable<AdInfoDTO> GetAllAds() => adServices.GetAllAds();
 
         // get ad by id
         [HttpGet("/Ad/{id}")]
-        public AdInfoDTO GetAddDTOByID(int id) => adService.GetAdById(id);
+        public AdInfoDTO GetAddDTOByID(int id) => adServices.GetAdById(id);
         
 
         // add new ad
         [HttpPost]
-        public void AddNewAdd ([FromBody]AdCreateDTO createAdDTO) => adService.AddNewAd(createAdDTO);
+        public void AddNewAdd ([FromBody]AdCreateDTO createAdDTO) => adServices.AddNewAd(createAdDTO);
         
 
         // delete ad by id
         [HttpDelete("/Ad/{id}")]
-        public void DeleteAdById(int id) => adService.DeleteAdById(id);
+        public void DeleteAdById(int id) => adServices.DeleteAdById(id);
 
 
         // edit ad by id
         [HttpPut]
-        public void EditAd([FromBody] AdEdit editAdDTO) => adService.UpdateAd(editAdDTO); 
+        public void EditAd([FromBody] AdEdit editAdDTO) => adServices.UpdateAd(editAdDTO); 
 
     }
 }

@@ -11,8 +11,7 @@ namespace DataAccesLayer.EntetiesConfiguration
     {
         public void Configure(EntityTypeBuilder<Comment> builder)
         {
-            // builder.HasKey(key => key.ID);
-            builder.HasKey(key => new { key.AdId, key.UserID });
+             builder.HasKey(key => key.ID);
         }
     }
 }

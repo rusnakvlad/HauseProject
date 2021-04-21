@@ -10,11 +10,11 @@ namespace BuisnesLogicLayer.Converters
 {
     public class ConvertToImageListDTO
     {
-        public static IEnumerable<ImageDTO> FromImageList(IEnumerable<Image> images)
+        public static IEnumerable<ImageEditInfoDTO> FromImageList(IEnumerable<Image> images)
         {
             foreach (var item in images)
             {
-                yield return new ImageDTO() { ImageURL = item.ImageUrl };
+                yield return new ImageEditInfoDTO() { ImageURL = item.ImageUrl, Id = item.ID, AdId = item.AdID };
             }
         }
     }

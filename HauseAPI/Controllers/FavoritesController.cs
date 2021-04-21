@@ -16,8 +16,15 @@ namespace HauseAPI.Controllers
 
         public FavoritesController(IFavoritesServices favoritesServices) => this.favoritesServices = favoritesServices;
 
-        // get all user favoritres by user and ad id
-        [HttpGet("{userId}/{adId}")]
+        // set(add) new favorite for user
+        [HttpPost("{userId}/{adId}")]
+        public void SetNewFavoite(int userId, int adId)
+        {
+            favoritesServices.SetFavorite(userId, adId);
+        }
+
+        // get all user favoritres by user id
+        [HttpGet("{userId}")]
         public IEnumerable<AdShortInfoDTO> GetUserFavoritesAds(int userId)
         {
            return favoritesServices.GetAllFavoritesByUserId(userId);

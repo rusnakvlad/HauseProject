@@ -18,6 +18,6 @@ namespace BuisnesLogicLayer.DTO
         public int AreaOfHouse { get; set; }
         public int RoomNumber { get; set; }
         public bool Status { get; set; }
-        public IEnumerable<ImageDTO> images { get; set; }
+        public IEnumerable<ImageEditInfoDTO> images { get; set; }
     }
 }

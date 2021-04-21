@@ -10,12 +10,12 @@ namespace BuisnesLogicLayer.Converters
 {
     public class ConvertToImageList
     {
-        public static List<Image> FromImageDTOList(List<ImageDTO> imageDTOs)
+        public static List<Image> FromImageCreateDTOList(List<ImageCreateDTO> imageDTOs)
         {
             List<Image> tepm = new();
             foreach (var item in imageDTOs)
             {
-                tepm.Add(new Image() { ImageUrl = item.ImageURL });
+                tepm.Add(new Image() { ImageUrl = item.ImageUrl });
             }
             return tepm;
         }

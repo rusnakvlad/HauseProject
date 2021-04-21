@@ -36,8 +36,8 @@ namespace HauseAPI
         public void ConfigureServices(IServiceCollection services)
         {
             #region Repositories
-            services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<IAdRepository, AdRepository>();
+            services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<IFavoriteRepository, FavoriteRepository>();
             services.AddTransient<IForCompareRepository, ForCompareRepository>();
             services.AddTransient<IImageRepository, ImageRepository>();
@@ -48,6 +48,7 @@ namespace HauseAPI
             services.AddTransient<IUnitOfWork, UnitOfWork>();
 
             #region Services
+            services.AddTransient<IAdServices, AdServices>();
             services.AddTransient<IUserServices, UserServices>();
             services.AddTransient<ICommentServices, CommentServices>();
             services.AddTransient<IFavoritesServices, FavoritesServices>();

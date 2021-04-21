@@ -16,9 +16,9 @@ namespace BuisnesLogicLayer.Services
 {
     public class AdServices : IAdServices
     {
-        private IUnitOfWork Database;
+        private readonly IUnitOfWork Database;
 
-        public AdServices(IUnitOfWork unitOfWork) => this.Database = unitOfWork;
+        public AdServices(IUnitOfWork unitOfWork) => Database = unitOfWork;
 
         /*--------------------Common Methods from Generic repository--------------------*/
         public IEnumerable<AdInfoDTO> GetAllAds()
@@ -28,14 +28,14 @@ namespace BuisnesLogicLayer.Services
             foreach (var ad in allAds)
             {
                 List<TagDTO> tagsDTOs = new ();
-                List<ImageDTO> imageDTOs = new ();
+                List<ImageEditInfoDTO> imageDTOs = new ();
                 // Get Tags
                 foreach (var item in ad.tags)
                     tagsDTOs.Add(new TagDTO() { _Tag = item.Tag_ });
-                
+
                 // Get Images
                 foreach (var item in ad.images)
-                    imageDTOs.Add(new ImageDTO() { ImageURL = item.ImageUrl });
+                    imageDTOs.Add(new ImageEditInfoDTO() { ImageURL = item.ImageUrl, Id = item.ID, AdId = item.AdID });
 
                 var owenerOfAd = Database.UserRepository.GetById(ad.OwnerId);
                 yield return new AdInfoDTO()
@@ -71,15 +71,16 @@ namespace BuisnesLogicLayer.Services
             var ad = Database.AdRepository.GetById(id);
             var owenerOfAd = Database.UserRepository.GetById(ad.OwnerId);
             List<TagDTO> tagsDTOs = new List<TagDTO>();
-            List<ImageDTO> imageDTOs = new List<ImageDTO>();
+            List<ImageEditInfoDTO> imageDTOs = new List<ImageEditInfoDTO>();
             // Get Tags
             foreach (var item in ad.tags)
                 tagsDTOs.Add(new TagDTO() { _Tag = item.Tag_ });
             
             // Get Images
             foreach (var item in ad.images)
-                 imageDTOs.Add(new ImageDTO() { ImageURL = item.ImageUrl });
-            
+                imageDTOs.Add(new ImageEditInfoDTO() { ImageURL = item.ImageUrl, Id = item.ID, AdId = item.AdID });
+
+
             return new AdInfoDTO()
             {
                 Id = ad.ID,
@@ -120,17 +121,6 @@ namespace BuisnesLogicLayer.Services
         public void UpdateAd(AdEdit editAdDTO)
         {
             Database.AdRepository.Update(ConvertToAd.FromEditAddInfoDTO(editAdDTO));
-            
-        }
-
-        public void SetFavorite(int userId, int adId)
-        {
-            Database.FavoriteRepository.Add(new Favorite(userId, adId));
-        }
-
-        public void SetForCompare(int userId, int adId)
-        {
-            Database.ForCompareRepository.Add(new ForCompare(userId, adId));
         }
 
         /*------------------------------Individual methods------------------------------*/

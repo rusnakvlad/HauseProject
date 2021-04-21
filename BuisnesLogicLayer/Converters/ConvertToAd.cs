@@ -31,7 +31,7 @@ namespace BuisnesLogicLayer.Converters
                 PurchaseOportunity = createAdDTO.PurchaseOportunity,
                 Status = createAdDTO.Status,
                 Description = createAdDTO.Description,
-                images = ConvertToImageList.FromImageDTOList(createAdDTO.images),
+                images = ConvertToImageList.FromImageCreateDTOList(createAdDTO.images),
                 tags = ConvertToTagList.FromTagDTOList(createAdDTO.tags)
             };
         }
@@ -57,9 +57,7 @@ namespace BuisnesLogicLayer.Converters
                 Balkon = editAdDTO.Balkon,
                 PurchaseOportunity = editAdDTO.PurchaseOportunity,
                 Status = editAdDTO.Status,
-                Description = editAdDTO.Description,
-                //images = ConvertToImageList.FromImageDTOList(editAdDTO.images),
-                //tags = ConvertToTagList.FromTagDTOList(editAdDTO.tags)
+                Description = editAdDTO.Description
             };
         }
     }

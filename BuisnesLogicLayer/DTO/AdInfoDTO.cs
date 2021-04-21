@@ -29,7 +29,7 @@ namespace BuisnesLogicLayer.DTO
         public string Description { get; set; }
         public string OwnerEmail { get; set; }
         public string OwnerPhone { get; set; }
-        public List<TagDTO> tags { get; set; }
-        public List<ImageDTO> images { get; set; }
+        public IEnumerable<TagDTO> tags { get; set; }
+        public IEnumerable<ImageEditInfoDTO> images { get; set; }
     }
 }

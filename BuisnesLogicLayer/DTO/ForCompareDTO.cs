@@ -27,6 +27,6 @@ namespace BuisnesLogicLayer.DTO
         public bool Pool { get; set; }
         public bool Balkon { get; set; }
         public bool PurchaseOportunity { get; set; }
-        public IEnumerable<ImageDTO> images { get; set; }
+        public IEnumerable<ImageEditInfoDTO> images { get; set; }
     }
 }

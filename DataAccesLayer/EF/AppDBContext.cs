@@ -4,12 +4,14 @@ using System.Text;
 using DataAccesLayer.Enteties;
 using Microsoft.EntityFrameworkCore;
 using DataAccesLayer.EntetiesConfiguration;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+
+
 namespace DataAccesLayer.EF
 {
-    public class AppDBContext : DbContext
+    public class AppDBContext : IdentityDbContext<User>
     {
         // Data context, show with which type of objects we will work
-        public DbSet<User> Users { get; set; }
         public DbSet<Comment> Comments { get; set; }
         public DbSet<Favorite> Favorites { get; set; }
         public DbSet<ForCompare> ForCompares { get; set; }
@@ -27,12 +29,13 @@ namespace DataAccesLayer.EF
         // Make connection to DB using method UseSqlServer
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Server = (localdb)\\mssqllocaldb; Database = UAHP; Trusted_Connection = True;");
+            optionsBuilder.UseSqlServer("Server = (localdb)\\mssqllocaldb; Database = UAHP; Trusted_Connection = True; MultipleActiveResultSets=true");
         }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
             modelBuilder.ApplyConfiguration(new UserConfiguration());
             modelBuilder.ApplyConfiguration(new AddConfiguration());
             modelBuilder.ApplyConfiguration(new CommentConfiguration());

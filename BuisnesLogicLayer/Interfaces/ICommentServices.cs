@@ -10,20 +10,20 @@ namespace BuisnesLogicLayer.Interfaces
     public interface ICommentServices
     {
         /*--------------------Common Methods from Generic repository--------------------*/
-        public IEnumerable<CommentCreateDTO> GetAllComments();
+        public Task<IEnumerable<CommentCreateDTO>> GetAllComments();
 
-        public CommentCreateDTO GetCommentById(int id);
+        public Task<CommentCreateDTO> GetCommentById(int id);
 
-        public void AddNewComment(CommentCreateDTO commentDTO);
+        public Task AddNewComment(CommentCreateDTO commentDTO);
 
-        public void UpdateComment(CommentInfoAndEditIDTO commentEditDTO);
+        public Task UpdateComment(CommentInfoAndEditIDTO commentEditDTO);
 
-        public void DeleteCommentById(int id);
+        public Task DeleteCommentById(int id);
 
         /*------------------------------Individual methods------------------------------*/
-        public IEnumerable<CommentCreateDTO> GetCommentsByAdId(int adId);
+        public Task<IEnumerable<CommentCreateDTO>> GetCommentsByAdId(int adId);
 
-        public void RemoveCommentByUserIdAndAdId(int userId, int adId);
+        public Task RemoveCommentByUserIdAndAdId(string userId, int adId);
         
         
     }

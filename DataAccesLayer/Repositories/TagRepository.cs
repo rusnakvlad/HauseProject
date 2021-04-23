@@ -5,6 +5,8 @@ using DataAccesLayer.Enteties;
 using DataAccesLayer.Interfaces;
 using DataAccesLayer.EF;
 using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace DataAccesLayer.Repositories
 {
@@ -13,9 +15,9 @@ namespace DataAccesLayer.Repositories
         private AppDBContext context;
         public TagRepository(AppDBContext context) : base(context) => this.context = context;
 
-        public IEnumerable<Tag> GetTagsFromAdByAdsId(int adId)
+        public async Task<IEnumerable<Tag>> GetTagsFromAdByAdsId(int adId)
         {
-            return context.Tags.ToList();
+            return await context.Tags.ToListAsync();
         }
     }
 }

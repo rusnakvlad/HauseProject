@@ -10,7 +10,7 @@ namespace BuisnesLogicLayer.DTO
     {
         // not displayed
         public int ID { get; set; }
-        public int OwnerId { get; set; }
+        public string OwnerId { get; set; }
 
         // displayed
         public int Price { get; set; }

@@ -5,6 +5,8 @@ using DataAccesLayer.Enteties;
 using DataAccesLayer.Interfaces;
 using DataAccesLayer.EF;
 using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace DataAccesLayer.Repositories
 {
@@ -14,16 +16,16 @@ namespace DataAccesLayer.Repositories
         public ForCompareRepository(AppDBContext context) : base(context) => this.context = context;
 
 
-        public IEnumerable<ForCompare> GetAllComparesByUserId(int userId)
+        public async Task<IEnumerable<ForCompare>> GetAllComparesByUserId(string userId)
         {
-            return context.ForCompares.ToList().Where(fc => fc.UserID == userId);
+            return await context.ForCompares.Where(fc => fc.UserID == userId).ToListAsync();
         }
 
-        public void RemoveCopareByUserIdAndAdId(int userId, int AdId)
+        public async Task RemoveCopareByUserIdAndAdId(string userId, int AdId)
         {
             var compareToRemove = context.ForCompares.ToList().Where(fc => fc.UserID == userId && fc.AdID == AdId).FirstOrDefault();
             context.ForCompares.Remove(compareToRemove);
-            context.SaveChanges();
+            await context.SaveChangesAsync();
         }
     }
 }

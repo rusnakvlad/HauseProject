@@ -18,26 +18,37 @@ namespace HauseAPI.Controllers
 
         // get all ads
         [HttpGet]
-        public IEnumerable<AdInfoDTO> GetAllAds() => adServices.GetAllAds();
+        public async Task<IEnumerable<AdInfoDTO>> GetAllAds()
+        {
+            return await adServices.GetAllAds();
+        }
 
         // get ad by id
         [HttpGet("/Ad/{id}")]
-        public AdInfoDTO GetAddDTOByID(int id) => adServices.GetAdById(id);
-        
+        public async Task<AdInfoDTO> GetAddDTOByID(int id)
+        {
+            return await adServices.GetAdById(id);
+        }
 
         // add new ad
         [HttpPost]
-        public void AddNewAdd ([FromBody]AdCreateDTO createAdDTO) => adServices.AddNewAd(createAdDTO);
-        
+        public async Task AddNewAdd([FromBody] AdCreateDTO createAdDTO)
+        {
+            await adServices.AddNewAd(createAdDTO);
+        }
 
         // delete ad by id
         [HttpDelete("/Ad/{id}")]
-        public void DeleteAdById(int id) => adServices.DeleteAdById(id);
-
+        public async Task DeleteAdById(int id)
+        {
+            await adServices.DeleteAdById(id);
+        }
 
         // edit ad by id
         [HttpPut]
-        public void EditAd([FromBody] AdEdit editAdDTO) => adServices.UpdateAd(editAdDTO); 
-
+        public async Task EditAd([FromBody] AdEdit editAdDTO)
+        {
+            await adServices.UpdateAd(editAdDTO);
+        }
     }
 }

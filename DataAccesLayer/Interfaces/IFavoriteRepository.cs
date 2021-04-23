@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 using DataAccesLayer.Enteties;
 
 namespace DataAccesLayer.Interfaces
 {
     public interface IFavoriteRepository : IGenericRepository<Favorite>
     {
-        public IEnumerable<Favorite> GetAllFavoritesByUserId(int userId);
+        public Task<IEnumerable<Favorite>> GetAllFavoritesByUserId(string userId);
 
-        public void RemoveFavoriteByUserIdAndAdId(int userId, int adId);
+        public Task RemoveFavoriteByUserIdAndAdId(string userId, int adId);
     }
 }

@@ -18,24 +18,26 @@ namespace BuisnesLogicLayer.Services
         private IUnitOfWork Database;
         public CommentServices(IUnitOfWork unitOfWork) => Database = unitOfWork;
         /*--------------------Common Methods from Generic repository--------------------*/
-        public IEnumerable<CommentCreateDTO> GetAllComments()
+        public async Task<IEnumerable<CommentCreateDTO>> GetAllComments()
         {
-            var comments = Database.CommentRepository.GetAll();
+            var comments = await Database.CommentRepository.GetAll();
+            List<CommentCreateDTO> commentCreateDTOs = new();
             foreach (var comment in comments)
             {
-                yield return new CommentCreateDTO()
+                commentCreateDTOs.Add(new CommentCreateDTO()
                 {
                     AdId = comment.AdId,
                     UserID = comment.UserID,
                     DateOfComment = comment.DateOfComment,
                     Text = comment.Text
-                };
+                });
             }
+            return commentCreateDTOs;
         }
 
-        public CommentCreateDTO GetCommentById(int id)
+        public async Task<CommentCreateDTO> GetCommentById(int id)
         {
-            var comment = Database.CommentRepository.GetById(id);
+            var comment = await Database.CommentRepository.GetById(id);
             return new CommentCreateDTO
             {
                 AdId = comment.AdId,
@@ -45,40 +47,42 @@ namespace BuisnesLogicLayer.Services
             };
         }
 
-        public void AddNewComment(CommentCreateDTO commentDTO)
+        public async Task AddNewComment(CommentCreateDTO commentDTO)
         {
-            Database.CommentRepository.Add(ConvertToComment.FromCommentDTO(commentDTO));
+            await Database.CommentRepository.Add(ConvertToComment.FromCommentDTO(commentDTO));
         }
 
-        public void DeleteCommentById(int id)
+        public async Task DeleteCommentById(int id)
         {
-            Database.CommentRepository.DeleteById(id);
+            await Database.CommentRepository.DeleteById(id);
         }
 
-        public void UpdateComment(CommentInfoAndEditIDTO commentEditDTO)
+        public async Task UpdateComment(CommentInfoAndEditIDTO commentEditDTO)
         {
-            Database.CommentRepository.Update(ConvertToComment.FromCommentEditDTO(commentEditDTO));
+            await Database.CommentRepository.Update(ConvertToComment.FromCommentEditDTO(commentEditDTO));
         }
 
         /*------------------------------Individual methods------------------------------*/
-        public IEnumerable<CommentCreateDTO> GetCommentsByAdId(int adId)
+        public async Task<IEnumerable<CommentCreateDTO>> GetCommentsByAdId(int adId)
         {
-            var comments = Database.CommentRepository.GetCommentsByAdId(adId);
+            var comments = await Database.CommentRepository.GetCommentsByAdId(adId);
+            List<CommentCreateDTO> commentCreateDTOs = new();
             foreach (var comment in comments)
             {
-                yield return new CommentCreateDTO()
+                commentCreateDTOs.Add(new CommentCreateDTO()
                 {
                     AdId = comment.AdId,
                     UserID = comment.UserID,
                     DateOfComment = comment.DateOfComment,
                     Text = comment.Text
-                };
+                });
             }
+            return commentCreateDTOs;
         }
 
-        public void RemoveCommentByUserIdAndAdId(int userId, int adId)
+        public async Task RemoveCommentByUserIdAndAdId(string userId, int adId)
         {
-            Database.CommentRepository.RemoveCommentByUserIdAndAdId(userId, adId);
+            await Database.CommentRepository.RemoveCommentByUserIdAndAdId(userId, adId);
         }
     }
 }

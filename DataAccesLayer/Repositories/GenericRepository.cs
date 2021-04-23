@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using DataAccesLayer.Enteties;
 using DataAccesLayer.Interfaces;
 using DataAccesLayer.EF;
+using Microsoft.EntityFrameworkCore;
 
 namespace DataAccesLayer.Repositories
 {
@@ -18,39 +19,39 @@ namespace DataAccesLayer.Repositories
         private AppDBContext context;
         public GenericRepository(AppDBContext context) => this.context = context;
 
-        public void Add(TEntity entity)
+        public async Task Add(TEntity entity)
         {
-            context.Set<TEntity>().Add(entity);
-            context.SaveChanges();
+            await context.Set<TEntity>().AddAsync(entity);
+            await context.SaveChangesAsync();
         }
 
-        public void Delete(TEntity entity)
+        public async Task Delete(TEntity entity)
         {
             context.Set<TEntity>().Remove(entity);
-            context.SaveChanges();
+            await context.SaveChangesAsync();
         }
 
-        public void DeleteById(int id)
+        public async Task DeleteById(int id)
         {
             var entityToDelete = context.Set<TEntity>().Find(id);
             context.Set<TEntity>().Remove(entityToDelete);
-            context.SaveChanges();
+            await context.SaveChangesAsync();
         }
 
-        public IEnumerable<TEntity> GetAll()
+        public async Task<IEnumerable<TEntity>> GetAll()
         {
-            return context.Set<TEntity>().ToList();
+            return await context.Set<TEntity>().ToListAsync();
         }
 
-        public TEntity GetById(int id)
+        public async Task<TEntity> GetById(int id)
         {
-            return context.Set<TEntity>().Find(id);
+            return await context.Set<TEntity>().FindAsync(id);
         }
 
-        public void Update(TEntity entity)
+        public async Task Update(TEntity entity)
         {
             context.Set<TEntity>().Update(entity);
-            context.SaveChanges();
+            await context.SaveChangesAsync();
         }
     }
 }

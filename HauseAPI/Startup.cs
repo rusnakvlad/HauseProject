@@ -20,11 +20,15 @@ using DataAccesLayer.EF;
 using BuisnesLogicLayer.DTO;
 using System.Text;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using DataAccesLayer.Enteties;
+
 namespace HauseAPI
 {
     public class Startup
     {
-        private IServiceCollection _services;
+        //private IServiceCollection _services;
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -58,8 +62,8 @@ namespace HauseAPI
             services.AddDbContext<AppDBContext>();
 
             services.AddControllers();
-      
-            _services = services;
+
+            services.AddIdentity<User, IdentityRole>().AddEntityFrameworkStores<AppDBContext>();
 
             services.AddSwaggerGen(c =>
             {
@@ -70,29 +74,12 @@ namespace HauseAPI
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env,IUserServices userServices)
         {
-            //app.Run(async context =>
-            //{
-            //    var sb = new StringBuilder();
-            //    sb.Append("<h1>Все сервисы</h1>");
-            //    sb.Append("<table>");
-            //    sb.Append("<tr><th>Тип</th><th>Lifetime</th><th>Реализация</th></tr>");
-            //    foreach (var svc in _services)
-            //    {
-            //        sb.Append("<tr>");
-            //        sb.Append($"<td>{svc.ServiceType.FullName}</td>");
-            //        sb.Append($"<td>{svc.Lifetime}</td>");
-            //        sb.Append($"<td>{svc.ImplementationType?.FullName}</td>");
-            //        sb.Append("</tr>");
-            //    }
-            //    sb.Append("</table>");
-            //    context.Response.ContentType = "text/html;charset=utf-8";
-            //    await context.Response.WriteAsync(userServices.GetUserProfileById(4).Name);
-            //});
 
             if (env.IsDevelopment())
             {
                 // то выводим информацию об ошибке, при наличии ошибки
                 app.UseDeveloperExceptionPage();
+
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "HauseAPI v1"));
             }
@@ -101,7 +88,8 @@ namespace HauseAPI
             //// добавляем возможности маршрутизации
             app.UseRouting();
 
-            //app.UseAuthorization();
+            app.UseAuthentication();    // подключение аутентификации
+            app.UseAuthorization();
 
             // устанавливаем адреса, которые будут обрабатываться
             app.UseEndpoints(endpoints =>

@@ -5,6 +5,8 @@ using DataAccesLayer.Enteties;
 using DataAccesLayer.Interfaces;
 using DataAccesLayer.EF;
 using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace DataAccesLayer.Repositories
 {
@@ -14,16 +16,16 @@ namespace DataAccesLayer.Repositories
         public ImageRepository(AppDBContext context) : base(context) => this.context = context;
 
 
-        public IEnumerable<Image> GetAllAdsImagesByAdId(int adId)
+        public async Task<IEnumerable<Image>> GetAllAdsImagesByAdId(int adId)
         {
-            return context.Images.ToList().Where(img => img.AdID == adId);
+            return await context.Images.Where(img => img.AdID == adId).ToListAsync();
         }
 
-        public void RemoveImageById(int imageId)
+        public async Task RemoveImageById(int imageId)
         {
             var imageToRemove = context.Images.Find(imageId);
             context.Images.Remove(imageToRemove);
-            context.SaveChanges();
+            await context.SaveChangesAsync();
         }
     }
 }

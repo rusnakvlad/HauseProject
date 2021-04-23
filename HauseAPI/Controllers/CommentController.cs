@@ -18,36 +18,51 @@ namespace HauseAPI.Controllers
         public CommentController(ICommentServices commentServices) => this.commentServices = commentServices;
         // Get all comments
         [HttpGet]
-        public IEnumerable<CommentCreateDTO> GetAllComments() => commentServices.GetAllComments();
-        
+        public async Task<IEnumerable<CommentCreateDTO>> GetAllComments()
+        {
+            return await commentServices.GetAllComments();
+        }
 
         [HttpGet("/Comment/{id}")]
-        public CommentCreateDTO GetCommentById(int id) => commentServices.GetCommentById(id);
-        
+        public async Task<CommentCreateDTO> GetCommentById(int id)
+        {
+            return await commentServices.GetCommentById(id);
+        }
 
         // Get comments by adId
         [HttpGet("/Comment/ad/{adId}")]
-        public IEnumerable<CommentCreateDTO> GetCommentsByAdId(int adId) => commentServices.GetCommentsByAdId(adId);
-        
+        public async Task<IEnumerable<CommentCreateDTO>> GetCommentsByAdId(int adId)
+        {
+           return await commentServices.GetCommentsByAdId(adId);
+        }
 
         // Add new comment
         [HttpPost]
-        public void AddNewComment([FromBody] CommentCreateDTO commentDTO) => commentServices.AddNewComment(commentDTO);
-        
+        public async Task AddNewComment([FromBody] CommentCreateDTO commentDTO)
+        {
+           await commentServices.AddNewComment(commentDTO);
+        }
 
         // Delete comment by ID
         [HttpDelete("/Comment/{id}")]
-        public void RemoveCommentById(int id) => commentServices.DeleteCommentById(id);
-        
+        public async Task RemoveCommentById(int id)
+        {
+            await commentServices .DeleteCommentById(id);
+        }
 
         // Delete comment by userId and adId
         [HttpDelete("/Comment/{userId}/{adId}")]
-        public void RemoveCommentByUserIdAndAdId(int userId, int adId) => commentServices.RemoveCommentByUserIdAndAdId(userId, adId);
+        public async Task RemoveCommentByUserIdAndAdId(string userId, int adId)
+        {
+            await commentServices.RemoveCommentByUserIdAndAdId(userId, adId);
+        }
         
-
         // Edit comment
         [HttpPut]
-        public void UpdateComment([FromBody] CommentInfoAndEditIDTO commentEditDTO) => commentServices.UpdateComment(commentEditDTO);
+        public async Task UpdateComment([FromBody] CommentInfoAndEditIDTO commentEditDTO)
+        {
+            await commentServices.UpdateComment(commentEditDTO);
+        }
         
     }
 }

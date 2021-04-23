@@ -6,6 +6,7 @@ using DataAccesLayer.Interfaces;
 using DataAccesLayer.EF;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 
 namespace DataAccesLayer.Repositories
 {
@@ -14,75 +15,63 @@ namespace DataAccesLayer.Repositories
         private AppDBContext context;
         public AdRepository(AppDBContext context) => this.context = context;
 
-        public void Add(Ad entity)
+        public async Task Add(Ad entity)
         {
-            // delte dubilcate tags
-            //List<Tag> tags = new List<Tag>(); // dublicate tags
-            //foreach (var item in entity.tags)
-            //{
-            //    if (context.Tags.ToList().Any(e => e.Tag_ == item.Tag_))
-            //       tags.Add(item); // all dubicates    
-            //}
-
-            //foreach (var item in tags)
-            //{
-            //    if (context.Tags.ToList().Any(e => e.Tag_ == item.Tag_))
-            //    {
-            //        context.Tags.Remove(item);
-            //        context.SaveChanges();
-            //    }
-            //}
-            context.Ads.Add(entity);
-            context.SaveChanges();
+            await context.Ads.AddAsync(entity);
+            await context.SaveChangesAsync();
         }
 
-        public void Delete(Ad entity)
+        public async Task Delete(Ad entity)
         {
             context.Ads.Remove(entity);
-            context.SaveChanges();
+            await context.SaveChangesAsync();
         }
 
-        public void DeleteById(int id)
+        public async Task DeleteById(int id)
         {
-            var entityToDelete = context.Ads.Find(id);
+            var entityToDelete = await context.Ads.FindAsync(id);
             context.Ads.Remove(entityToDelete);
-            context.SaveChanges();
+            await context.SaveChangesAsync();
         }
 
-        public IEnumerable<Ad> GetAdsByOptions(Dictionary<string, string> filter)
+        public async Task<IEnumerable<Ad>> GetAdsByOptions(Dictionary<string, string> filter)
         {
-            throw new Exception();
-        }
-
-        public IEnumerable<Ad> GetAdsByUserId(int userId)
-        {
-            return context.Ads.Include(c => c.comments)
+            return await context.Ads.Include(c => c.comments)
                         .Include(i => i.images)
                         .Include(t => t.tags)
-                        .ToList().Where(ad => ad.OwnerId == userId);
+                        .ToListAsync();
         }
 
-        public IEnumerable<Ad> GetAll()
+        public async Task<IEnumerable<Ad>> GetAdsByUserId(string userId)
         {
-            return context.Ads.Include(c => c.comments)
+            return await context.Ads.Include(c => c.comments)
                         .Include(i => i.images)
                         .Include(t => t.tags)
-                        .ToList();
+                        .Where(ad => ad.OwnerId == userId)
+                        .ToListAsync();
         }
 
-        public Ad GetById(int id)
+        public async Task<IEnumerable<Ad>> GetAll()
         {
-            return context.Ads.Include(c => c.comments)
+            return await context.Ads.Include(c => c.comments)
                         .Include(i => i.images)
                         .Include(t => t.tags)
-                        .ToList().Where(ad => ad.ID == id)
-                        .FirstOrDefault();
+                        .ToListAsync();
         }
 
-        public void Update(Ad ad)
+        public async Task<Ad> GetById(int id)
+        {
+            return await context.Ads.Include(c => c.comments)
+                        .Include(i => i.images)
+                        .Include(t => t.tags)
+                        .Where(ad => ad.ID == id)
+                        .FirstOrDefaultAsync();
+        }
+
+        public async Task Update(Ad ad)
         {
             context.Ads.Update(ad);
-            context.SaveChanges();
+            await context.SaveChangesAsync();
         }
     }
 }

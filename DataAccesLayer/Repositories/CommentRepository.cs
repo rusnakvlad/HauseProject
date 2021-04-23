@@ -5,6 +5,8 @@ using DataAccesLayer.Enteties;
 using DataAccesLayer.Interfaces;
 using DataAccesLayer.EF;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 
 namespace DataAccesLayer.Repositories
 {
@@ -13,18 +15,16 @@ namespace DataAccesLayer.Repositories
         private AppDBContext context;
         public CommentRepository(AppDBContext context) : base(context)=> this.context = context;
 
-        public IEnumerable<Comment> GetCommentsByAdId(int adId)
+        public async Task<IEnumerable<Comment>> GetCommentsByAdId(int adId)
         {
-            return context.Comments.ToList().Where(coment => coment.AdId == adId);
+            return await context.Comments.Where(coment => coment.AdId == adId).ToListAsync();
         }
 
-        public void RemoveCommentByUserIdAndAdId(int userId,int adId)
+        public async Task RemoveCommentByUserIdAndAdId(string userId,int adId)
         {
             var commentToRemove = context.Comments.ToList().Where(coment => coment.UserID == userId && coment.AdId == adId).FirstOrDefault();
             context.Comments.Remove(commentToRemove);
-            context.SaveChanges();
+            await context.SaveChangesAsync();
         }
-
-        
     }
 }

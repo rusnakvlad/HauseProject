@@ -19,13 +19,14 @@ namespace BuisnesLogicLayer.Services
 
         public ForcompareServices(IUnitOfWork unitOfWork) => Database = unitOfWork;
 
-        public IEnumerable<ForCompareDTO> GetAllComparesByUserId(int userId)
+        public async Task<IEnumerable<ForCompareDTO>> GetAllComparesByUserId(string userId)
         {
-            var forCompares = Database.ForCompareRepository.GetAllComparesByUserId(userId);
+            var forCompares = await Database.ForCompareRepository.GetAllComparesByUserId(userId);
+            List<ForCompareDTO> forCompareDTOs = new();
             foreach (var coparasion in forCompares)
             {
-                var ad = Database.AdRepository.GetById(coparasion.AdID);
-                yield return new ForCompareDTO()
+                var ad = await Database.AdRepository.GetById(coparasion.AdID);
+                forCompareDTOs.Add(new ForCompareDTO()
                 {
                     Id = ad.ID,
                     OwnerId = ad.OwnerId,
@@ -44,18 +45,19 @@ namespace BuisnesLogicLayer.Services
                     Balkon = ad.Balkon,
                     PurchaseOportunity = ad.PurchaseOportunity,
                     images = ConvertToImageListDTO.FromImageList(ad.images)
-                };
+                });
             }
+            return forCompareDTOs;
         }
 
-        public void RemoveCopareByUserIdAndAdId(int userId, int AdId)
+        public async Task RemoveCopareByUserIdAndAdId(string userId, int AdId)
         {
-            Database.ForCompareRepository.RemoveCopareByUserIdAndAdId(userId, AdId);
+           await Database.ForCompareRepository.RemoveCopareByUserIdAndAdId(userId, AdId);
         }
 
-        public void SetForCompare(int userId, int adId)
+        public async Task SetForCompare(string userId, int adId)
         {
-            Database.ForCompareRepository.Add(new ForCompare(userId, adId));
+            await Database.ForCompareRepository.Add(new ForCompare(userId, adId));
         }
     }
 }

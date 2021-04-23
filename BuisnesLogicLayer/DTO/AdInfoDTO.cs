@@ -10,7 +10,7 @@ namespace BuisnesLogicLayer.DTO
     public class AdInfoDTO
     {
         public int Id { get; set; }
-        public int OwnerId { get; set; }
+        public string OwnerId { get; set; }
         public int Price { get; set; }
         public string Region { get; set; }
         public string District { get; set; }

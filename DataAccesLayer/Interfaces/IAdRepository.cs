@@ -3,25 +3,26 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using DataAccesLayer.Enteties;
+using System.Threading.Tasks;
 
 namespace DataAccesLayer.Interfaces
 {
     public interface IAdRepository //: IGenericRepository<Ad>
     {
-        IEnumerable<Ad> GetAll();
+        Task<IEnumerable<Ad>> GetAll();
 
-        Ad GetById(int id);
+        Task<Ad> GetById(int id);
 
-        void Add(Ad entity);
+        Task Add(Ad entity);
 
-        void Update(Ad entity);
+        Task Update(Ad entity);
 
-        void Delete(Ad entity);
+        Task Delete(Ad entity);
 
-        void DeleteById(int id);
+        Task DeleteById(int id);
 
-        IEnumerable<Ad> GetAdsByUserId(int adId);
+        Task<IEnumerable<Ad>> GetAdsByUserId(string userdId);
 
-        IEnumerable<Ad> GetAdsByOptions(Dictionary<string, string> filter);
+        Task<IEnumerable<Ad>> GetAdsByOptions(Dictionary<string, string> filter);
     }
 }

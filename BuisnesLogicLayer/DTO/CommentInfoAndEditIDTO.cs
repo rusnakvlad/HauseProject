@@ -9,7 +9,7 @@ namespace BuisnesLogicLayer.DTO
     public class CommentInfoAndEditIDTO
     {
         public int Id { get; set; }
-        public int UserID { get; set; }
+        public string UserID { get; set; }
         public int AdId { get; set; }
         public DateTime DateOfComment { get; set; }
         public string Text { get; set; }

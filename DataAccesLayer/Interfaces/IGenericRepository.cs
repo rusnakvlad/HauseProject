@@ -8,16 +8,16 @@ namespace DataAccesLayer.Interfaces
 {
     public interface IGenericRepository<T> where T : class
     {
-        IEnumerable<T> GetAll();
+        Task<IEnumerable<T>> GetAll();
 
-        T GetById(int id);
+        Task<T> GetById(int id);
 
-        void Add(T entity);
+        Task Add(T entity);
 
-        void Update(T entity);
+        Task Update(T entity);
 
-        void Delete(T entity);
+        Task Delete(T entity);
 
-        void DeleteById(int id);
+        Task DeleteById(int id);
     }
 }

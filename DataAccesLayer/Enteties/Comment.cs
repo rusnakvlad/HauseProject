@@ -14,12 +14,12 @@ namespace DataAccesLayer.Enteties
         ////////////////////////////////////////////////
 
         public int ID { get; set; }
-        public int UserID { get; set; }
+        public string UserID { get; set; }
         public int AdId { get; set; }
         public DateTime DateOfComment { get; set; }
         public string Text { get; set; }
 
-        public Comment(int UserId, int AdId, DateTime DateOfComment, string Text)
+        public Comment(string UserId, int AdId, DateTime DateOfComment, string Text)
         {
             this.UserID = UserId;
             this.AdId = AdId;

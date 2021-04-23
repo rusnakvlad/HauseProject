@@ -11,7 +11,7 @@ namespace DataAccesLayer.EntetiesConfiguration
     {
         public void Configure(EntityTypeBuilder<User> builder)
         {
-            builder.HasKey(keyExpression => keyExpression.ID);
+            builder.HasKey(keyExpression => keyExpression.Id);
             builder.HasMany(items => items.ads).WithOne(item => item.user).HasForeignKey(fk => fk.OwnerId);
             builder.HasMany(items => items.comments).WithOne(item => item.user).HasForeignKey(fk => fk.UserID).OnDelete(DeleteBehavior.NoAction);
             builder.HasMany(items => items.favorites).WithOne(item => item.user).HasForeignKey(fk => fk.UserID).OnDelete(DeleteBehavior.NoAction);

@@ -19,13 +19,14 @@ namespace BuisnesLogicLayer.Services
 
         public FavoritesServices(IUnitOfWork unitOfWork) => Database = unitOfWork;
 
-        public IEnumerable<AdShortInfoDTO> GetAllFavoritesByUserId(int userId)
+        public async Task<IEnumerable<AdShortInfoDTO>> GetAllFavoritesByUserId(string userId)
         {
-            var favorites = Database.FavoriteRepository.GetAllFavoritesByUserId(userId);
+            var favorites = await Database.FavoriteRepository.GetAllFavoritesByUserId(userId);
+            List<AdShortInfoDTO> adShortInfoDTOs = new();
             foreach (var favorite in favorites)
             {
-                var ad = Database.AdRepository.GetById(favorite.AdID);
-                yield return new AdShortInfoDTO()
+                var ad = await Database.AdRepository.GetById(favorite.AdID);
+                adShortInfoDTOs.Add(new AdShortInfoDTO()
                 {
                     ID = ad.ID,
                     OwnerId = ad.OwnerId,
@@ -34,18 +35,19 @@ namespace BuisnesLogicLayer.Services
                     RoomNumber = ad.RoomNumber,
                     Status = ad.Status,
                     images = ConvertToImageListDTO.FromImageList(ad.images)
-                };
+                });
             }
+            return adShortInfoDTOs;
         }
 
-        public void RemoveFavoriteByUserIdAndAdId(int userId, int adId)
+        public async Task RemoveFavoriteByUserIdAndAdId(string userId, int adId)
         {
-            Database.FavoriteRepository.RemoveFavoriteByUserIdAndAdId(userId, adId);
+            await Database.FavoriteRepository.RemoveFavoriteByUserIdAndAdId(userId, adId);
         }
 
-        public void SetFavorite(int userId, int adId)
+        public async Task SetFavorite(string userId, int adId)
         {
-            Database.FavoriteRepository.Add(new Favorite(userId, adId));
+            await Database.FavoriteRepository.Add(new Favorite(userId, adId));
         }
     }
 }

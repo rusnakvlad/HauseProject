@@ -13,10 +13,10 @@ namespace DataAccesLayer.Enteties
        //[Required]
        //public int ID { get; set; }
         [Required]
-        public int UserID { get; set; }
+        public string UserID { get; set; }
         [Required]
         public int AdID { get; set; }
-        public Favorite(int UserID, int AdsID)
+        public Favorite(string UserID, int AdsID)
         {
             this.UserID = UserID;
             this.AdID = AdsID;

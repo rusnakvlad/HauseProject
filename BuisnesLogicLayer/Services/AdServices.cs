@@ -21,10 +21,10 @@ namespace BuisnesLogicLayer.Services
         public AdServices(IUnitOfWork unitOfWork) => Database = unitOfWork;
 
         /*--------------------Common Methods from Generic repository--------------------*/
-        public IEnumerable<AdInfoDTO> GetAllAds()
+        public async Task<IEnumerable<AdInfoDTO>> GetAllAds()
         {
-            var allAds = Database.AdRepository.GetAll();
-            
+            var allAds = await Database.AdRepository.GetAll();
+            var adsDTO = new List<AdInfoDTO>();
             foreach (var ad in allAds)
             {
                 List<TagDTO> tagsDTOs = new ();
@@ -37,8 +37,9 @@ namespace BuisnesLogicLayer.Services
                 foreach (var item in ad.images)
                     imageDTOs.Add(new ImageEditInfoDTO() { ImageURL = item.ImageUrl, Id = item.ID, AdId = item.AdID });
 
-                var owenerOfAd = Database.UserRepository.GetById(ad.OwnerId);
-                yield return new AdInfoDTO()
+                var owenerOfAd = await Database.UserRepository.GetById(ad.OwnerId);
+
+                adsDTO.Add(new AdInfoDTO()
                 {
                     Id = ad.ID,
                     OwnerId = ad.OwnerId,
@@ -59,17 +60,18 @@ namespace BuisnesLogicLayer.Services
                     Status = ad.Status,
                     Description = ad.Description,
                     OwnerEmail = owenerOfAd.Email,
-                    OwnerPhone = owenerOfAd.Phone,
+                    OwnerPhone = owenerOfAd.PhoneNumber,
                     tags = tagsDTOs,
                     images = imageDTOs
-                };
+                });
             }
+            return adsDTO;
         }
 
-        public AdInfoDTO GetAdById(int id)
+        public async Task<AdInfoDTO> GetAdById(int id)
         {
-            var ad = Database.AdRepository.GetById(id);
-            var owenerOfAd = Database.UserRepository.GetById(ad.OwnerId);
+            var ad = await Database.AdRepository.GetById(id);
+            var owenerOfAd = await Database.UserRepository.GetById(ad.OwnerId);
             List<TagDTO> tagsDTOs = new List<TagDTO>();
             List<ImageEditInfoDTO> imageDTOs = new List<ImageEditInfoDTO>();
             // Get Tags
@@ -102,25 +104,25 @@ namespace BuisnesLogicLayer.Services
                 Status = ad.Status,
                 Description = ad.Description,
                 OwnerEmail = owenerOfAd.Email,
-                OwnerPhone = owenerOfAd.Phone,
+                OwnerPhone = owenerOfAd.PhoneNumber,
                 tags = tagsDTOs,
                 images = imageDTOs
             };
         }
 
-        public void AddNewAd(AdCreateDTO createAdDTO)
+        public async Task AddNewAd(AdCreateDTO createAdDTO)
         {
-            Database.AdRepository.Add(ConvertToAd.FromCreateAddInfoDTO(createAdDTO));
+            await Database.AdRepository.Add(ConvertToAd.FromCreateAddInfoDTO(createAdDTO));
         }
 
-        public void DeleteAdById(int id)
+        public async Task DeleteAdById(int id)
         {
-            Database.AdRepository.DeleteById(id);
+            await Database.AdRepository.DeleteById(id);
         }
 
-        public void UpdateAd(AdEdit editAdDTO)
+        public async Task UpdateAd(AdEdit editAdDTO)
         {
-            Database.AdRepository.Update(ConvertToAd.FromEditAddInfoDTO(editAdDTO));
+            await Database.AdRepository.Update(ConvertToAd.FromEditAddInfoDTO(editAdDTO));
         }
 
         /*------------------------------Individual methods------------------------------*/

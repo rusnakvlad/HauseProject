@@ -12,9 +12,9 @@ namespace DataAccesLayer.Enteties
         public User user { get; set; }
         public Ad ad { get; set; }
         ////////////////////////////////////////////////
-        public int UserID { get; set; }
+        public string UserID { get; set; }
         public int AdID { get; set; }
-        public ForCompare(int UserID, int AdID)
+        public ForCompare(string UserID, int AdID)
         {
             this.UserID = UserID;
             this.AdID = AdID;

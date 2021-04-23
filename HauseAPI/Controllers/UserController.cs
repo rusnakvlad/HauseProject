@@ -20,36 +20,36 @@ namespace HauseAPI.Controllers
 
         // Get All Users Profiles
         [HttpGet]
-        public IEnumerable<UserProfileDTO> GetAllUsersProfiles()
+        public async Task<IEnumerable<UserProfileDTO>> GetAllUsersProfiles()
         {
-            return userServices.GetAllUsersProfiles();
+            return await userServices.GetAllUsersProfiles();
         }
         // Get User Profile by id
         [HttpGet("/user/{id}")]
-        public UserProfileDTO GetUserProfileDTOById(int id)
+        public async Task<UserProfileDTO> GetUserProfileDTOById(string id)
         {
-           return userServices.GetUserProfileById(id);
+            return await userServices.GetUserProfileById(id);
         }
 
         // Register(Add) new user
         [HttpPost]
-        public void RegisterUser([FromBody]UserRegisterDTO userRegisterDTO)
+        public async Task<bool> RegisterUser([FromBody]UserRegisterDTO userRegisterDTO)
         {
-            userServices.RegisterUser(userRegisterDTO);
+           return await userServices.RegisterUser(userRegisterDTO);
         }
 
         // Delete user by id
         [HttpDelete("{id}")]
-        public void DeleteUserById(int id)
+        public async Task<bool> DeleteUserById(string id)
         {
-            userServices.DeleteUserById(id);
+           return await userServices.DeleteUserById(id);
         }
 
         // Edit user
         [HttpPut]
-        public void EditUser([FromBody] UserEditDTO userEditDTO)
+        public async Task<bool> EditUser([FromBody] UserEditDTO userEditDTO)
         {
-            userServices.UpdateUser(userEditDTO);
+            return await userServices.UpdateUser(userEditDTO);
         }
     }
 }

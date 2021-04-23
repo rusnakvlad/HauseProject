@@ -19,22 +19,23 @@ namespace HauseAPI.Controllers
         
         // set(add) new comparision for user
         [HttpPost("{userId}/{adId}")]
-        public void SetNewForCompare(int userId, int adId)
+        public async Task SetNewForCompare(string userId, int adId)
         {
-            forCompareServices.SetForCompare(userId, adId);
+            await forCompareServices.SetForCompare(userId, adId);
         }
+
         // get all user compares by user and ad id
         [HttpGet("{userId}")]
-        public IEnumerable<ForCompareDTO> GetUserFavoritesAds(int userId)
+        public async Task<IEnumerable<ForCompareDTO>> GetUserFavoritesAds(string userId)
         {
-            return forCompareServices.GetAllComparesByUserId(userId);
+            return await forCompareServices.GetAllComparesByUserId(userId);
         }
 
         // Delete Compare by useId and adId
         [HttpDelete("{userId}/{adId}")]
-        public void DeleteCompare(int userId, int adId)
+        public async Task DeleteCompare(string userId, int adId)
         {
-            forCompareServices.RemoveCopareByUserIdAndAdId(userId, adId);
+            await forCompareServices.RemoveCopareByUserIdAndAdId(userId, adId);
         }
     }
 }

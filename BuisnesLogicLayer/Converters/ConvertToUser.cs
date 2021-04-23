@@ -12,12 +12,18 @@ namespace BuisnesLogicLayer.Converters
         {
             return new User()
             {
+               // Id = "2",
                 Name = DTO.Name,
                 Surname = DTO.Surname,
-                Phone = DTO.Phone,
+                PhoneNumber = DTO.Phone,
                 Email = DTO.Email,
-                AdminRights = false,
-                Password = DTO.Password
+                PasswordHash = DTO.Password,
+                PhoneNumberConfirmed = true,
+                EmailConfirmed = true,
+                TwoFactorEnabled = true,
+                LockoutEnabled = true,
+                LockoutEnd = DateTime.Now,
+                AccessFailedCount = 0
             };
         }
 
@@ -25,13 +31,12 @@ namespace BuisnesLogicLayer.Converters
         {
             return new User()
             {
-                ID = DTO.Id,
+                Id = DTO.Id,
                 Name = DTO.Name,
                 Surname = DTO.Surname,
-                Phone = DTO.Phone,
+                PhoneNumber = DTO.Phone,
                 Email = DTO.Email,
-                AdminRights = false,
-                Password = DTO.Password
+                PasswordHash = DTO.Password
             };
         }
     }

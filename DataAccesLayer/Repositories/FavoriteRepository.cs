@@ -5,6 +5,9 @@ using DataAccesLayer.Enteties;
 using DataAccesLayer.Interfaces;
 using System.Linq;
 using DataAccesLayer.EF;
+using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
+
 namespace DataAccesLayer.Repositories
 {
     public class FavoriteRepository : GenericRepository<Favorite>, IFavoriteRepository
@@ -12,16 +15,16 @@ namespace DataAccesLayer.Repositories
         public AppDBContext context;
         public FavoriteRepository(AppDBContext context) : base(context) => this.context = context;
 
-        public IEnumerable<Favorite> GetAllFavoritesByUserId(int userId)
+        public async Task<IEnumerable<Favorite>> GetAllFavoritesByUserId(string userId)
         {
-            return context.Favorites.ToList().Where(fav => fav.UserID == userId);
+            return await context.Favorites.Where(fav => fav.UserID == userId).ToListAsync();
         }
 
-        public void RemoveFavoriteByUserIdAndAdId(int userId, int adId)
+        public async Task RemoveFavoriteByUserIdAndAdId(string userId, int adId)
         {
             var favTemp = context.Favorites.ToList().Where(fav => fav.UserID == userId && fav.AdID == adId).FirstOrDefault();
             context.Favorites.Remove(favTemp);
-            context.SaveChanges();
+            await context.SaveChangesAsync();
         }
     }
 }

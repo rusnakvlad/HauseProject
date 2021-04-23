@@ -10,10 +10,10 @@ namespace BuisnesLogicLayer.Interfaces
 {
     public interface IForCompareServices
     {
-        public void SetForCompare(int userId, int adId);
+        public Task SetForCompare(string userId, int adId);
 
-        public IEnumerable<ForCompareDTO> GetAllComparesByUserId(int userId);
+        public Task<IEnumerable<ForCompareDTO>> GetAllComparesByUserId(string userId);
 
-        public void RemoveCopareByUserIdAndAdId(int userId, int AdId);
+        public Task RemoveCopareByUserIdAndAdId(string userId, int AdId);
     }
 }

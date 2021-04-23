@@ -12,7 +12,7 @@ namespace BuisnesLogicLayer.Converters
         {
             return new User()
             {
-               // Id = "2",
+                // Id = "2",
                 Name = DTO.Name,
                 Surname = DTO.Surname,
                 PhoneNumber = DTO.Phone,
@@ -23,7 +23,8 @@ namespace BuisnesLogicLayer.Converters
                 TwoFactorEnabled = true,
                 LockoutEnabled = true,
                 LockoutEnd = DateTime.Now,
-                AccessFailedCount = 0
+                AccessFailedCount = 0,
+                UserName = String.Concat(DTO.Name, DTO.Surname)
             };
         }
 

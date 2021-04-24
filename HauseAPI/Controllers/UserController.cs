@@ -8,6 +8,7 @@ using BuisnesLogicLayer.Interfaces;
 using DataAccesLayer.Enteties;
 using BuisnesLogicLayer.DTO;
 using DataAccesLayer.EF;
+
 namespace HauseAPI.Controllers
 {
     [ApiController]
@@ -26,14 +27,15 @@ namespace HauseAPI.Controllers
         }
 
         // Get User Profile by id
-        [HttpGet("/User/{id}")]
+        [HttpGet("{id}")]
         public async Task<UserProfileDTO> GetUserProfileDTOById(string id)
         {
             return await userServices.GetUserProfileById(id);
         }
 
         // Get User Profile by id
-        [HttpGet("/User/Email/{email}")]
+        [Route("Email/{email}")]
+        [HttpGet]
         public async Task<UserProfileDTO> GetUserProfileDTOByEmail(string email)
         {
             return await userServices.GetUserProfileByEmail(email);

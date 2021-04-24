@@ -1,0 +1,136 @@
+﻿@page "/CreateAd"
+
+<main id="mainContainer" class="d-grid">
+
+    <div id="container-1" class="d-flex justify-content-between">
+
+        <div id="boxToAddPhoto" class="d-flex justify-content-center">
+            <button style="margin-top:100px; margin-bottom:100px;" type="button" class="btn btn-light">Додати фото</button>
+        </div>
+
+        <div id="boxAddedPhoto">
+            <div class="boxesAddedPhoto"></div>
+            <div class="boxesAddedPhoto"></div>
+            <div class="boxesAddedPhoto"></div>
+            <div class="boxesAddedPhoto"></div>
+            <div class="boxesAddedPhoto"></div>
+            <div class="boxesAddedPhoto"></div>
+            <div class="boxesAddedPhoto"></div>
+            <div class="boxesAddedPhoto"></div>
+            <div class="boxesAddedPhoto"></div>
+        </div>
+
+    </div>
+
+    <div id="container-2" class="d-flex justify-content-between" style="background-color: #d1c52200;">
+
+        <!-----------------------------------First column--------------------------------------------------->
+        <div id="contParams1" style="background-color: #70000000;width: 400px;height: 400px;">
+            <div class="d-grid">
+
+                <div class="d-flex justify-content-between">
+                    <div class="textParam">Ціна:</div>
+                    <div class="paramOfAd" style="margin-left: 20px;"><input type="text" class="form-control" placeholder=""></div>
+                </div>
+                <!-------------------------------------------->
+                <hr style="height:1px;background-color:white; width: 100%;">
+                <!-------------------------------------------->
+                <div class="textParam">Місцзнаходження</div>
+                <div class="d-flex justify-content-between">
+                    <div class="textParam">Область:</div>
+                    <div class="paramOfAd" style="margin-left: 20px;"><input type="text" class="form-control" placeholder=""></div>
+                </div>
+                <br>
+                <div class="d-flex justify-content-between">
+                    <div class="textParam">Район:</div>
+                    <div class="paramOfAd" style="margin-left: 20px;"><input type="text" class="form-control" placeholder=""></div>
+                </div>
+                <br>
+                <div class="d-flex justify-content-between">
+                    <div class="textParam">Місто:</div>
+                    <div class="paramOfAd" style="margin-left: 20px;"><input type="text" class="form-control" placeholder=""></div>
+                </div>
+                <!-------------------------------------------->
+                <hr style="height:1px;background-color:white; width: 100%;">
+                <!-------------------------------------------->
+                <div class="d-flex justify-content-between">
+                    <div class="textParam">Площа:</div>
+                    <div class="paramOfAd" style="margin-left: 20px;"><input type="text" class="form-control" placeholder=""></div>
+                </div>
+                <!-------------------------------------------->
+                <hr style="height:1px;background-color:white; width: 100%;">
+                <!-------------------------------------------->
+                <div class="d-flex justify-content-between">
+                    <div class="textParam">Кількість поверхів:</div>
+                    <div class="paramOfAd" style="margin-left: 20px;"><input type="text" class="form-control" placeholder=""></div>
+                </div>
+            </div>
+        </div>
+
+        <!-----------------------------------Second column--------------------------------------------------->
+
+        <div id="contParams2" style="background-color: rgba(0, 255, 255, 0); width: 400px;height: 400px;">
+
+            <div class="d-grid">
+
+                <div class="d-flex justify-content-between">
+                    <div class="textParam">Кількість кімнат:</div>
+                    <div class="paramOfAd" style="margin-left: 20px;"><input type="text" class="form-control" placeholder=""></div>
+                </div>
+                <!-------------------------------------------->
+                <hr style="height:1px;background-color:white; width: 100%;">
+                <!-------------------------------------------->
+                <div class="d-flex justify-content-between">
+                    <div class="textParam">Басейнн:</div>
+                    <div class="paramOfAd" style="margin-left: 20px;"><input type="text" class="form-control" placeholder=""></div>
+                </div>
+                <!-------------------------------------------->
+                <hr style="height:1px;background-color:white; width: 100%;">
+                <!-------------------------------------------->
+                <div class="d-flex justify-content-between">
+                    <div class="textParam">Балкон:</div>
+                    <div class="paramOfAd" style="margin-left: 20px;"><input type="text" class="form-control" placeholder=""></div>
+                </div>
+                <!-------------------------------------------->
+                <hr style="height:1px;background-color:white; width: 100%;">
+                <!-------------------------------------------->
+                <div class="d-flex justify-content-between">
+                    <div class="textParam">Рік будинку:</div>
+                    <div class="paramOfAd" style="margin-left: 20px;"><input type="text" class="form-control" placeholder=""></div>
+                </div>
+                <!-------------------------------------------->
+                <hr style="height:1px;background-color:white; width: 100%;">
+                <!-------------------------------------------->
+                <div class="d-flex justify-content-between">
+                    <div class="textParam">Вид угоди:</div>
+                    <div class="paramOfAd" style="margin-left: 20px;"><input type="text" class="form-control" placeholder=""></div>
+                </div>
+                <!-------------------------------------------->
+                <hr style="height:1px;background-color:white; width: 100%;">
+                <!-------------------------------------------->
+
+            </div>
+        </div>
+
+    </div>
+    <div id="container-3" class="d-grid">
+        <!-------------------------------------------->
+        <hr style="height:1px;background-color:white; width: 100%;">
+        <!-------------------------------------------->
+        <div class="d-flex justify-content-start">
+            <div class="textParam">Тег:</div>
+            <div class="textParam" style="margin-left: 20px;margin-right: 5px;color: rgb(194, 194, 194);">#</div>
+            <div class="paramOfAd" style="margin-left: 0px;"><input type="text" class="form-control" placeholder=""></div>
+            <button href="/AdInfoPage/AdInfoPage.html" class="btn btn-success" style="margin-left: 5px;"><b>+</b></button>
+        </div>
+        <div class="textParam">Опис</div>
+        <textarea class="form-control" id="OutputText" rows="5"></textarea>
+    </div>
+    <div class="d-flex justify-content-center">
+        <NavLink href="AdInfo"><span class="btn btn-success" style="margin-top: 10px;">Опублікувати</span></NavLink>
+    </div>
+</main>
+
+@code {
+
+}

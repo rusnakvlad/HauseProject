@@ -32,6 +32,7 @@ namespace DataAccesLayer.Repositories
         {
             var result = await UserManager.CreateAsync(entity);
             await context.SaveChangesAsync();
+            await UserManager.AddToRoleAsync(entity,"User");          
             return result.Succeeded;
         }
 

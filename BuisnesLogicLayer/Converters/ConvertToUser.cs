@@ -12,13 +12,12 @@ namespace BuisnesLogicLayer.Converters
         {
             return new User()
             {
-                // Id = "2",
                 Name = DTO.Name,
                 Surname = DTO.Surname,
                 PhoneNumber = DTO.Phone,
                 Email = DTO.Email,
                 PasswordHash = DTO.Password,
-                PhoneNumberConfirmed = true,
+                PhoneNumberConfirmed = false,
                 EmailConfirmed = true,
                 TwoFactorEnabled = true,
                 LockoutEnabled = true,

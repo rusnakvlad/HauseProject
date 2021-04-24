@@ -43,6 +43,7 @@ namespace DataAccesLayer.EF
             modelBuilder.ApplyConfiguration(new ForCompareConfiguration());
             modelBuilder.ApplyConfiguration(new TagConfiguration());
             modelBuilder.ApplyConfiguration(new ImageConfiguration());
+            modelBuilder.ApplyConfiguration(new IdentityRoleConfiguration());
         }
     }
 }

@@ -19,6 +19,10 @@ namespace DataAccesLayer.Interfaces
 
         public Task<User> GetById(string id);
 
+        public Task<User> GetByEmail(string email);
+
         public Task<bool> Update(User entity);
+
+
     }
 }

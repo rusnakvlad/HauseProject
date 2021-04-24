@@ -66,5 +66,10 @@ namespace DataAccesLayer.Repositories
             var result = await UserManager.UpdateAsync(entity);
             return result.Succeeded;
        }
+
+        public async Task<User> GetByEmail(string email)
+        {
+            return await UserManager.FindByEmailAsync(email);
+        }
     }
 }

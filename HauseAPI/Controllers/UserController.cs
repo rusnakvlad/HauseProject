@@ -24,11 +24,19 @@ namespace HauseAPI.Controllers
         {
             return await userServices.GetAllUsersProfiles();
         }
+
         // Get User Profile by id
-        [HttpGet("/user/{id}")]
+        [HttpGet("/User/{id}")]
         public async Task<UserProfileDTO> GetUserProfileDTOById(string id)
         {
             return await userServices.GetUserProfileById(id);
+        }
+
+        // Get User Profile by id
+        [HttpGet("/User/Email/{email}")]
+        public async Task<UserProfileDTO> GetUserProfileDTOByEmail(string email)
+        {
+            return await userServices.GetUserProfileByEmail(email);
         }
 
         // Register(Add) new user

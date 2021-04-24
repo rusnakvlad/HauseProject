@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BuisnesLogicLayer", "Buisne
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HauseAPI", "HauseAPI\HauseAPI.csproj", "{23CEDF75-E90F-4479-8D82-24D919467D87}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorFront", "BlazorFront\BlazorFront.csproj", "{1D6C5170-5320-4AD6-AAF2-CA9DBCDE2780}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorFront", "BlazorFront\BlazorFront.csproj", "{1D6C5170-5320-4AD6-AAF2-CA9DBCDE2780}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

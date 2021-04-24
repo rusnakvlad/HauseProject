@@ -70,6 +70,26 @@ namespace BuisnesLogicLayer.Services
             };
         }
 
+        public async Task<UserProfileDTO> GetUserProfileByEmail(string email)
+        {
+            var user = await Database.UserRepository.GetByEmail(email);
+            var comments = await Database.CommentRepository.GetAll();
+            var commentsCount = comments.Where(comment => comment.UserID == user.Id).Count();
+            var ads = await Database.AdRepository.GetAll();
+            var adsCount = ads.Where(ad => ad.OwnerId == user.Id).Count();
+            return new UserProfileDTO()
+            {
+                Id = user.Id,
+                Name = user.Name,
+                Surname = user.Surname,
+                Phone = user.PhoneNumber,
+                Email = user.Email,
+                AdsAmount = adsCount,
+                ComentsAmount = commentsCount,
+                Password = user.PasswordHash
+            };
+        }
+
         public bool LogIn(UserLogInDTO userLogInDTO)
         {
             throw new NotImplementedException();

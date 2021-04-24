@@ -1,4 +1,3 @@
-using BlazorFront.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Hosting;
@@ -10,6 +9,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BlazorFront.Services;
+using Microsoft.AspNetCore.Http;
+using System.Net.Http;
 
 namespace BlazorFront
 {
@@ -28,7 +30,15 @@ namespace BlazorFront
         {
             services.AddRazorPages();
             services.AddServerSideBlazor();
-            services.AddSingleton<WeatherForecastService>();
+           // services.AddSingleton<UserServices>();
+            services.AddHttpContextAccessor();
+            services.AddScoped<HttpContextAccessor>();
+
+            services.AddHttpClient<IUserServices, UserServices>(x => {
+                x.BaseAddress = new Uri("https://localhost:44365/User/"); 
+            });
+
+            services.AddSingleton<HttpClient>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -49,6 +59,9 @@ namespace BlazorFront
             app.UseStaticFiles();
 
             app.UseRouting();
+            app.UseAuthentication();
+            app.UseAuthorization();
+            app.UseCookiePolicy();
 
             app.UseEndpoints(endpoints =>
             {

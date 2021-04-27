@@ -23,6 +23,13 @@ namespace HauseAPI.Controllers
             return await adServices.GetAllAds();
         }
 
+        // get all ads by user id
+        [HttpGet("/Ad/UserId/{userId}")]
+        public async Task<IEnumerable<AdInfoDTO>> GetAllAdsByUserId(string userId)
+        {
+            return await adServices.GetAdsByUserId(userId);
+        }
+
         // get ad by id
         [HttpGet("/Ad/{id}")]
         public async Task<AdInfoDTO> GetAddDTOByID(int id)

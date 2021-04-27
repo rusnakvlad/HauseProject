@@ -41,8 +41,8 @@ namespace HauseAPI.Controllers
             return await userServices.GetUserProfileByEmail(email);
         }
 
-        // Register(Add) new user
-        [HttpPost]
+        // Register new user
+        [HttpPost("RegisterUser")]
         public async Task<bool> RegisterUser([FromBody]UserRegisterDTO userRegisterDTO)
         {
            return await userServices.RegisterUser(userRegisterDTO);

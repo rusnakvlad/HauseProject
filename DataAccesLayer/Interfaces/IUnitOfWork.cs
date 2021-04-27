@@ -17,8 +17,8 @@ namespace DataAccesLayer.Interfaces
         ITagRepository TagRepository { get; }
         IUserRepository UserRepository { get; }
 
-        public UserManager<User> UserManager { get; set; }
+       /* public UserManager<User> UserManager { get; set; }
         public RoleManager<IdentityRole> RoleManager { get; set; }
-        public SignInManager<User> SignInManager { get; set; }
+        public SignInManager<User> SignInManager { get; set; }*/
     }
 }

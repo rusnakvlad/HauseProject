@@ -5,6 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Blazor.HttpClient" Version="3.2.0-preview1.20073.1" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\BuisnesLogicLayer\BuisnesLogicLayer.csproj" />
     <ProjectReference Include="..\DataAccesLayer\DataAccesLayer.csproj" />
     <ProjectReference Include="..\HauseAPI\HauseAPI.csproj" />

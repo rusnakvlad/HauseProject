@@ -21,17 +21,22 @@ namespace DataAccesLayer.Repositories
             await context.SaveChangesAsync();
         }
 
-        public async Task Delete(Ad entity)
+        public async Task Delete(Ad entityToDelete)
         {
-            context.Ads.Remove(entity);
-            await context.SaveChangesAsync();
+            if (await context.Ads.AnyAsync(ad => ad == entityToDelete))
+            {
+                context.Ads.Remove(entityToDelete);
+                await context.SaveChangesAsync();
+            }
         }
 
         public async Task DeleteById(int id)
         {
-            var entityToDelete = await context.Ads.FindAsync(id);
-            context.Ads.Remove(entityToDelete);
-            await context.SaveChangesAsync();
+            if (await context.Ads.AnyAsync(ad => ad.ID == id))
+            {
+                var entityToDelete = await context.Ads.FindAsync(id);
+                await this.Delete(entityToDelete);
+            }
         }
 
         public async Task<IEnumerable<Ad>> GetAdsByOptions(Dictionary<string, string> filter)
@@ -44,34 +49,58 @@ namespace DataAccesLayer.Repositories
 
         public async Task<IEnumerable<Ad>> GetAdsByUserId(string userId)
         {
-            return await context.Ads.Include(c => c.comments)
-                        .Include(i => i.images)
-                        .Include(t => t.tags)
-                        .Where(ad => ad.OwnerId == userId)
-                        .ToListAsync();
+            if (await context.Ads.AnyAsync(ad => ad.OwnerId == userId))
+            {
+                return await context.Ads.Include(c => c.comments)
+                            .Include(i => i.images)
+                            .Include(t => t.tags)
+                            .Where(ad => ad.OwnerId == userId)
+                            .ToListAsync();
+            }
+            else
+            {
+                throw new Exception($"User with id {userId} has not ads");
+            }
         }
 
         public async Task<IEnumerable<Ad>> GetAll()
         {
-            return await context.Ads.Include(c => c.comments)
-                        .Include(i => i.images)
-                        .Include(t => t.tags)
-                        .ToListAsync();
+            if (await context.Ads.CountAsync() != 0)
+            {
+                return await context.Ads.Include(c => c.comments)
+                            .Include(i => i.images)
+                            .Include(t => t.tags)
+                            .ToListAsync();
+            }
+            else
+            {
+                throw new Exception("In database are not ahy ads");
+            }
         }
 
         public async Task<Ad> GetById(int id)
         {
-            return await context.Ads.Include(c => c.comments)
-                        .Include(i => i.images)
-                        .Include(t => t.tags)
-                        .Where(ad => ad.ID == id)
-                        .FirstOrDefaultAsync();
+            if (await context.Ads.AnyAsync(ad => ad.ID == id))
+            {
+                return await context.Ads.Include(c => c.comments)
+                            .Include(i => i.images)
+                            .Include(t => t.tags)
+                            .Where(ad => ad.ID == id)
+                            .FirstOrDefaultAsync();
+            }
+            else
+            {
+                throw new Exception($"There are not image with id: {id}");
+            }
         }
 
         public async Task Update(Ad ad)
         {
-            context.Ads.Update(ad);
-            await context.SaveChangesAsync();
+            if (await context.Ads.AnyAsync(dbAd => dbAd == ad))
+            {
+                context.Ads.Update(ad);
+                await context.SaveChangesAsync();
+            }
         }
     }
 }

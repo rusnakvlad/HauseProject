@@ -20,6 +20,8 @@ namespace BuisnesLogicLayer.Interfaces
 
         public Task UpdateAd(AdEdit editAdDTO);
 
+        public Task<IEnumerable<AdInfoDTO>> GetAdsByUserId(string userId);
+
         /*------------------------------Individual methods------------------------------*/
        
 

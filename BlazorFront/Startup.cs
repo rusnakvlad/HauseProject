@@ -30,15 +30,11 @@ namespace BlazorFront
         {
             services.AddRazorPages();
             services.AddServerSideBlazor();
-           // services.AddSingleton<UserServices>();
-            services.AddHttpContextAccessor();
-            services.AddScoped<HttpContextAccessor>();
 
-            services.AddHttpClient<IUserServices, UserServices>(x => {
-                x.BaseAddress = new Uri("https://localhost:44365/User/"); 
+            services.AddHttpClient<IUserServices, UserServices>(client => {
+                client.BaseAddress = new Uri("https://localhost:44365/User/"); 
             });
 
-            services.AddSingleton<HttpClient>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -61,8 +57,6 @@ namespace BlazorFront
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
-            app.UseCookiePolicy();
-
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapBlazorHub();

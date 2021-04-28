@@ -1,7 +1,9 @@
 ﻿@page "/ProfileInfo"
 @using BlazorFront.Services
 @using BuisnesLogicLayer.DTO
+@using BuisnesLogicLayer.Converters
 @inject IUserServices userServices
+@inject Blazored.LocalStorage.ILocalStorageService localStorage
 <div class="container">
     <div class="d-flex justify-content-center">
         <div class="col-md-9">
@@ -60,15 +62,15 @@
                                 </div>
 
                                 <div class="form-group row">
-                                    <label for="newpass" class="col-4 col-form-label">Новий пароль</label>
+                                    <label for="newpass" class="col-4 col-form-label">Пароль</label>
                                     <div class="col-8">
-                                        <input @bind="@user.Name" id="newpass" name="newpass" placeholder="Новий пароль" class="form-control here" type="text">
+                                        <input @bind="@user.Password" id="newpass" name="newpass" placeholder="Новий пароль" class="form-control here" type="text">
                                     </div>
                                 </div>
 
                                 <div class="form-group row">
                                     <div class="offset-4 col-8">
-                                        <button name="submit" type="submit" class="btn btn-primary">Оновити</button>
+                                        <button name="submit" @onclick="UpdateUser" class="btn btn-primary">Оновити</button>
                                     </div>
                                 </div>
 
@@ -87,17 +89,30 @@
 
     protected override async Task OnInitializedAsync()
     {
-        user = await userServices.GetUserByEmail("ggbufon@gmail.juve");
+        var temp = await localStorage.GetItemAsync<UserProfileDTO>("savedUser");
+        user = await userServices.GetUserByEmail(temp.Email);
     }
-    //UserViewModel user = new UserViewModel()
-    //{
-    //    Name = "Mike",
-    //    Surname = "Nevsky",
-    //    Phone = "0114455789",
-    //    Email = "miknev@gmail.com",
-    //    AdsAmount = 2,
-    //    ComentsAmount = 5,
-    //    Password = "oopblazor"
-    //};
+
+    public async Task<bool> UpdateUser()
+    {
+        return await userServices.UpdateUser(new UserEditDTO()
+        {
+            Id = user.Id,
+            Name = user.Name,
+            Surname = user.Surname,
+            Email = user.Email,
+            Password = user.Password,
+            Phone = user.Phone
+        });
+    }
+
+    public async Task Update()
+    {
+        bool result = await UpdateUser();
+        if (result)
+        {
+            await OnInitializedAsync();
+        }
+    }
 }
 

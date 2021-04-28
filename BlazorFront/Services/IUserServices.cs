@@ -10,5 +10,9 @@ namespace BlazorFront.Services
         public Task<UserProfileDTO> GetUserByEmail(string email);
 
         public Task<bool> RegisterUser(UserRegisterDTO user);
+
+        public Task<bool> UpdateUser(UserEditDTO user);
+
+        public Task<UserProfileDTO> LogIn(UserLogInDTO user);
     }
 }

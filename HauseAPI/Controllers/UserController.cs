@@ -34,8 +34,7 @@ namespace HauseAPI.Controllers
         }
 
         // Get User Profile by id
-        [Route("Email/{email}")]
-        [HttpGet]
+        [HttpGet("Email/{email}")]
         public async Task<UserProfileDTO> GetUserProfileDTOByEmail(string email)
         {
             return await userServices.GetUserProfileByEmail(email);
@@ -56,10 +55,16 @@ namespace HauseAPI.Controllers
         }
 
         // Edit user
-        [HttpPut]
+        [HttpPut("UpdateUser")]
         public async Task<bool> EditUser([FromBody] UserEditDTO userEditDTO)
         {
             return await userServices.UpdateUser(userEditDTO);
+        }
+
+        [HttpGet("LogIn/{email}/{password}")]
+        public async Task<UserProfileDTO> LogInUser (string email, string password)
+        {
+            return await userServices.LogIn(new UserLogInDTO() { Email = email,Password = password});
         }
     }
 }

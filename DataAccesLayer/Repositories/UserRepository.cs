@@ -7,7 +7,7 @@ using DataAccesLayer.EF;
 using System.Linq;
 using Microsoft.AspNetCore.Identity;
 using System.Threading.Tasks;
-
+using Microsoft.EntityFrameworkCore;
 namespace DataAccesLayer.Repositories
 {
     public class UserRepository : IUserRepository
@@ -77,11 +77,13 @@ namespace DataAccesLayer.Repositories
 
         public async Task<bool> Update(User entity)
         {
-            if(context.Users.All(user => user.Id != entity.Id))
-            {
-                throw new Exception("Thtere is not such a user to edit");
-            }
-            var result = await UserManager.UpdateAsync(entity);
+            var user = await UserManager.FindByIdAsync(entity.Id);
+            user.Name = entity.Name;
+            user.Surname = entity.Surname;
+            user.PhoneNumber = entity.PhoneNumber;
+            user.Email = entity.Email;
+            user.PasswordHash = entity.PasswordHash;
+            var result = await UserManager.UpdateAsync(user);
             return result.Succeeded;
         }
 
@@ -92,6 +94,12 @@ namespace DataAccesLayer.Repositories
                 throw new Exception("There is not a user with such an email");
             }
             return await UserManager.FindByEmailAsync(email);
+        }
+
+        public async Task<User> LogIn(string email, string password)
+        {
+            var user = await UserManager.FindByEmailAsync(email);
+            return user.PasswordHash == password ? user : null;
         }
     }
 }

@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using BlazorFront.Services;
 using Microsoft.AspNetCore.Http;
 using System.Net.Http;
+using Blazored.LocalStorage;
 
 namespace BlazorFront
 {
@@ -30,7 +31,7 @@ namespace BlazorFront
         {
             services.AddRazorPages();
             services.AddServerSideBlazor();
-
+            services.AddBlazoredLocalStorage();
             services.AddHttpClient<IUserServices, UserServices>(client => {
                 client.BaseAddress = new Uri("https://localhost:44365/User/"); 
             });

@@ -1,4 +1,7 @@
-
+.hrefstyle{
+    text-decoration:none;
+    color:white;
+}
 .txtFromMain {
     font-family: Arial;
     font-style: normal;

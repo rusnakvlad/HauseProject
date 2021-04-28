@@ -17,7 +17,7 @@ namespace BuisnesLogicLayer.Interfaces
         public Task<bool> UpdateUser(UserEditDTO userEditDTO);
         public Task<UserProfileDTO> GetUserProfileByEmail(string email);
 
-        public bool LogIn(UserLogInDTO userLogInDTO);
+        public Task<UserProfileDTO> LogIn(UserLogInDTO user);
         public void LogOut();
     }
 }

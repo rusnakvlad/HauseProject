@@ -90,9 +90,18 @@ namespace BuisnesLogicLayer.Services
             };
         }
 
-        public bool LogIn(UserLogInDTO userLogInDTO)
+        public async Task<UserProfileDTO> LogIn (UserLogInDTO userLogin)
         {
-            throw new NotImplementedException();
+            var user = await Database.UserRepository.LogIn(userLogin.Email, userLogin.Password);
+            return new UserProfileDTO()
+            {
+                Id = user.Id,
+                Name = user.Name,
+                Surname = user.Surname,
+                Phone = user.PhoneNumber,
+                Email = user.Email,
+                Password = user.PasswordHash
+            };
         }
 
         public void LogOut()

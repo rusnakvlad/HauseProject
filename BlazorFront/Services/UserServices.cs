@@ -16,12 +16,13 @@ namespace BlazorFront.Services
         {
             this.httpClient = httpClient;
         }
-
+        /*====================== Get By Email ======================*/
         public async Task<UserProfileDTO> GetUserByEmail(string email)
         {
             return await httpClient.GetJsonAsync<UserProfileDTO>("Email/" + email);
         }
 
+        /*====================== Register ======================*/
         public async Task<bool> RegisterUser(UserRegisterDTO user)
         {
             string serializedUser = JsonConvert.SerializeObject(user);
@@ -33,9 +34,32 @@ namespace BlazorFront.Services
             var responseStatusCode = response.StatusCode;
             var responseBody = await response.Content.ReadAsStringAsync();
 
-            var returnedUser = JsonConvert.DeserializeObject<UserRegisterDTO>(responseBody);
+            var returnedUser = JsonConvert.DeserializeObject<bool>(responseBody);
             
+            return returnedUser;
+        }
+
+        /*====================== Edit ======================*/
+        public async Task<bool> UpdateUser(UserEditDTO user)
+        {
+            string serializedUser = JsonConvert.SerializeObject(user);
+            var requestMessage = new HttpRequestMessage(HttpMethod.Put, "UpdateUser");
+            requestMessage.Content = new StringContent(serializedUser);
+            requestMessage.Content.Headers.ContentType
+                = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
+            var response = await httpClient.SendAsync(requestMessage);
+            var responseStatusCode = response.StatusCode;
+            var responseBody = await response.Content.ReadAsStringAsync();
+
+            var returnedUser = JsonConvert.DeserializeObject<UserRegisterDTO>(responseBody);
+
             return returnedUser.Email != null ? true : false;
+        }
+
+        public async Task<UserProfileDTO> LogIn(UserLogInDTO user)
+        {
+            return await httpClient.GetJsonAsync<UserProfileDTO>("LogIn/" + user.Email + "/" + user.Password);
+
         }
     }
 }

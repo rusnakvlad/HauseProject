@@ -23,6 +23,8 @@ namespace DataAccesLayer.Interfaces
 
         public Task<bool> Update(User entity);
 
+        public Task<User> LogIn(string email, string password);
+
 
     }
 }

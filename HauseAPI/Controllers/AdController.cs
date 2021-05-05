@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using BuisnesLogicLayer.Interfaces;
 using BuisnesLogicLayer.Services;
 using BuisnesLogicLayer.DTO;
+using DataAccesLayer.Enteties;
+
 namespace HauseAPI.Controllers
 {
     [ApiController]
@@ -17,10 +19,17 @@ namespace HauseAPI.Controllers
         public AdController(IAdServices adServices) => this.adServices = adServices;
 
         // get all ads
-        [HttpGet]
+        [HttpGet("GetAll")]
         public async Task<IEnumerable<AdInfoDTO>> GetAllAds()
         {
             return await adServices.GetAllAds();
+        }
+
+        // get by option ads
+        [HttpPost("GetByOptions")]
+        public async Task<IEnumerable<AdInfoDTO>> GetAdsByOptions([FromBody] AdToCompare adToCompare)
+        {
+            return await adServices.GetAdsByOptions(adToCompare);
         }
 
         // get all ads by user id

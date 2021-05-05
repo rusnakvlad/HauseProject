@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using BuisnesLogicLayer.DTO;
+using DataAccesLayer.Enteties;
 
 namespace BlazorFront.Services
 {
@@ -19,5 +20,7 @@ namespace BlazorFront.Services
         public Task UpdateAd(AdEdit editAdDTO);
 
         public Task<IEnumerable<AdInfoDTO>> GetAdsByUserId(string userId);
+
+        public Task<IEnumerable<AdInfoDTO>> GetAdsByOptions(AdToCompare adToCompare);
     }
 }

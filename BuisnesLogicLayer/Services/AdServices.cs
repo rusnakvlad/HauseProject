@@ -172,6 +172,53 @@ namespace BuisnesLogicLayer.Services
             return adsDTO;
         }
 
+        public async Task<IEnumerable<AdInfoDTO>> GetAdsByOptions(AdToCompare adToCompare)
+        {
+            var allAds = await Database.AdRepository.GetAdsByOptions(adToCompare);
+            var adsDTO = new List<AdInfoDTO>();
+            foreach (var ad in allAds)
+            {
+                List<TagDTO> tagsDTOs = new();
+                List<ImageEditInfoDTO> imageDTOs = new();
+                // Get Tags
+                foreach (var item in ad.tags)
+                    tagsDTOs.Add(new TagDTO() { _Tag = item.Tag_ });
+
+                // Get Images
+                foreach (var item in ad.images)
+                    imageDTOs.Add(new ImageEditInfoDTO() { ImageFile = item.ImageFile, Id = item.ID, AdId = item.AdID });
+
+                var owenerOfAd = await Database.UserRepository.GetById(ad.OwnerId);
+
+                adsDTO.Add(new AdInfoDTO()
+                {
+                    Id = ad.ID,
+                    OwnerId = ad.OwnerId,
+                    Price = ad.Price,
+                    Region = ad.Region,
+                    District = ad.District,
+                    City = ad.City,
+                    Street = ad.Street,
+                    HouseNumber = ad.HouseNumber,
+                    HouseType = ad.HouseType,
+                    AreaOfHouse = ad.AreaOfHouse,
+                    FloorAmount = ad.FloorAmount,
+                    RoomNumber = ad.RoomNumber,
+                    HouseYear = ad.HouseYear,
+                    Pool = ad.Pool,
+                    Balkon = ad.Balkon,
+                    PurchaseOportunity = ad.PurchaseOportunity,
+                    Status = ad.Status,
+                    Description = ad.Description,
+                    OwnerEmail = owenerOfAd.Email,
+                    OwnerPhone = owenerOfAd.PhoneNumber,
+                    tags = tagsDTOs,
+                    images = imageDTOs
+                });
+            }
+            return adsDTO;
+        }
+
         /*------------------------------Individual methods------------------------------*/
     }
 }

@@ -23,6 +23,6 @@ namespace DataAccesLayer.Interfaces
 
         Task<IEnumerable<Ad>> GetAdsByUserId(string userdId);
 
-        Task<IEnumerable<Ad>> GetAdsByOptions(Ad ad);
+        Task<IEnumerable<Ad>> GetAdsByOptions(AdToCompare adToCompare);
     }
 }

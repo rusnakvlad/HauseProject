@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using BuisnesLogicLayer.DTO;
+using DataAccesLayer.Enteties;
 
 namespace BuisnesLogicLayer.Interfaces
 {
@@ -21,6 +22,8 @@ namespace BuisnesLogicLayer.Interfaces
         public Task UpdateAd(AdEdit editAdDTO);
 
         public Task<IEnumerable<AdInfoDTO>> GetAdsByUserId(string userId);
+
+        public Task<IEnumerable<AdInfoDTO>> GetAdsByOptions(AdToCompare adToCompare);
 
         /*------------------------------Individual methods------------------------------*/
        

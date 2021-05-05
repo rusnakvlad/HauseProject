@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using System.Net.Http;
 using BuisnesLogicLayer.DTO;
+using DataAccesLayer.Enteties;
 using Microsoft.AspNetCore.Components;
 
 namespace BlazorFront.Services
@@ -47,14 +48,30 @@ namespace BlazorFront.Services
             return await httpClient.GetJsonAsync<IEnumerable<AdInfoDTO>>("UserId/" + userId);
         }
 
-        public Task<IEnumerable<AdInfoDTO>> GetAllAds()
+        public async Task<IEnumerable<AdInfoDTO>> GetAllAds()
         {
-            throw new NotImplementedException();
+            return await httpClient.GetJsonAsync<IEnumerable<AdInfoDTO>>("GetAll");
         }
 
         public Task UpdateAd(AdEdit editAdDTO)
         {
             throw new NotImplementedException();
+        }
+
+        public async Task<IEnumerable<AdInfoDTO>> GetAdsByOptions(AdToCompare adToCompare)
+        {
+            string serializedUser = JsonConvert.SerializeObject(adToCompare);
+            var requestMessage = new HttpRequestMessage(HttpMethod.Post, "GetByOptions");
+            requestMessage.Content = new StringContent(serializedUser);
+            requestMessage.Content.Headers.ContentType
+                = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
+            var response = await httpClient.SendAsync(requestMessage);
+            var responseStatusCode = response.StatusCode;
+            var responseBody = await response.Content.ReadAsStringAsync();
+
+            var returnedUser = JsonConvert.DeserializeObject<IEnumerable<AdInfoDTO>>(responseBody);
+
+            return returnedUser;
         }
     }
 }

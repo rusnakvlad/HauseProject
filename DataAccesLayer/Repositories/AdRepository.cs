@@ -33,12 +33,74 @@ namespace DataAccesLayer.Repositories
                 await this.Delete(entityToDelete);
         }
 
-        public async Task<IEnumerable<Ad>> GetAdsByOptions(Ad ad)
+        public async Task<IEnumerable<Ad>> GetAdsByOptions(AdToCompare adToCompare)
         {
-            return await context.Ads.Include(c => c.comments)
-                        .Include(i => i.images)
-                        .Include(t => t.tags)
-                        .ToListAsync();
+            List<Ad> allAds = await context.Ads.Include(c => c.comments)
+                            .Include(i => i.images)
+                            .Include(t => t.tags)
+                            .ToListAsync();
+
+            List<Ad> resutlAds = new List<Ad>();
+            foreach (var ad in allAds)
+            {
+                if (adToCompare.MaxPrice != 0)
+                {
+                    if (adToCompare.MaxPrice < ad.Price) break;
+                }
+
+                if(adToCompare.Region != "")
+                {
+                    if (adToCompare.Region != ad.Region) break;
+                }
+
+                if (adToCompare.District != "")
+                {
+                    if (adToCompare.District != ad.District) break;
+                }
+
+                if (adToCompare.City != "")
+                {
+                    if (adToCompare.City != ad.City) break;
+                }
+
+                if (adToCompare.HouseType != "" && !adToCompare.HouseTypeNoMatter)
+                {
+                    if (adToCompare.HouseType != ad.HouseType) break;
+                }
+
+                if (adToCompare.MaxAreaOfHouse != 0)
+                {
+                    if (adToCompare.MaxAreaOfHouse < ad.AreaOfHouse) break;
+                }
+
+                if (adToCompare.MaxFloorAmount != 0)
+                {
+                    if (adToCompare.MaxFloorAmount < ad.FloorAmount) break;
+                }
+
+                if (adToCompare.MaxRoomNumber != 0)
+                {
+                    if (adToCompare.MaxRoomNumber < ad.RoomNumber) break;
+                }
+
+                if (!adToCompare.PoolNoMatter)
+                {
+                    if (adToCompare.Pool != ad.Pool) break;
+                }
+
+                if (!adToCompare.BalkonNoMatter)
+                {
+                    if (adToCompare.Balkon != ad.Balkon) break;
+                }
+
+                if (!adToCompare.PurchaseOportunityNoMatter)
+                {
+                    if (adToCompare.PurchaseOportunity != ad.PurchaseOportunity) break;
+                }
+                resutlAds.Add(ad);
+            }
+
+            return resutlAds;
         }
 
         public async Task<IEnumerable<Ad>> GetAdsByUserId(string userId)

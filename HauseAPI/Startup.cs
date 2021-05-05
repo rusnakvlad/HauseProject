@@ -57,6 +57,7 @@ namespace HauseAPI
             services.AddTransient<ICommentServices, CommentServices>();
             services.AddTransient<IFavoritesServices, FavoritesServices>();
             services.AddTransient<IForCompareServices, ForcompareServices>();
+            services.AddTransient<IImageServices, ImageServices>();
             #endregion
 
             services.AddDbContext<AppDBContext>();

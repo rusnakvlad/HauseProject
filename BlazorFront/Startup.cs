@@ -40,6 +40,10 @@ namespace BlazorFront
             services.AddHttpClient<IAdServices, AdServices>(client => {
                 client.BaseAddress = new Uri("https://localhost:44365/Ad/");
             });
+
+            services.AddHttpClient<IImageServices, ImageServices>(client => {
+                client.BaseAddress = new Uri("https://localhost:44365/Image/");
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

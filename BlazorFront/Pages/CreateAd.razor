@@ -197,7 +197,7 @@
         var owner = await localStorage.GetItemAsync<UserProfileDTO>("savedUser");
         ad.OwnerId = owner.Id;
         await adServices.AddNewAd(ad);
-        NavigationManager.NavigateTo("MyAds");
+        NavigationManager.NavigateTo($"MyAds/{ad.OwnerId}");
     }
 
 

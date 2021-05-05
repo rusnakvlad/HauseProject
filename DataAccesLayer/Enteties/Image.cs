@@ -13,11 +13,11 @@ namespace DataAccesLayer.Enteties
         ////////////////////////////////////////////////
         public int ID { get; set; }
         public int AdID { get; set; }
-        public string ImageUrl { get; set; }
-        public Image(int AdsID, string ImageUrl)
+        public byte[] ImageFile { get; set; }
+        public Image(int AdsID, byte[] ImageFile)
         {
             this.AdID = AdsID;
-            this.ImageUrl = ImageUrl;
+            this.ImageFile = ImageFile;
         }
         public Image() { }
     }

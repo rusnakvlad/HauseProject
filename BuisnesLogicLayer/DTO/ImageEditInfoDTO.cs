@@ -10,6 +10,6 @@ namespace BuisnesLogicLayer.DTO
     {
         public int Id { get; set; }
         public int AdId { get; set; }
-        public string ImageURL { get; set; }
+        public byte[] ImageFile { get; set; }
     }
 }

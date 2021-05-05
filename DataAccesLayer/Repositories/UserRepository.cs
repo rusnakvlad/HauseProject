@@ -30,10 +30,6 @@ namespace DataAccesLayer.Repositories
 
         public async Task<bool> Add(User entity)
         {
-            if(context.Users.Any(user => user.Email == entity.Email))
-            {
-                throw new Exception("There is already an user with such email");
-            }
             var result = await UserManager.CreateAsync(entity);
             await context.SaveChangesAsync();
             await UserManager.AddToRoleAsync(entity,"User");          
@@ -42,10 +38,6 @@ namespace DataAccesLayer.Repositories
 
         public async Task<bool> Delete(User entity)
         {
-            if (context.Users.All(user => user != entity))
-            {
-                throw new Exception("Thre is not such a user to delete");
-            }
             var result = await UserManager.DeleteAsync(entity);
             await context.SaveChangesAsync();
             return result.Succeeded;
@@ -59,19 +51,11 @@ namespace DataAccesLayer.Repositories
 
         public async Task<IEnumerable<User>> GetAll()
         {
-            if (!context.Users.Any())
-            {
-                throw new Exception("Thre are not users in database");
-            }
             return await Task.Run(() => UserManager.Users);
         }
 
         public async Task<User> GetById(string id)
         {
-            if(context.Users.All(user => user.Id != id))
-            {
-                throw new Exception($"There is not a user with id: {id}");
-            }
             return await UserManager.FindByIdAsync(id);
         }
 
@@ -89,10 +73,6 @@ namespace DataAccesLayer.Repositories
 
         public async Task<User> GetByEmail(string email)
         {
-            if(context.Users.All(user => user.Email != email))
-            {
-                throw new Exception("There is not a user with such an email");
-            }
             return await UserManager.FindByEmailAsync(email);
         }
 

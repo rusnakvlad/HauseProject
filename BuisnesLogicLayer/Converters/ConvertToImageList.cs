@@ -15,7 +15,7 @@ namespace BuisnesLogicLayer.Converters
             List<Image> tepm = new();
             foreach (var item in imageDTOs)
             {
-                tepm.Add(new Image() { ImageUrl = item.ImageUrl });
+                tepm.Add(new Image() { ImageFile = item.ImageFile });
             }
             return tepm;
         }

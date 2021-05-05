@@ -1,0 +1,25 @@
+﻿@page "/AdsImagesView/{adId}"
+<main class="d-flex justify-content-center">
+    <div id="photosContainer">
+        <div style="position: absolute; right: 20px;top: 20px;cursor: pointer;">
+            <img src="cancel.png" width="30px">
+        </div>
+        <div class="d-flex justify-content-center">
+            <img class="align-self-center" src="back.png">
+        </div>
+
+        <div class="d-flex justify-content-center">
+            <div style="margin-top: 100px;">
+                <img src="house.png" width="500px" style="cursor:pointer">
+            </div>
+        </div>
+
+        <div class="d-flex justify-content-center">
+            <img class="align-self-center" src="next.png" style="cursor:pointer">
+        </div>
+
+    </div>
+</main>
+@code {
+    [Parameter] public string adId { get; set; }
+}

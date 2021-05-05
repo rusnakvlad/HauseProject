@@ -24,7 +24,7 @@
             </a>
             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                 <li> <NavLink class="hrefstyle" href="ProfileInfo"><span class="dropdown-item">Профіль</span></NavLink></li>
-                <li> <NavLink class="hrefstyle" href="MyAds"><span class="dropdown-item">Мої оголошення</span></NavLink></li>
+                <li> <NavLink class="hrefstyle" href="@goMyAdsLink"><span class="dropdown-item">Мої оголошення</span></NavLink></li>
                 <li> <NavLink class="hrefstyle" href="Favorites"><span class="dropdown-item">Обрані</span></NavLink></li>
                 <li> <NavLink class="hrefstyle" href="Compares"><span class="dropdown-item">Порівняння</span></NavLink></li>
                 <li @onclick="LogOut"> <NavLink class="hrefstyle" href="/"><span class="dropdown-item">Вийти</span></NavLink></li>
@@ -69,11 +69,17 @@
 
 @code
 {       
-    UserProfileDTO user = new UserProfileDTO();
+        UserProfileDTO user = new UserProfileDTO();
+        string goMyAdsLink = "";
+        //string goMyProfileLink = "";
     protected override async Task OnInitializedAsync()
     {
-        if(await localStorage.ContainKeyAsync("savedUser"))
+        if (await localStorage.ContainKeyAsync("savedUser"))
+        {
             user = await localStorage.GetItemAsync<UserProfileDTO>("savedUser");
+            goMyAdsLink = $"MyAds/{user.Id}";
+          //  goMyProfileLink = $"ProfileInfo/{user.Id}";
+        }
     }
 
     private async Task LogOut()

@@ -14,7 +14,15 @@ namespace BuisnesLogicLayer.Converters
         {
             foreach (var item in images)
             {
-                yield return new ImageEditInfoDTO() { ImageURL = item.ImageUrl, Id = item.ID, AdId = item.AdID };
+                yield return new ImageEditInfoDTO() { ImageFile = item.ImageFile, Id = item.ID, AdId = item.AdID };
+            }
+        }
+
+        public static IEnumerable<ImageCreateDTO> FromImageBytes(List<byte[]> images)
+        {
+            foreach (var item in images)
+            {
+                yield return new ImageCreateDTO() { ImageFile = item };
             }
         }
     }

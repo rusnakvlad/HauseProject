@@ -35,7 +35,7 @@ namespace BuisnesLogicLayer.Services
 
                 // Get Images
                 foreach (var item in ad.images)
-                    imageDTOs.Add(new ImageEditInfoDTO() { ImageURL = item.ImageUrl, Id = item.ID, AdId = item.AdID });
+                    imageDTOs.Add(new ImageEditInfoDTO() { ImageFile = item.ImageFile, Id = item.ID, AdId = item.AdID });
 
                 var owenerOfAd = await Database.UserRepository.GetById(ad.OwnerId);
 
@@ -80,7 +80,7 @@ namespace BuisnesLogicLayer.Services
             
             // Get Images
             foreach (var item in ad.images)
-                imageDTOs.Add(new ImageEditInfoDTO() { ImageURL = item.ImageUrl, Id = item.ID, AdId = item.AdID });
+                imageDTOs.Add(new ImageEditInfoDTO() { ImageFile = item.ImageFile, Id = item.ID, AdId = item.AdID });
 
 
             return new AdInfoDTO()
@@ -139,7 +139,7 @@ namespace BuisnesLogicLayer.Services
 
                 // Get Images
                 foreach (var item in ad.images)
-                    imageDTOs.Add(new ImageEditInfoDTO() { ImageURL = item.ImageUrl, Id = item.ID, AdId = item.AdID });
+                    imageDTOs.Add(new ImageEditInfoDTO() { ImageFile = item.ImageFile, Id = item.ID, AdId = item.AdID });
 
                 var owenerOfAd = await Database.UserRepository.GetById(ad.OwnerId);
 

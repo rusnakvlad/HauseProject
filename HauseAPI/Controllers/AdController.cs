@@ -31,7 +31,7 @@ namespace HauseAPI.Controllers
         }
 
         // get ad by id
-        [HttpGet("/Ad/{id}")]
+        [HttpGet("/Ad/GetById/{id}")]
         public async Task<AdInfoDTO> GetAddDTOByID(int id)
         {
             return await adServices.GetAdById(id);

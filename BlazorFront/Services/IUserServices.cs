@@ -14,5 +14,7 @@ namespace BlazorFront.Services
         public Task<bool> UpdateUser(UserEditDTO user);
 
         public Task<UserProfileDTO> LogIn(UserLogInDTO user);
+
+        public Task<UserProfileDTO> GetUserById(string Id);
     }
 }

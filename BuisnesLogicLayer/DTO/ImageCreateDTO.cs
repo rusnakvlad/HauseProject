@@ -8,6 +8,9 @@ namespace BuisnesLogicLayer.DTO
 {
     public class ImageCreateDTO
     {
-        public string ImageUrl { get; set; }
+        public byte[] ImageFile { get; set; }
+
+        public ImageCreateDTO(byte[] img) => ImageFile = img;
+        public ImageCreateDTO() { }
     }
 }

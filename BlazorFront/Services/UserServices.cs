@@ -61,5 +61,10 @@ namespace BlazorFront.Services
             return await httpClient.GetJsonAsync<UserProfileDTO>("LogIn/" + user.Email + "/" + user.Password);
 
         }
+
+        public async Task<UserProfileDTO> GetUserById(string Id)
+        {
+            return await httpClient.GetJsonAsync<UserProfileDTO>("GetById/" + Id);
+        }
     }
 }

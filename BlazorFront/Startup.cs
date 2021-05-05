@@ -32,10 +32,14 @@ namespace BlazorFront
             services.AddRazorPages();
             services.AddServerSideBlazor();
             services.AddBlazoredLocalStorage();
+
             services.AddHttpClient<IUserServices, UserServices>(client => {
                 client.BaseAddress = new Uri("https://localhost:44365/User/"); 
             });
 
+            services.AddHttpClient<IAdServices, AdServices>(client => {
+                client.BaseAddress = new Uri("https://localhost:44365/Ad/");
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

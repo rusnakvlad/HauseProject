@@ -1,3 +1,6 @@
+.tagIngerval{
+    margin-left:3px;
+}
 .hrefstyle{
     text-decoration:none;
     color:white;
@@ -69,10 +72,10 @@
     margin-left: 10px;
 }
 
-.ad :hover {
+/*.ad :hover {
     background-color: rgb(233, 233, 233);
     cursor: pointer;
-}
+}*/
 
 /*========================= Compares Page Styles =========================*/
 .adInfoContainer {
@@ -143,6 +146,7 @@
     border: 3px rgb(253, 253, 253) solid;
     border-radius: 10px;
     background-color: #282a2c;
+    resize:none;
 }
 
 #container-1 {
@@ -165,8 +169,15 @@
 }
 
 .boxesAddedPhoto {
-    background-color: rgb(167, 167, 167);
+   
     margin: 5px 5px 5px 5px;
+}
+
+.boxesAddedPhoto img {
+    flex-shrink: 0;
+    -webkit-flex-shrink: 0;
+    max-width: 100%;
+    max-height: 100%;
 }
 
 #container-2 {
@@ -200,7 +211,7 @@
 #boxFoto {
     width: 400px;
     height: 300px;
-    background-color: rgb(167, 167, 167);
+    /*background-color: rgb(167, 167, 167);*/
 }
 
 #primaryAdInfo {
@@ -257,6 +268,19 @@
     font-style: normal;
     font-weight: bold;
     font-size: 24px;
+}
+
+/*========================= Images View =========================*/
+#photosContainer {
+    display: grid;
+    grid-template-columns: 6% 88% 6%;
+    background-color: rgba(0, 0, 0, 0.815);
+    height: 100%;
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    bottom: 0px;
+    left: 0px;
 }
 /*@import url('open-iconic/font/css/open-iconic-bootstrap.min.css');
 

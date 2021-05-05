@@ -27,7 +27,7 @@ namespace HauseAPI.Controllers
         }
 
         // Get User Profile by id
-        [HttpGet("{id}")]
+        [HttpGet("GetById/{id}")]
         public async Task<UserProfileDTO> GetUserProfileDTOById(string id)
         {
             return await userServices.GetUserProfileById(id);

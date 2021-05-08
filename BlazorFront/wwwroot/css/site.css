@@ -77,6 +77,11 @@
     cursor: pointer;
 }*/
 
+.favicons {
+    width: 30px;
+    cursor: pointer;
+    margin-right: 10px;
+}
 /*========================= Compares Page Styles =========================*/
 .adInfoContainer {
     display: grid;

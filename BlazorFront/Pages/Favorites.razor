@@ -1,51 +1,101 @@
-﻿@page "/Favorites"
-    <div class="d-flex justify-content-center" id="liveNew">Обрані оголошення</div>
+﻿@page "/Favorites/{userId}"
+@using BlazorFront.Services
+@using BuisnesLogicLayer.DTO
+@using DataAccesLayer.Enteties
+@inject IAdServices adServices
+@inject IUserServices userServices
+@inject IFavoritesServices favoriteServices
+@inject NavigationManager NavigationManager
+@inject Blazored.LocalStorage.ILocalStorageService localStorage
+<div class="d-flex justify-content-center" id="liveNew">Обрані оголошення</div>
 
-    <br>
-    <br>
+<br>
+<br>
 
-    <div class="favAds" style="margin: 0px 300px 0px 300px;">
+<div class="favAds" style="margin: 0px 300px 0px 300px;">
 
+    @foreach (var ad in ads)
+    {
         <div class="ad" style="border: rgb(104, 104, 104) 3px solid;">
-
             <div id="forImg" class="d-flex justify-content-center" style="margin: 0px 0px 0px 0px; border-right:rgb(104, 104, 104) 3px solid;">
-                <img class="imgFromAd" src="https://fomag.ru/upload/iblock/84e/84edefd1381ca02526b2ecafff65ea70.jpg" width="100%" height="100%">
+                <img class="imgFromAd" src="data:image/png;base64, @(Convert.ToBase64String(ad.images.FirstOrDefault().ImageFile))" width="100%" height="100%">
             </div>
 
             <div class="favInfo">
                 <div class="d-flex justify-content-end" style="border-bottom: #1C6EA4 1px solid;">
-                    <img src="star (2).png" style="width: 30px;">
-                    <img src="compare (1).png" style="width: 30px;">
+                    <img src="@favIconSrc" @onclick="ChangeFav" style="width: 30px;cursor:pointer;margin-right:10px">
+                    <img src="@compareIconSrc" @onclick="ChangeCompare" style="width: 30px;cursor:pointer">
                 </div>
 
                 <div class="favInfoTxt">
-                    <div style="margin-left: 10px;"><font color="gray">Площа:</font> 300 квм</div>
+                    <div style="margin-left: 10px;"><font color="gray">Площа:</font> @ad.AreaOfHouse</div>
                 </div>
 
                 <div class="favInfoTxt">
-                    <div style="margin-left: 10px;"><font color="gray">Кількість кімнат:</font> 5</div>
+                    <div style="margin-left: 10px;"><font color="gray">Кількість кімнат:</font>@ad.RoomNumber</div>
                 </div>
 
                 <div class="favInfoTxt">
-                    <div style="margin-left: 10px;"><font color="gray">Рік будинку:</font> 1958</div>
+                    <div style="margin-left: 10px;"><font color="gray">Рік будинку:</font> @ad.HouseYear</div>
+                </div>
+
+
+                <div class="favInfoTxt">
+                    @if (ad.PurchaseOportunity)
+                    {
+                        <div style="margin-left: 10px;"><font color="gray">Вид угоди:</font>Купівля</div>
+                    }
+                    else
+                    {
+                        <div style="margin-left: 10px;"><font color="gray">Вид угоди:</font>Оренда</div>
+                    }
                 </div>
 
                 <div class="favInfoTxt">
-                    <div style="margin-left: 10px;"><font color="gray">Вид угоди:</font> продажа</div>
+                    @if (ad.Balkon)
+                    {
+                        <div style="margin-left: 10px;"><font color="gray">Балкон:</font>Є</div>
+                    }
+                    else
+                    {
+                        <div style="margin-left: 10px;"><font color="gray">Балкон:</font>Нема</div>
+                    }
                 </div>
 
                 <div class="favInfoTxt">
-                    <div style="margin-left: 10px;"><font color="gray">Балкон:</font> є</div>
+                    <div style="margin-left: 10px;"><font color="gray">Ціна:</font> <b>@ad.Price</b></div>
                 </div>
 
-                <div class="favInfoTxt">
-                    <div style="margin-left: 10px;"><font color="gray">Ціна:</font> <b>15000</b> грн</div>
-                </div>
+                <button @onclick="() => GoToAd(ad.Id)">Перейти</button>
             </div>
 
 
         </div>
-    </div>
-    @code {
-
     }
+
+</div>
+@code {
+    [Parameter] public string userId { get; set; }
+    public IEnumerable<AdShortInfoDTO> ads = new List<AdShortInfoDTO>();
+    public AdToCompare adToCompare = new();
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        ads = await favoriteServices.GetAllFavoritesByUserId(userId);
+    }
+
+    void GoToAd(int adId)
+    {
+        NavigationManager.NavigateTo($"/AdInfo/{adId}");
+    }
+
+    /*========================== Set/Unset favorite/compare ==========================*/
+
+    string favIconSrc = "star1.png";
+    string compareIconSrc = "compare1.png";
+
+    void ChangeFav() => favIconSrc = favIconSrc == "star1.png" ? "star2.png" : "star1.png";
+
+    void ChangeCompare() => compareIconSrc = compareIconSrc == "compare1.png" ? "compare2.png" : "compare1.png";
+}

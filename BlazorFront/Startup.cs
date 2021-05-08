@@ -44,6 +44,14 @@ namespace BlazorFront
             services.AddHttpClient<IImageServices, ImageServices>(client => {
                 client.BaseAddress = new Uri("https://localhost:44365/Image/");
             });
+
+            services.AddHttpClient<IFavoritesServices, FavoritesServices>(client => {
+                client.BaseAddress = new Uri("https://localhost:44365/Favorites/");
+            });
+
+            services.AddHttpClient<IForCompareServices, ForCompareServices>(client => {
+                client.BaseAddress = new Uri("https://localhost:44365/ForCompare/");
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

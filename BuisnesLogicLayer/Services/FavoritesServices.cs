@@ -28,7 +28,10 @@ namespace BuisnesLogicLayer.Services
                 var ad = await Database.AdRepository.GetById(favorite.AdID);
                 adShortInfoDTOs.Add(new AdShortInfoDTO()
                 {
-                    ID = ad.ID,
+                    Id = ad.ID,
+                    PurchaseOportunity = ad.PurchaseOportunity,
+                    HouseYear = ad.HouseYear,
+                    Balkon = ad.Balkon,
                     OwnerId = ad.OwnerId,
                     Price = ad.Price,
                     HouseType = ad.HouseType,

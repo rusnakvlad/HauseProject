@@ -25,8 +25,8 @@
 
             <div class="favInfo">
                 <div class="d-flex justify-content-end" style="border-bottom: #1C6EA4 1px solid;">
-                    <img src="star (2).png" style="width: 30px;">
-                    <img src="compare (1).png" style="width: 30px;">
+                    <img src="@favIconSrc" @onclick="ChangeFav" style="width: 30px;cursor:pointer;margin-right:10px">
+                    <img src="@compareIconSrc" @onclick="ChangeCompare" style="width: 30px;cursor:pointer">
                 </div>
 
                 <div class="favInfoTxt">
@@ -78,6 +78,7 @@
 </div>
 @code {
     [Parameter] public string userId { get; set; }
+
     public IEnumerable<AdInfoDTO> ads = new List<AdInfoDTO>();
     protected override async Task OnInitializedAsync()
     {
@@ -88,4 +89,13 @@
     {
         NavigationManager.NavigateTo($"/AdInfo/{adId}");
     }
+
+    /*========================== Set/Unset favorite/compare ==========================*/
+
+    string favIconSrc = "star1.png";
+    string compareIconSrc = "compare1.png";
+
+    void ChangeFav() => favIconSrc = favIconSrc == "star1.png" ? "star2.png" : "star1.png";
+
+    void ChangeCompare() => compareIconSrc = compareIconSrc == "compare1.png" ? "compare2.png" : "compare1.png";
 }

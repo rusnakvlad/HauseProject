@@ -1,112 +1,92 @@
-﻿@page "/Compares"
+﻿@page "/Compares/{userId}"
+@using BlazorFront.Services
+@using BuisnesLogicLayer.DTO
+@inject IForCompareServices forCompareServices
+@inject IUserServices userServices
+@inject NavigationManager NavigationManager
+@inject Blazored.LocalStorage.ILocalStorageService localStorage
+<div class="d-flex justify-content-center" id="liveNew">Порівняння</div>
 
-    <div class="d-flex justify-content-center" id="liveNew">Порівняння</div>
-
-    <div class="d-flex justify-content-start">
-        <div id="adCategoryInfo" style="border-width: 0px;">
-            <div>
-                <div style="margin-top: 60px; margin-left: 20px; width: 190px; border-width: 0px;">
-                    <div style="border-width: 0px;">Сортувати за:</div>
-                    <select class="form-select" aria-label="Default select example" width="100px">
-                        <option value="1">Ціна</option>
-                        <option value="2">Площа</option>
-                    </select>
-                </div>
+<div class="d-flex justify-content-start">
+    <div id="adCategoryInfo" style="border-width: 0px;">
+        <div>
+            <div style="margin-top: 60px; margin-left: 20px; width: 190px; border-width: 0px;">
+                <div style="border-width: 0px;">Сортувати за:</div>
+                <select class="form-select" aria-label="Default select example" width="100px">
+                    <option value="1">Ціна</option>
+                    <option value="2">Площа</option>
+                </select>
             </div>
-            <div>Ціна</div>
-            <div>Кількість кімнат</div>
-            <div>КількістьПоверхів</div>
-            <div>Басейн</div>
-            <div>Балкон</div>
-            <div>Рік будинку</div>
-            <div>Вид угоди</div>
-            <div>Область</div>
-            <div>Район</div>
-            <div>Місто</div>
-            <div>Площа</div>
         </div>
 
-        <div class="adInfoContainer">
-            <div><img class="imgFromAd" src="https://fomag.ru/upload/iblock/84e/84edefd1381ca02526b2ecafff65ea70.jpg" width="100%" height="100%"></div>
-            <div>1500 грн</div>
-            <div>3</div>
-            <div>1</div>
-            <div>є</div>
-            <div>нема</div>
-            <div>2019</div>
-            <div>Продажа</div>
-            <div>Чернівці</div>
-            <div>Новоселиця</div>
-            <div>Драниця</div>
-            <div>250 кв.м</div>
-        </div>
-
-        <div class="adInfoContainer">
-            <div><img class="imgFromAd" src="https://fomag.ru/upload/iblock/84e/84edefd1381ca02526b2ecafff65ea70.jpg" width="100%" height="100%"></div>
-            <div>1500 грн</div>
-            <div>3</div>
-            <div>1</div>
-            <div>є</div>
-            <div>нема</div>
-            <div>2019</div>
-            <div>Продажа</div>
-            <div>Чернівці</div>
-            <div>Новоселиця</div>
-            <div>Драниця</div>
-            <div>250 кв.м</div>
-        </div>
-
-        <div class="adInfoContainer">
-            <div><img class="imgFromAd" src="https://fomag.ru/upload/iblock/84e/84edefd1381ca02526b2ecafff65ea70.jpg" width="100%" height="100%"></div>
-            <div>1500 грн</div>
-            <div>3</div>
-            <div>1</div>
-            <div>є</div>
-            <div>нема</div>
-            <div>2019</div>
-            <div>Продажа</div>
-            <div>Чернівці</div>
-            <div>Новоселиця</div>
-            <div>Драниця</div>
-            <div>250 кв.м</div>
-        </div>
-
-        <div class="adInfoContainer">
-            <div><img class="imgFromAd" src="https://fomag.ru/upload/iblock/84e/84edefd1381ca02526b2ecafff65ea70.jpg" width="100%" height="100%"></div>
-            <div>1500 грн</div>
-            <div>3</div>
-            <div>1</div>
-            <div>є</div>
-            <div>нема</div>
-            <div>2019</div>
-            <div>Продажа</div>
-            <div>Чернівці</div>
-            <div>Новоселиця</div>
-            <div>Драниця</div>
-            <div>250 кв.м</div>
-        </div>
-
-        <div class="adInfoContainer">
-            <div><img class="imgFromAd" src="https://fomag.ru/upload/iblock/84e/84edefd1381ca02526b2ecafff65ea70.jpg" width="100%" height="100%"></div>
-            <div>1500 грн</div>
-            <div>3</div>
-            <div>1</div>
-            <div>є</div>
-            <div>нема</div>
-            <div>2019</div>
-            <div>Продажа</div>
-            <div>Чернівці</div>
-            <div>Новоселиця</div>
-            <div>Драниця</div>
-            <div>250 кв.м</div>
-        </div>
-
+        <div>Ціна</div>
+        <div>Кількість кімнат</div>
+        <div>КількістьПоверхів</div>
+        <div>Басейн</div>
+        <div>Балкон</div>
+        <div>Рік будинку</div>
+        <div>Вид угоди</div>
+        <div>Область</div>
+        <div>Район</div>
+        <div>Місто</div>
+        <div>Площа</div>
     </div>
-    <div class="d-flex justify-content-center" style="margin-top: 10px;">
-        <img src="back.png" width="3%" height="3%" style="margin-right: 5px;cursor: pointer;">
-        <img src="next.png" width="3%" height="3%" style="margin-left: 5px;cursor: pointer;">
-    </div>
+    @if (ads.Count() != 0)
+    {
+        @foreach (var ad in ads)
+        {
+            <div class="adInfoContainer">
+                <div>
+                <img class="imgFromAd" @onclick="() => GoToAd(ad.Id)" src="data:image/png;base64, @(Convert.ToBase64String(ad.images.FirstOrDefault().ImageFile))" style="cursor:pointer;" width="100%" height="100%">
+                </div>
+                <div>@ad.Price грн</div>
+                <div>@ad.RoomNumber</div>
+                <div>@ad.FloorAmount</div>
 
-    @code {
+                @if (ad.Pool)
+                {<div>Є</div> }
+                else
+                { <div>Нема</div>}
 
+                @if (ad.Balkon)
+                {<div>Є</div> }
+                else
+                { <div>Нема</div>}
+
+                <div>@ad.HouseYear</div>
+
+                @if (ad.PurchaseOportunity)
+                {<div>Продажа</div> }
+                else
+                { <div>Оренда</div>}
+
+                <div>@ad.Region</div>
+                <div>@ad.District</div>
+                <div>@ad.City</div>
+
+                <div>@ad.AreaOfHouse кв.м</div>
+            </div>
+        }
     }
+
+
+</div>
+<div class="d-flex justify-content-center" style="margin-top: 10px;">
+    <img src="back.png" width="3%" height="3%" style="margin-right: 5px;cursor: pointer;">
+    <img src="next.png" width="3%" height="3%" style="margin-left: 5px;cursor: pointer;">
+</div>
+
+@code {
+    [Parameter] public string userId { get; set; }
+
+    public IEnumerable<ForCompareDTO> ads = new List<ForCompareDTO>();
+    protected override async Task OnInitializedAsync()
+    {
+        ads = await forCompareServices.GetAllComparesByUserId(userId);
+    }
+
+    void GoToAd(int adId)
+    {
+        NavigationManager.NavigateTo($"/AdInfo/{adId}");
+    }
+}

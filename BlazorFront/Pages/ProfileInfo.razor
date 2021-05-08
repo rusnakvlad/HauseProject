@@ -1,8 +1,9 @@
-﻿@page "/ProfileInfo"
+﻿@page "/ProfileInfo/{userId}"
 @using BlazorFront.Services
 @using BuisnesLogicLayer.DTO
 @using BuisnesLogicLayer.Converters
 @inject IUserServices userServices
+@inject NavigationManager NavigationManager
 @inject Blazored.LocalStorage.ILocalStorageService localStorage
 <div class="container">
     <div class="d-flex justify-content-center">
@@ -85,17 +86,18 @@
 </div>
 
 @code {
+    [Parameter] public string userId { get; set; }
     public UserProfileDTO user = new UserProfileDTO();
 
     protected override async Task OnInitializedAsync()
     {
         var temp = await localStorage.GetItemAsync<UserProfileDTO>("savedUser");
-        user = await userServices.GetUserByEmail(temp.Email);
+        user = await userServices.GetUserById(userId);
     }
 
     public async Task<bool> UpdateUser()
     {
-        return await userServices.UpdateUser(new UserEditDTO()
+        var result = await userServices.UpdateUser(new UserEditDTO()
         {
             Id = user.Id,
             Name = user.Name,
@@ -104,6 +106,11 @@
             Password = user.Password,
             Phone = user.Phone
         });
+        if (!result) return false;
+        await localStorage.ClearAsync();
+        NavigationManager.NavigateTo("/LogIn", true);
+        return result;
+
     }
 
     public async Task Update()

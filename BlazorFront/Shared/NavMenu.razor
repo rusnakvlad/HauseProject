@@ -23,7 +23,7 @@
                 <span style="margin-right:5px">@user.Name</span><span>@user.Surname</span>
             </a>
             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                <li> <NavLink class="hrefstyle" href="ProfileInfo"><span class="dropdown-item">Профіль</span></NavLink></li>
+                <li> <NavLink class="hrefstyle" href="@goMyProfileLink"><span class="dropdown-item">Профіль</span></NavLink></li>
                 <li> <NavLink class="hrefstyle" href="@goMyAdsLink"><span class="dropdown-item">Мої оголошення</span></NavLink></li>
                 <li> <NavLink class="hrefstyle" href="@goFavoritesLink"><span class="dropdown-item">Обрані</span></NavLink></li>
                 <li> <NavLink class="hrefstyle" href="@goForComparesLink"><span class="dropdown-item">Порівняння</span></NavLink></li>
@@ -47,8 +47,8 @@
         </a>
 
         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <li> <NavLink class="hrefstyle" href="@findAdsLink"><span class="dropdown-item">Дома</span></NavLink></li>
-            <li> <NavLink class="hrefstyle" href="@findAdsLink"><span class="dropdown-item">Квартири</span></NavLink></li>
+            <li> <NavLink class="hrefstyle" href="@gofindAdsLink"><span class="dropdown-item">Дома</span></NavLink></li>
+            <li> <NavLink class="hrefstyle" href="@gofindAdsLink"><span class="dropdown-item">Квартири</span></NavLink></li>
         </ul>
 
     </div>
@@ -72,9 +72,9 @@
     UserProfileDTO user = new UserProfileDTO();
     string goMyAdsLink = "";
     string goFavoritesLink = "";
-    string findAdsLink = "";
+    string gofindAdsLink = "";
     string goForComparesLink = "";
-    //string goMyProfileLink = "";
+    string goMyProfileLink = "";
     protected override async Task OnInitializedAsync()
     {
         if (await localStorage.ContainKeyAsync("savedUser"))
@@ -82,9 +82,9 @@
             user = await localStorage.GetItemAsync<UserProfileDTO>("savedUser");
             goMyAdsLink = $"MyAds/{user.Id}";
             goFavoritesLink = $"Favorites/{user.Id}";
-            findAdsLink = $"FindAds/{user.Id}";
+            gofindAdsLink = $"FindAds/{user.Id}";
             goForComparesLink = $"Compares/{user.Id}";
-            //  goMyProfileLink = $"ProfileInfo/{user.Id}";
+            goMyProfileLink = $"ProfileInfo/{user.Id}";
         }
     }
 

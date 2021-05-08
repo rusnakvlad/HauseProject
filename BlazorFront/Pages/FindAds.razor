@@ -5,6 +5,7 @@
 @inject IAdServices adServices
 @inject IUserServices userServices
 @inject IFavoritesServices favoriteServices
+@inject IForCompareServices forCompareServices
 @inject NavigationManager NavigationManager
 @inject Blazored.LocalStorage.ILocalStorageService localStorage
 <main id="mainContainerFA">
@@ -19,7 +20,7 @@
                 <div class="favInfo">
                     <div class="d-flex justify-content-end" style="border-bottom: #1C6EA4 1px solid;">          
                         <img @bind-src="@IsOrNotFavorites[iterator].src" @bind-src:event="onchange" @onclick="() => ChangeFavState(userId, ad.Id)" class="favicons">            
-                        <img src="@compareIconSrc" @onclick="() => ChangeCompareState()" style="width: 30px;cursor:pointer">
+                        <img @bind-src="@IsOrNotCompares[iterator].src" @bind-src:event="onchange" @onclick="() => ChangeCompareState(userId, ad.Id)" class="favicons">
                     </div>
 
                     <div class="favInfoTxt">
@@ -263,13 +264,15 @@
     public IEnumerable<AdShortInfoDTO> adsFavorites = new List<AdShortInfoDTO>();
     List<FavStarIcon> IsOrNotFavorites = new();
 
-    public IEnumerable<AdShortInfoDTO> adsCompares = new List<AdShortInfoDTO>();
-    List<FavStarIcon> IsOrNotCompares = new();
+    public IEnumerable<ForCompareDTO> adsCompares = new List<ForCompareDTO>();
+    List<CompareIcon> IsOrNotCompares = new();
+
 
     protected override async Task OnInitializedAsync()
     {
         ads = await adServices.GetAllAds();
         adsFavorites = await favoriteServices.GetAllFavoritesByUserId(userId);
+        adsCompares = await forCompareServices.GetAllComparesByUserId(userId);
         foreach(var ad in ads)
         {
             if (adsFavorites.Any(adfav => adfav.Id == ad.Id))
@@ -280,17 +283,26 @@
             {
                 IsOrNotFavorites.Add(new FavStarIcon("star1.png", ad.Id));
             }
+
+            if (adsCompares.Any(adcomp => adcomp.Id == ad.Id))
+            {
+                IsOrNotCompares.Add(new CompareIcon("compare2.png", ad.Id));
+            }
+            else
+            {
+                IsOrNotCompares.Add(new CompareIcon("compare1.png", ad.Id));
+            }
         }
     }
+
 
     void GoToAd(int adId)
     {
         NavigationManager.NavigateTo($"/AdInfo/{adId}");
     }
 
-    /*========================== Set/Unset favorite/compare ==========================*/
 
-    string compareIconSrc = "compare1.png";
+    /*========================== Set/Unset favorite/compare ==========================*/
 
     async Task ChangeFavState(string userId, int adId)
     {
@@ -316,10 +328,29 @@
         iterator = 0;
     }
 
-    async Task ChangeCompareState()
+    async Task ChangeCompareState(string userId, int adId)
+    {
+        for (int i = 0; i < IsOrNotCompares.Count(); i++)
         {
-
+            if (IsOrNotCompares[i].adId == adId)
+            {
+                if (IsOrNotCompares[i].src == "compare1.png") // if is not comparasion
+                {
+                    IsOrNotCompares[i].src = "compare2.png";
+                    iterator = 0;
+                    await forCompareServices.SetForCompare(userId, adId); // set comparasion
+                }
+                else if (IsOrNotCompares[i].src == "compare2.png")
+                {
+                    IsOrNotCompares[i].src = "compare1.png";
+                    iterator = 0;
+                    await forCompareServices.RemoveCopareByUserIdAndAdId(userId, adId);
+                }
+                break;
+            }
         }
+        iterator = 0;
+    }
 
 
     public class FavStarIcon

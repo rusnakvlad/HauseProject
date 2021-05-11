@@ -109,6 +109,13 @@
         font-weight: bold;
     }
 
+#imgDelete {
+    position: absolute;
+    background-color: rgba(255, 0, 0, 0);
+    border-width: 0px;
+    width: 20px;
+    margin-left: 215px;
+}
 
 /*========================= FindAds Page Styles =========================*/
 #mainContainerFA {

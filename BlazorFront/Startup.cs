@@ -13,6 +13,7 @@ using BlazorFront.Services;
 using Microsoft.AspNetCore.Http;
 using System.Net.Http;
 using Blazored.LocalStorage;
+using BlazorFront.Validation;
 
 namespace BlazorFront
 {
@@ -32,7 +33,7 @@ namespace BlazorFront
             services.AddRazorPages();
             services.AddServerSideBlazor();
             services.AddBlazoredLocalStorage();
-
+            #region HttpClients
             services.AddHttpClient<IUserServices, UserServices>(client => {
                 client.BaseAddress = new Uri("https://localhost:44365/User/"); 
             });
@@ -52,6 +53,11 @@ namespace BlazorFront
             services.AddHttpClient<IForCompareServices, ForCompareServices>(client => {
                 client.BaseAddress = new Uri("https://localhost:44365/ForCompare/");
             });
+            #endregion
+
+            #region ValidationServices
+            services.AddSingleton<UserValidation>();
+            #endregion
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

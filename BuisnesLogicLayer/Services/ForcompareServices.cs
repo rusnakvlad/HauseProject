@@ -11,14 +11,19 @@ using DataAccesLayer.Interfaces;
 using DataAccesLayer.Enteties;
 using BuisnesLogicLayer.Converters;
 using DataAccesLayer.Repositories;
+using AutoMapper;
+
 namespace BuisnesLogicLayer.Services
 {
     public class ForcompareServices : IForCompareServices
     {
-        private IUnitOfWork Database;
-
-        public ForcompareServices(IUnitOfWork unitOfWork) => Database = unitOfWork;
-
+        private readonly IUnitOfWork Database;
+        private readonly IMapper mapper;
+        public ForcompareServices(IUnitOfWork unitOfWork, IMapper mapper)
+        {
+            Database = unitOfWork;
+            this.mapper = mapper;
+        }
         public async Task<IEnumerable<ForCompareDTO>> GetAllComparesByUserId(string userId)
         {
             var forCompares = await Database.ForCompareRepository.GetAllComparesByUserId(userId);
@@ -26,26 +31,9 @@ namespace BuisnesLogicLayer.Services
             foreach (var coparasion in forCompares)
             {
                 var ad = await Database.AdRepository.GetById(coparasion.AdID);
-                forCompareDTOs.Add(new ForCompareDTO()
-                {
-                    Id = ad.ID,
-                    OwnerId = ad.OwnerId,
-                    Price = ad.Price,
-                    Region = ad.Region,
-                    District = ad.District,
-                    City = ad.City,
-                    Street = ad.Street,
-                    HouseNumber = ad.HouseNumber,
-                    HouseType = ad.HouseType,
-                    AreaOfHouse = ad.AreaOfHouse,
-                    FloorAmount = ad.FloorAmount,
-                    RoomNumber = ad.RoomNumber,
-                    HouseYear = ad.HouseYear,
-                    Pool = ad.Pool,
-                    Balkon = ad.Balkon,
-                    PurchaseOportunity = ad.PurchaseOportunity,
-                    images = ConvertToImageListDTO.FromImageList(ad.images)
-                });
+                var mappedAd = mapper.Map<Ad, ForCompareDTO>(ad);
+                mappedAd.images = mapper.Map<IEnumerable<Image>, List<ImageEditInfoDTO>>(ad.images);
+                forCompareDTOs.Add(mappedAd);
             }
             return forCompareDTOs;
         }

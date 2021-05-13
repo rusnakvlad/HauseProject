@@ -44,7 +44,7 @@
                                 <div class="form-group row">
                                     <label for="phone" class="col-4 col-form-label">Телефон</label>
                                     <div class="col-8">
-                                        <input @bind="@user.Phone" id="phone" name="phone" placeholder="Телефон" class="form-control here" required="required" type="text">
+                                        <input @bind="@user.PhoneNumber" id="phone" name="phone" placeholder="Телефон" class="form-control here" required="required" type="text">
                                     </div>
                                 </div>
 
@@ -65,7 +65,7 @@
                                 <div class="form-group row">
                                     <label for="newpass" class="col-4 col-form-label">Пароль</label>
                                     <div class="col-8">
-                                        <input @bind="@user.Password" id="newpass" name="newpass" placeholder="Новий пароль" class="form-control here" type="text">
+                                        <input @bind="@user.PasswordHash" id="newpass" name="newpass" placeholder="Новий пароль" class="form-control here" type="text">
                                     </div>
                                 </div>
 
@@ -103,8 +103,8 @@
             Name = user.Name,
             Surname = user.Surname,
             Email = user.Email,
-            Password = user.Password,
-            Phone = user.Phone
+            PasswordHash = user.PasswordHash,
+            PhoneNumber = user.PhoneNumber
         });
         if (!result) return false;
         await localStorage.ClearAsync();

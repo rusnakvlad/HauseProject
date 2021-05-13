@@ -11,14 +11,19 @@ using DataAccesLayer.Interfaces;
 using DataAccesLayer.Enteties;
 using BuisnesLogicLayer.Converters;
 using DataAccesLayer.Repositories;
+using AutoMapper;
+
 namespace BuisnesLogicLayer.Services
 {
     public class FavoritesServices : IFavoritesServices
     {
         private IUnitOfWork Database;
-
-        public FavoritesServices(IUnitOfWork unitOfWork) => Database = unitOfWork;
-
+        private readonly IMapper mapper;
+        public FavoritesServices(IUnitOfWork unitOfWork, IMapper mapper)
+        {
+            Database = unitOfWork;
+            this.mapper = mapper;
+        }
         public async Task<IEnumerable<AdShortInfoDTO>> GetAllFavoritesByUserId(string userId)
         {
             var favorites = await Database.FavoriteRepository.GetAllFavoritesByUserId(userId);
@@ -26,19 +31,9 @@ namespace BuisnesLogicLayer.Services
             foreach (var favorite in favorites)
             {
                 var ad = await Database.AdRepository.GetById(favorite.AdID);
-                adShortInfoDTOs.Add(new AdShortInfoDTO()
-                {
-                    Id = ad.ID,
-                    PurchaseOportunity = ad.PurchaseOportunity,
-                    HouseYear = ad.HouseYear,
-                    Balkon = ad.Balkon,
-                    OwnerId = ad.OwnerId,
-                    Price = ad.Price,
-                    HouseType = ad.HouseType,
-                    RoomNumber = ad.RoomNumber,
-                    Status = ad.Status,
-                    images = ConvertToImageListDTO.FromImageList(ad.images)
-                });
+                var mappedAd = mapper.Map<Ad, AdShortInfoDTO>(ad);
+                mappedAd.images = mapper.Map<IEnumerable<Image>, List<ImageEditInfoDTO>>(ad.images);
+                adShortInfoDTOs.Add(mappedAd);
             }
             return adShortInfoDTOs;
         }

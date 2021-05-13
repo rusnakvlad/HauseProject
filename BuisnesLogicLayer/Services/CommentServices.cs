@@ -10,46 +10,38 @@ using DataAccesLayer.Repositories;
 using DataAccesLayer.EF;
 using DataAccesLayer.Interfaces;
 using BuisnesLogicLayer.Converters;
+using AutoMapper;
+using DataAccesLayer.Enteties;
 
 namespace BuisnesLogicLayer.Services
 {
     public class CommentServices : ICommentServices
     {
-        private IUnitOfWork Database;
-        public CommentServices(IUnitOfWork unitOfWork) => Database = unitOfWork;
+        private readonly IUnitOfWork Database;
+        private readonly IMapper mapper;
+        public CommentServices(IUnitOfWork unitOfWork, IMapper mapper)
+        {
+            Database = unitOfWork;
+            this.mapper = mapper;
+        }
         /*--------------------Common Methods from Generic repository--------------------*/
-        public async Task<IEnumerable<CommentCreateDTO>> GetAllComments()
+        public async Task<IEnumerable<CommentInfoAndEditIDTO>> GetAllComments()
         {
             var comments = await Database.CommentRepository.GetAll();
-            List<CommentCreateDTO> commentCreateDTOs = new();
-            foreach (var comment in comments)
-            {
-                commentCreateDTOs.Add(new CommentCreateDTO()
-                {
-                    AdId = comment.AdId,
-                    UserID = comment.UserID,
-                    DateOfComment = comment.DateOfComment,
-                    Text = comment.Text
-                });
-            }
-            return commentCreateDTOs;
+            var mappedComments = mapper.Map<IEnumerable<Comment>, IEnumerable<CommentInfoAndEditIDTO>>(comments);
+            return mappedComments;
         }
 
-        public async Task<CommentCreateDTO> GetCommentById(int id)
+        public async Task<CommentInfoAndEditIDTO> GetCommentById(int id)
         {
             var comment = await Database.CommentRepository.GetById(id);
-            return new CommentCreateDTO
-            {
-                AdId = comment.AdId,
-                UserID = comment.UserID,
-                DateOfComment = comment.DateOfComment,
-                Text = comment.Text
-            };
+            var mappedComment = mapper.Map<Comment, CommentInfoAndEditIDTO>(comment);
+            return mappedComment;
         }
 
         public async Task AddNewComment(CommentCreateDTO commentDTO)
         {
-            await Database.CommentRepository.Add(ConvertToComment.FromCommentDTO(commentDTO));
+            await Database.CommentRepository.Add(mapper.Map<CommentCreateDTO, Comment>(commentDTO));
         }
 
         public async Task DeleteCommentById(int id)
@@ -59,25 +51,15 @@ namespace BuisnesLogicLayer.Services
 
         public async Task UpdateComment(CommentInfoAndEditIDTO commentEditDTO)
         {
-            await Database.CommentRepository.Update(ConvertToComment.FromCommentEditDTO(commentEditDTO));
+            await Database.CommentRepository.Update(mapper.Map<CommentInfoAndEditIDTO, Comment>(commentEditDTO));
         }
 
         /*------------------------------Individual methods------------------------------*/
-        public async Task<IEnumerable<CommentCreateDTO>> GetCommentsByAdId(int adId)
+        public async Task<IEnumerable<CommentInfoAndEditIDTO>> GetCommentsByAdId(int adId)
         {
             var comments = await Database.CommentRepository.GetCommentsByAdId(adId);
-            List<CommentCreateDTO> commentCreateDTOs = new();
-            foreach (var comment in comments)
-            {
-                commentCreateDTOs.Add(new CommentCreateDTO()
-                {
-                    AdId = comment.AdId,
-                    UserID = comment.UserID,
-                    DateOfComment = comment.DateOfComment,
-                    Text = comment.Text
-                });
-            }
-            return commentCreateDTOs;
+            var mappedComments = mapper.Map<IEnumerable<Comment>, IEnumerable<CommentInfoAndEditIDTO>>(comments);
+            return mappedComments;
         }
 
         public async Task RemoveCommentByUserIdAndAdId(string userId, int adId)

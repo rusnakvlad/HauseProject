@@ -6,14 +6,19 @@ using System.Threading.Tasks;
 using BuisnesLogicLayer.DTO;
 using BuisnesLogicLayer.Interfaces;
 using DataAccesLayer.Interfaces;
+using AutoMapper;
 
 namespace BuisnesLogicLayer.Services
 {
     public class ImageServices : IImageServices
     {
-        private IUnitOfWork Database;
-        public ImageServices(IUnitOfWork unitOfWork) => Database = unitOfWork;
-
+        private readonly IUnitOfWork Database;
+        private readonly IMapper mapper;
+        public ImageServices(IUnitOfWork unitOfWork, IMapper mapper)
+        {
+            Database = unitOfWork;
+            this.mapper = mapper;
+        }
         public async Task<IEnumerable<ImageEditInfoDTO>> GetImagesByAdId(int adId)
         {
             List<ImageEditInfoDTO> imageDTOs = new List<ImageEditInfoDTO>();
@@ -21,7 +26,7 @@ namespace BuisnesLogicLayer.Services
 
             foreach (var item in images)
             {
-                imageDTOs.Add(new ImageEditInfoDTO() { ImageFile = item.ImageFile, Id = item.ID, AdId = item.AdID });
+                imageDTOs.Add(new ImageEditInfoDTO() { ImageFile = item.ImageFile, ID = item.ID, AdID = item.AdID });
             }
 
             return imageDTOs;

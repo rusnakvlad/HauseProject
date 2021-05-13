@@ -23,6 +23,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using DataAccesLayer.Enteties;
+using AutoMapper;
+using BuisnesLogicLayer.MappersConfigurations;
 
 namespace HauseAPI
 {
@@ -51,6 +53,7 @@ namespace HauseAPI
 
             services.AddTransient<IUnitOfWork, UnitOfWork>();
 
+
             #region Services
             services.AddTransient<IAdServices, AdServices>();
             services.AddTransient<IUserServices, UserServices>();
@@ -60,10 +63,12 @@ namespace HauseAPI
             services.AddTransient<IImageServices, ImageServices>();
             #endregion
 
+            
+
             services.AddDbContext<AppDBContext>();
 
             services.AddControllers();
-
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.AddIdentity<User, IdentityRole>().AddEntityFrameworkStores<AppDBContext>();
 
             services.AddSwaggerGen(c =>

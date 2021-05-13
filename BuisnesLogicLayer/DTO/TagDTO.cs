@@ -8,9 +8,9 @@ namespace BuisnesLogicLayer.DTO
 {
     public class TagDTO
     {
-        public string _Tag { get; set; }
+        public string Tag_ { get; set; }
 
-        public TagDTO(string tag) => _Tag = tag;
+        public TagDTO(string tag) => Tag_= tag;
         public TagDTO() { }
     }
 }

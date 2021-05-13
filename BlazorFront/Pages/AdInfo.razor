@@ -188,7 +188,7 @@
         ad = await adServices.GetAdById(int.Parse(adId));
         foreach (var item in ad.tags)
         {
-            tags.Add(item._Tag);
+            tags.Add(item.Tag_);
         }
         var format = "image/png";
         foreach (var item in ad.images)

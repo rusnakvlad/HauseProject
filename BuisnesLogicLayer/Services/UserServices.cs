@@ -11,14 +11,19 @@ using DataAccesLayer.Repositories;
 using System.Linq;
 using DataAccesLayer.EF;
 using System.Threading.Tasks;
+using AutoMapper;
 
 namespace BuisnesLogicLayer.Services
 {
     public class UserServices : IUserServices
     {
         private readonly IUnitOfWork Database;
-
-        public UserServices(IUnitOfWork unitOfWork) => Database = unitOfWork;
+        private readonly IMapper mapper;
+        public UserServices(IUnitOfWork unitOfWork, IMapper mapper)
+        {
+            Database = unitOfWork;
+            this.mapper = mapper;
+        }
 
         public async Task<bool> DeleteUserById(string id)
         {
@@ -35,17 +40,12 @@ namespace BuisnesLogicLayer.Services
                 var commentsCount = comments.Where(comment => comment.UserID == user.Id).Count();
                 var ads = await Database.AdRepository.GetAll();
                 var adsCount = ads.Where(ad => ad.OwnerId == user.Id).Count();
-                uesrsProfiles.Add(new UserProfileDTO
-                {
-                    Id = user.Id,
-                    Name = user.Name,
-                    Surname = user.Surname,
-                    Phone = user.PhoneNumber,
-                    Email = user.Email,
-                    AdsAmount = adsCount,
-                    ComentsAmount = commentsCount,
-                    Password = user.PasswordHash,
-                });
+
+                var mappedUser = mapper.Map<User, UserProfileDTO>(user);
+                mappedUser.AdsAmount = adsCount;
+                mappedUser.ComentsAmount = commentsCount;
+
+                uesrsProfiles.Add(mappedUser);
             }
             return uesrsProfiles.ToList();
         }
@@ -57,17 +57,11 @@ namespace BuisnesLogicLayer.Services
             var commentsCount = comments.Where(comment => comment.UserID == user.Id).Count();
             var ads = await Database.AdRepository.GetAll();
             var adsCount = ads.Where(ad => ad.OwnerId == id).Count();
-            return new UserProfileDTO()
-            {
-                Id = user.Id,
-                Name = user.Name,
-                Surname = user.Surname,
-                Phone = user.PhoneNumber,
-                Email = user.Email,
-                AdsAmount = adsCount,
-                ComentsAmount = commentsCount,
-                Password = user.PasswordHash
-            };
+
+            var mappedUser = mapper.Map<User, UserProfileDTO>(user);
+            mappedUser.AdsAmount = adsCount;
+            mappedUser.ComentsAmount = commentsCount;
+            return mappedUser;
         }
 
         public async Task<UserProfileDTO> GetUserProfileByEmail(string email)
@@ -77,31 +71,18 @@ namespace BuisnesLogicLayer.Services
             var commentsCount = comments.Where(comment => comment.UserID == user.Id).Count();
             var ads = await Database.AdRepository.GetAll();
             var adsCount = ads.Where(ad => ad.OwnerId == user.Id).Count();
-            return new UserProfileDTO()
-            {
-                Id = user.Id,
-                Name = user.Name,
-                Surname = user.Surname,
-                Phone = user.PhoneNumber,
-                Email = user.Email,
-                AdsAmount = adsCount,
-                ComentsAmount = commentsCount,
-                Password = user.PasswordHash
-            };
+
+            var mappedUser = mapper.Map<User, UserProfileDTO>(user);
+            mappedUser.AdsAmount = adsCount;
+            mappedUser.ComentsAmount = commentsCount;
+            return mappedUser;
         }
 
         public async Task<UserProfileDTO> LogIn (UserLogInDTO userLogin)
         {
             var user = await Database.UserRepository.LogIn(userLogin.Email, userLogin.Password);
-            return new UserProfileDTO()
-            {
-                Id = user.Id,
-                Name = user.Name,
-                Surname = user.Surname,
-                Phone = user.PhoneNumber,
-                Email = user.Email,
-                Password = user.PasswordHash
-            };
+            var mappedUser = mapper.Map<User, UserProfileDTO>(user);
+            return mappedUser;
         }
 
         public void LogOut()

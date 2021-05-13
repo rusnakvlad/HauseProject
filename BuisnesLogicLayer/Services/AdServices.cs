@@ -11,61 +11,25 @@ using DataAccesLayer.Interfaces;
 using DataAccesLayer.Enteties;
 using BuisnesLogicLayer.Converters;
 using DataAccesLayer.Repositories;
+using AutoMapper;
 
 namespace BuisnesLogicLayer.Services
 {
     public class AdServices : IAdServices
     {
         private readonly IUnitOfWork Database;
-
-        public AdServices(IUnitOfWork unitOfWork) => Database = unitOfWork;
+        private readonly IMapper mapper;
+        public AdServices(IUnitOfWork unitOfWork, IMapper mapper)
+        {
+            Database = unitOfWork;
+            this.mapper = mapper;
+        }
 
         /*--------------------Common Methods from Generic repository--------------------*/
         public async Task<IEnumerable<AdInfoDTO>> GetAllAds()
         {
             var allAds = await Database.AdRepository.GetAll();
-            var adsDTO = new List<AdInfoDTO>();
-            foreach (var ad in allAds)
-            {
-                List<TagDTO> tagsDTOs = new ();
-                List<ImageEditInfoDTO> imageDTOs = new ();
-                // Get Tags
-                foreach (var item in ad.tags)
-                    tagsDTOs.Add(new TagDTO() { _Tag = item.Tag_ });
-
-                // Get Images
-                foreach (var item in ad.images)
-                    imageDTOs.Add(new ImageEditInfoDTO() { ImageFile = item.ImageFile, Id = item.ID, AdId = item.AdID });
-
-                var owenerOfAd = await Database.UserRepository.GetById(ad.OwnerId);
-
-                adsDTO.Add(new AdInfoDTO()
-                {
-                    Id = ad.ID,
-                    OwnerId = ad.OwnerId,
-                    Price = ad.Price,
-                    Region = ad.Region,
-                    District = ad.District,
-                    City = ad.City,
-                    Street = ad.Street,
-                    HouseNumber = ad.HouseNumber,
-                    HouseType = ad.HouseType,
-                    AreaOfHouse = ad.AreaOfHouse,
-                    FloorAmount = ad.FloorAmount,
-                    RoomNumber = ad.RoomNumber,
-                    HouseYear = ad.HouseYear,
-                    Pool = ad.Pool,
-                    Balkon = ad.Balkon,
-                    PurchaseOportunity = ad.PurchaseOportunity,
-                    Status = ad.Status,
-                    Description = ad.Description,
-                    OwnerEmail = owenerOfAd.Email,
-                    OwnerPhone = owenerOfAd.PhoneNumber,
-                    tags = tagsDTOs,
-                    images = imageDTOs
-                });
-            }
-            return adsDTO;
+            return await GetAdDTOs(allAds);
         }
 
         public async Task<AdInfoDTO> GetAdById(int id)
@@ -74,45 +38,27 @@ namespace BuisnesLogicLayer.Services
             var owenerOfAd = await Database.UserRepository.GetById(ad.OwnerId);
             List<TagDTO> tagsDTOs = new List<TagDTO>();
             List<ImageEditInfoDTO> imageDTOs = new List<ImageEditInfoDTO>();
+
             // Get Tags
-            foreach (var item in ad.tags)
-                tagsDTOs.Add(new TagDTO() { _Tag = item.Tag_ });
-            
+            tagsDTOs = mapper.Map<IEnumerable<Tag>, List<TagDTO>>(ad.tags);
             // Get Images
-            foreach (var item in ad.images)
-                imageDTOs.Add(new ImageEditInfoDTO() { ImageFile = item.ImageFile, Id = item.ID, AdId = item.AdID });
+            imageDTOs = mapper.Map<IEnumerable<Image>, List<ImageEditInfoDTO>>(ad.images);
 
+            var mappedAd = mapper.Map<Ad, AdInfoDTO>(ad);
+            mappedAd.OwnerEmail = owenerOfAd.Email;
+            mappedAd.OwnerPhone = owenerOfAd.PhoneNumber;
+            mappedAd.tags = tagsDTOs;
+            mappedAd.images = imageDTOs;
 
-            return new AdInfoDTO()
-            {
-                Id = ad.ID,
-                OwnerId = ad.OwnerId,
-                Price = ad.Price,
-                Region = ad.Region,
-                District = ad.District,
-                City = ad.City,
-                Street = ad.Street,
-                HouseNumber = ad.HouseNumber,
-                HouseType = ad.HouseType,
-                AreaOfHouse = ad.AreaOfHouse,
-                FloorAmount = ad.FloorAmount,
-                RoomNumber = ad.RoomNumber,
-                HouseYear = ad.HouseYear,
-                Pool = ad.Pool,
-                Balkon = ad.Balkon,
-                PurchaseOportunity = ad.PurchaseOportunity,
-                Status = ad.Status,
-                Description = ad.Description,
-                OwnerEmail = owenerOfAd.Email,
-                OwnerPhone = owenerOfAd.PhoneNumber,
-                tags = tagsDTOs,
-                images = imageDTOs
-            };
+            return mappedAd;
         }
 
         public async Task AddNewAd(AdCreateDTO createAdDTO)
         {
-            await Database.AdRepository.Add(ConvertToAd.FromCreateAddInfoDTO(createAdDTO));
+            var mappedAd = mapper.Map<AdCreateDTO, Ad>(createAdDTO);
+            mappedAd.images = mapper.Map<List<ImageCreateDTO>, IEnumerable<Image>>(createAdDTO.images);
+            mappedAd.tags = mapper.Map<List<TagDTO>, IEnumerable<Tag>>(createAdDTO.tags);
+            await Database.AdRepository.Add(mappedAd);
         }
 
         public async Task DeleteAdById(int id)
@@ -122,103 +68,47 @@ namespace BuisnesLogicLayer.Services
 
         public async Task UpdateAd(AdEdit editAdDTO)
         {
-            await Database.AdRepository.Update(ConvertToAd.FromEditAddInfoDTO(editAdDTO));
+            var mappedAd = mapper.Map<AdEdit, Ad>(editAdDTO);
+            await Database.AdRepository.Update(mappedAd);
         }
 
         public async Task<IEnumerable<AdInfoDTO>> GetAdsByUserId(string userId)
         {
             var allAds = await Database.AdRepository.GetAdsByUserId(userId);
-            var adsDTO = new List<AdInfoDTO>();
-            foreach (var ad in allAds)
-            {
-                List<TagDTO> tagsDTOs = new();
-                List<ImageEditInfoDTO> imageDTOs = new();
-                // Get Tags
-                foreach (var item in ad.tags)
-                    tagsDTOs.Add(new TagDTO() { _Tag = item.Tag_ });
-
-                // Get Images
-                foreach (var item in ad.images)
-                    imageDTOs.Add(new ImageEditInfoDTO() { ImageFile = item.ImageFile, Id = item.ID, AdId = item.AdID });
-
-                var owenerOfAd = await Database.UserRepository.GetById(ad.OwnerId);
-
-                adsDTO.Add(new AdInfoDTO()
-                {
-                    Id = ad.ID,
-                    OwnerId = ad.OwnerId,
-                    Price = ad.Price,
-                    Region = ad.Region,
-                    District = ad.District,
-                    City = ad.City,
-                    Street = ad.Street,
-                    HouseNumber = ad.HouseNumber,
-                    HouseType = ad.HouseType,
-                    AreaOfHouse = ad.AreaOfHouse,
-                    FloorAmount = ad.FloorAmount,
-                    RoomNumber = ad.RoomNumber,
-                    HouseYear = ad.HouseYear,
-                    Pool = ad.Pool,
-                    Balkon = ad.Balkon,
-                    PurchaseOportunity = ad.PurchaseOportunity,
-                    Status = ad.Status,
-                    Description = ad.Description,
-                    OwnerEmail = owenerOfAd.Email,
-                    OwnerPhone = owenerOfAd.PhoneNumber,
-                    tags = tagsDTOs,
-                    images = imageDTOs
-                });
-            }
-            return adsDTO;
+            return await GetAdDTOs(allAds);
         }
 
         public async Task<IEnumerable<AdInfoDTO>> GetAdsByOptions(AdToCompare adToCompare)
         {
             var allAds = await Database.AdRepository.GetAdsByOptions(adToCompare);
+            return await GetAdDTOs(allAds);
+        }
+
+        /*------------------------------Individual methods------------------------------*/
+        public async Task<List<AdInfoDTO>> GetAdDTOs(IEnumerable<Ad> allAds)
+        {
             var adsDTO = new List<AdInfoDTO>();
             foreach (var ad in allAds)
             {
                 List<TagDTO> tagsDTOs = new();
                 List<ImageEditInfoDTO> imageDTOs = new();
-                // Get Tags
-                foreach (var item in ad.tags)
-                    tagsDTOs.Add(new TagDTO() { _Tag = item.Tag_ });
 
+                // Get Tags
+                tagsDTOs = mapper.Map<IEnumerable<Tag>, List<TagDTO>>(ad.tags);
                 // Get Images
-                foreach (var item in ad.images)
-                    imageDTOs.Add(new ImageEditInfoDTO() { ImageFile = item.ImageFile, Id = item.ID, AdId = item.AdID });
+                imageDTOs = mapper.Map<IEnumerable<Image>, List<ImageEditInfoDTO>>(ad.images);
 
                 var owenerOfAd = await Database.UserRepository.GetById(ad.OwnerId);
 
-                adsDTO.Add(new AdInfoDTO()
-                {
-                    Id = ad.ID,
-                    OwnerId = ad.OwnerId,
-                    Price = ad.Price,
-                    Region = ad.Region,
-                    District = ad.District,
-                    City = ad.City,
-                    Street = ad.Street,
-                    HouseNumber = ad.HouseNumber,
-                    HouseType = ad.HouseType,
-                    AreaOfHouse = ad.AreaOfHouse,
-                    FloorAmount = ad.FloorAmount,
-                    RoomNumber = ad.RoomNumber,
-                    HouseYear = ad.HouseYear,
-                    Pool = ad.Pool,
-                    Balkon = ad.Balkon,
-                    PurchaseOportunity = ad.PurchaseOportunity,
-                    Status = ad.Status,
-                    Description = ad.Description,
-                    OwnerEmail = owenerOfAd.Email,
-                    OwnerPhone = owenerOfAd.PhoneNumber,
-                    tags = tagsDTOs,
-                    images = imageDTOs
-                });
+                var mappedAd = mapper.Map<Ad, AdInfoDTO>(ad);
+                mappedAd.OwnerEmail = owenerOfAd.Email;
+                mappedAd.OwnerPhone = owenerOfAd.PhoneNumber;
+                mappedAd.tags = tagsDTOs;
+                mappedAd.images = imageDTOs;
+                adsDTO.Add(mappedAd);
+
             }
             return adsDTO;
         }
-
-        /*------------------------------Individual methods------------------------------*/
     }
 }

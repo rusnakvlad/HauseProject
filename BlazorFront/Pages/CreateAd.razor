@@ -203,7 +203,7 @@
         ad.images = tempImgList;
         foreach (var tag in tagList)
         {
-            tempTagList.Add(new TagDTO() { _Tag = tag });
+            tempTagList.Add(new TagDTO() { Tag_ = tag });
         }
         ad.tags = tempTagList;
         var owner = await localStorage.GetItemAsync<UserProfileDTO>("savedUser");

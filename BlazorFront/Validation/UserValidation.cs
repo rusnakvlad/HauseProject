@@ -15,13 +15,13 @@ namespace BlazorFront.Validation
                 .NotEmpty().WithMessage("Поле не має бути пустим")
                 .Matches(@"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$").WithMessage("Поле Почта заповнено неправильно");
 
-            RuleFor(u => u.Password)
+            RuleFor(u => u.PasswordHash)
                 .NotEmpty().WithMessage("Поле не має бути пустим")
                 .Matches(@"^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,30}$").WithMessage("Пароль не надійний");
 
             RuleFor(u => u.PasswordConfirmation)
                 .NotEmpty().WithMessage("Поле не має бути пустим")
-                .Equal(u => u.Password).WithMessage("Паролі не співпадають");
+                .Equal(u => u.PasswordHash).WithMessage("Паролі не співпадають");
 
             RuleFor(u => u.Name)
                 .NotEmpty().WithMessage("Поле не має бути пустим")
@@ -31,7 +31,7 @@ namespace BlazorFront.Validation
                 .NotEmpty().WithMessage("Поле не має бути пустим")
                 .Matches(@"^\S+").WithMessage("Поле Прізвище заповнено неправильно");
 
-            RuleFor(u => u.Phone)
+            RuleFor(u => u.PhoneNumber)
                 .NotEmpty().WithMessage("Поле не має бути пустим")
                 .Matches(@"^\d{9}").WithMessage("Поле Телефон заповнено неправильно");
         }

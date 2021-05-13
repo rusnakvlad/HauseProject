@@ -35,14 +35,14 @@
 
                     <div class="form-input">
                         <i class="fa fa-phone"></i> +380
-                        <input @bind="@user.Phone" type="text" class="form-control" placeholder="">
-                        <ValidationMessage For="@(() => user.Phone)" />
+                        <input @bind="@user.PhoneNumber" type="text" class="form-control" placeholder="">
+                        <ValidationMessage For="@(() => user.PhoneNumber)" />
                     </div>
 
                     <div class="form-input">
                         <i class="fa fa-lock"></i> <span style="font-size:8pt;">Довжина пароля не меньше 5 символів і хоча б одна велика літера одна цифра та знак</span>
-                        <input asp-for="Password" @bind="@user.Password" type="text" class="form-control" placeholder="Пароль">
-                        <ValidationMessage For="(() => user.Password)" />
+                        <input asp-for="Password" @bind="@user.PasswordHash" type="text" class="form-control" placeholder="Пароль">
+                        <ValidationMessage For="(() => user.PasswordHash)" />
                     </div>
 
                     <div class="form-input">

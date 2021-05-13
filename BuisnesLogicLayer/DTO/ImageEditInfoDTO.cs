@@ -8,8 +8,8 @@ namespace BuisnesLogicLayer.DTO
 {
     public class ImageEditInfoDTO
     {
-        public int Id { get; set; }
-        public int AdId { get; set; }
+        public int ID { get; set; }
+        public int AdID { get; set; }
         public byte[] ImageFile { get; set; }
     }
 }

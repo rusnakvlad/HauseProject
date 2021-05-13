@@ -14,9 +14,9 @@ namespace BuisnesLogicLayer.Converters
             {
                 Name = DTO.Name,
                 Surname = DTO.Surname,
-                PhoneNumber = DTO.Phone,
+                PhoneNumber = DTO.PhoneNumber,
                 Email = DTO.Email,
-                PasswordHash = DTO.Password,
+                PasswordHash = DTO.PasswordHash,
                 PhoneNumberConfirmed = false,
                 EmailConfirmed = true,
                 TwoFactorEnabled = true,
@@ -34,9 +34,9 @@ namespace BuisnesLogicLayer.Converters
                 Id = DTO.Id,
                 Name = DTO.Name,
                 Surname = DTO.Surname,
-                PhoneNumber = DTO.Phone,
+                PhoneNumber = DTO.PhoneNumber,
                 Email = DTO.Email,
-                PasswordHash = DTO.Password
+                PasswordHash = DTO.PasswordHash
             };
         }
     }

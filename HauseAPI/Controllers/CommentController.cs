@@ -18,20 +18,20 @@ namespace HauseAPI.Controllers
         public CommentController(ICommentServices commentServices) => this.commentServices = commentServices;
         // Get all comments
         [HttpGet]
-        public async Task<IEnumerable<CommentCreateDTO>> GetAllComments()
+        public async Task<IEnumerable<CommentInfoAndEditIDTO>> GetAllComments()
         {
             return await commentServices.GetAllComments();
         }
 
         [HttpGet("/Comment/{id}")]
-        public async Task<CommentCreateDTO> GetCommentById(int id)
+        public async Task<CommentInfoAndEditIDTO> GetCommentById(int id)
         {
             return await commentServices.GetCommentById(id);
         }
 
         // Get comments by adId
         [HttpGet("/Comment/ad/{adId}")]
-        public async Task<IEnumerable<CommentCreateDTO>> GetCommentsByAdId(int adId)
+        public async Task<IEnumerable<CommentInfoAndEditIDTO>> GetCommentsByAdId(int adId)
         {
            return await commentServices.GetCommentsByAdId(adId);
         }

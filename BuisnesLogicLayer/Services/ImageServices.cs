@@ -19,6 +19,13 @@ namespace BuisnesLogicLayer.Services
             Database = unitOfWork;
             this.mapper = mapper;
         }
+
+        public async Task DeleteImageById(int id)
+        {
+            await Database.ImageRepository.RemoveImageById(id);
+            //await Database.ImageRepository.DeleteById(id);
+        }
+
         public async Task<IEnumerable<ImageEditInfoDTO>> GetImagesByAdId(int adId)
         {
             List<ImageEditInfoDTO> imageDTOs = new List<ImageEditInfoDTO>();

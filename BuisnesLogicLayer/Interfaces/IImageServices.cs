@@ -10,5 +10,6 @@ namespace BuisnesLogicLayer.Interfaces
     public interface IImageServices
     {
         Task<IEnumerable<ImageEditInfoDTO>> GetImagesByAdId(int adId);
+        Task DeleteImageById(int id);
     }
 }

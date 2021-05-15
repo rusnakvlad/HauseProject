@@ -7,18 +7,47 @@ using DataAccesLayer.EF;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
+using Dapper;
+using System.Data.SqlClient;
 
 namespace DataAccesLayer.Repositories
 {
     public class AdRepository : IAdRepository
     {
+        public readonly string connectionString = "Server = (localdb)\\mssqllocaldb; Database = UAHP; Trusted_Connection = True; MultipleActiveResultSets=true";
+
         private AppDBContext context;
         public AdRepository(AppDBContext context) => this.context = context;
 
         public async Task Add(Ad entity)
         {
+            List<Tag> tags = entity.tags.GroupBy(t => t.Tag_).Select(t => t.First()).ToList();
+            entity.tags = null;
             await context.Ads.AddAsync(entity);
             await context.SaveChangesAsync();
+            int adId = entity.ID;
+
+            foreach (var tag in tags)
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    await connection.OpenAsync();
+                    var allTags = await context.Tags.ToListAsync();
+                    if (allTags.All(localtag => localtag.Tag_ != tag.Tag_))
+                    {
+                        connection.Query($"insert into Tags (Tag_) values ('{tag.Tag_}')");
+                    }
+                }
+            }
+
+            foreach (var tag in tags)
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    await connection.OpenAsync();
+                        connection.Query($"insert into AdTag(adsID,tagsTag_) values ({adId},'{tag.Tag_}')");
+                }
+            }
         }
 
         public async Task Delete(Ad entityToDelete)

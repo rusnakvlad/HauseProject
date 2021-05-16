@@ -29,6 +29,11 @@ namespace BuisnesLogicLayer.Services
         {
             var comments = await Database.CommentRepository.GetAll();
             var mappedComments = mapper.Map<IEnumerable<Comment>, IEnumerable<CommentInfoAndEditIDTO>>(comments);
+            foreach (var comment in mappedComments)
+            {
+                var user = await Database.UserRepository.GetById(comment.UserID);
+                comment.UserNameSurname = user.Name + " " + user.Surname;
+            }
             return mappedComments;
         }
 
@@ -36,6 +41,8 @@ namespace BuisnesLogicLayer.Services
         {
             var comment = await Database.CommentRepository.GetById(id);
             var mappedComment = mapper.Map<Comment, CommentInfoAndEditIDTO>(comment);
+            var user = await Database.UserRepository.GetById(comment.UserID);
+            mappedComment.UserNameSurname = user.Name + " " + user.Surname;
             return mappedComment;
         }
 
@@ -59,6 +66,11 @@ namespace BuisnesLogicLayer.Services
         {
             var comments = await Database.CommentRepository.GetCommentsByAdId(adId);
             var mappedComments = mapper.Map<IEnumerable<Comment>, IEnumerable<CommentInfoAndEditIDTO>>(comments);
+            foreach (var comment in mappedComments)
+            {
+                var user = await Database.UserRepository.GetById(comment.UserID);
+                comment.UserNameSurname = user.Name + " " + user.Surname;
+            }
             return mappedComments;
         }
 

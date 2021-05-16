@@ -177,14 +177,19 @@
 
 </main>
 
+<Comments adId="@int.Parse(adId)" userId="@userId"></Comments>
+
 @code {
     [Parameter] public string adId { get; set; }
+    public string userId = "";
     AdInfoDTO ad = new AdInfoDTO();
     List<string> tags = new List<string>();
     List<string> imagesUrls = new();
 
     protected override async Task OnInitializedAsync()
     {
+        var user = await localStorage.GetItemAsync<UserProfileDTO>("savedUser");
+        userId = user.Id;
         ad = await adServices.GetAdById(int.Parse(adId));
         foreach (var item in ad.tags)
         {

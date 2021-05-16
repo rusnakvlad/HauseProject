@@ -13,5 +13,6 @@ namespace BuisnesLogicLayer.DTO
         public int AdId { get; set; }
         public DateTime DateOfComment { get; set; }
         public string Text { get; set; }
+        public string UserNameSurname { get; set; }
     }
 }

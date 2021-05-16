@@ -53,6 +53,10 @@ namespace BlazorFront
             services.AddHttpClient<IForCompareServices, ForCompareServices>(client => {
                 client.BaseAddress = new Uri("https://localhost:44365/ForCompare/");
             });
+
+            services.AddHttpClient<ICommentServices, CommentServices>(client => {
+                client.BaseAddress = new Uri("https://localhost:44365/Comment/");
+            });
             #endregion
 
             #region ValidationServices

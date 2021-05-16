@@ -7,9 +7,9 @@ using BuisnesLogicLayer.DTO;
 
 namespace BlazorFront.Validation
 {
-    public class UserValidation : AbstractValidator<UserRegisterDTO>
+    public class UserValidator : AbstractValidator<UserRegisterDTO>
     {
-        public UserValidation()
+        public UserValidator()
         {
             RuleFor(u => u.Email)
                 .NotEmpty().WithMessage("Поле не має бути пустим")

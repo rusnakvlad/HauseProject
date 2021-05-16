@@ -33,6 +33,12 @@ namespace BlazorFront
             services.AddRazorPages();
             services.AddServerSideBlazor();
             services.AddBlazoredLocalStorage();
+
+            #region ValidationServices
+            services.AddScoped<UserValidator>();
+            services.AddScoped<AdValidator>();
+            #endregion
+
             #region HttpClients
             services.AddHttpClient<IUserServices, UserServices>(client => {
                 client.BaseAddress = new Uri("https://localhost:44365/User/"); 
@@ -59,9 +65,6 @@ namespace BlazorFront
             });
             #endregion
 
-            #region ValidationServices
-            services.AddSingleton<UserValidation>();
-            #endregion
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

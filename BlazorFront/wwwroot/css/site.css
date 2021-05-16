@@ -1,10 +1,17 @@
-.tagIngerval{
-    margin-left:3px;
+.novalidtxt 
+{
+    color: red;
 }
+
+.tagIngerval {
+    margin-left: 3px;
+}
+
 .hrefstyle{
     text-decoration:none;
     color:white;
 }
+
 .txtFromMain {
     font-family: Arial;
     font-style: normal;
@@ -205,7 +212,6 @@
     font-weight: bold;
     font-size: 18px;
 }
-
 
 #mainContainer {
     /*display: grid;

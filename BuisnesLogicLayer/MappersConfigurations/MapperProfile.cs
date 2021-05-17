@@ -21,7 +21,8 @@ namespace BuisnesLogicLayer.MappersConfigurations
             //========> Ad Mappers
             CreateMap<Ad, AdInfoDTO>().ForMember(dest => dest.images, act => act.Ignore()).ForMember(dest => dest.tags, act => act.Ignore());
             CreateMap<AdCreateDTO, Ad>().ForMember(dest => dest.images, act => act.Ignore()).ForMember(dest => dest.tags, act => act.Ignore());
-            CreateMap<AdEdit, Ad>().ForMember(dest => dest.images, act => act.Ignore());
+            CreateMap<AdEditDTO, Ad>();
+            CreateMap<Ad, AdEditDTO>();
 
             //========> Tag Mappers
             CreateMap<Tag, TagDTO>();

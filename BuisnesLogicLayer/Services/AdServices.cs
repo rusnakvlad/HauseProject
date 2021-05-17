@@ -66,9 +66,9 @@ namespace BuisnesLogicLayer.Services
             await Database.AdRepository.DeleteById(id);
         }
 
-        public async Task UpdateAd(AdEdit editAdDTO)
+        public async Task UpdateAd(AdEditDTO editAdDTO)
         {
-            var mappedAd = mapper.Map<AdEdit, Ad>(editAdDTO);
+            var mappedAd = mapper.Map<AdEditDTO, Ad>(editAdDTO);
             await Database.AdRepository.Update(mappedAd);
         }
 
@@ -109,6 +109,12 @@ namespace BuisnesLogicLayer.Services
 
             }
             return adsDTO;
+        }
+
+        public async Task<AdEditDTO> GetAdToEdit(int id)
+        {
+            var ad = await Database.AdRepository.GetById(id);
+            return mapper.Map<Ad, AdEditDTO>(ad);
         }
     }
 }

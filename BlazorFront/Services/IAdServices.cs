@@ -15,9 +15,11 @@ namespace BlazorFront.Services
 
         public Task AddNewAd(AdCreateDTO createAdDTO);
 
+        public Task<AdEditDTO> GetAdForEdit(int id);
+
         public Task DeleteAdById(int id);
 
-        public Task UpdateAd(AdEdit editAdDTO);
+        public Task UpdateAd(AdEditDTO editAdDTO);
 
         public Task<IEnumerable<AdInfoDTO>> GetAdsByUserId(string userId);
 

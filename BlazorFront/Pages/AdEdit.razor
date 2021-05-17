@@ -1,4 +1,4 @@
-﻿@page "/CreateAd"
+﻿@page "/AdEdit/{adId}"
 @using BuisnesLogicLayer.DTO
 @using BlazorFront.Services
 @inject NavigationManager NavigationManager
@@ -9,21 +9,6 @@
 
     <EditForm Model="@ad" OnValidSubmit="SubmitValidForm">
         <FluentValidationValidator />
-        <div id="container-1" class="d-flex justify-content-between">
-
-            <div id="boxToAddPhoto" class="d-flex justify-content-center">
-                <InputFile OnChange="OnInputFileChange" multiple style="margin-top:100px; margin-bottom:100px;" class="btn btn-light" />
-            </div>
-
-            <div id="boxAddedPhoto">
-                @foreach (var imageDataUrl in imageDataUrls)
-                {
-                    <div class="boxesAddedPhoto"> <img src="@imageDataUrl" style="width:80%" /></div>
-                }
-
-            </div>
-
-        </div>
 
         <div id="container-2" class="d-flex justify-content-between" style="background-color: #d1c52200;margin-top:50px;">
 
@@ -188,110 +173,32 @@
             <!-------------------------------------------->
             <hr style="height:1px;background-color:white; width: 100%;">
             <!-------------------------------------------->
-            <div class="d-flex justify-content-start">
-                <div class="textParam">Тег:</div>
-                <div class="textParam" style="margin-left: 20px;margin-right: 5px;color: rgb(194, 194, 194);">#</div>
-                <div class="paramOfAd" style="margin-left: 0px;">
-                    <input @bind="tag" type="text" class="form-control" placeholder="">
-                </div>
-                <div @onclick="AddTagToAd" class="btn btn-success" style="margin-left: 5px;"><b>+</b></div>
-            </div>
-            <div class="d-flex justify-content-start" style="color: rgb(0, 184, 190);flex-wrap:wrap;">
-                @foreach (var tag in tagList)
-                {
-                    if (tag.Length != 0)
-                    {
-                    <p class="tagIngerval">#@tag</p>
-                    }
-                }
-            </div>
+
             <div class="textParam">Опис</div>
             <textarea @bind="ad.Description" class="form-control" id="OutputText" rows="5"></textarea>
         </div>
         <div class="d-flex justify-content-center">
-            <button type="submit" class="btn btn-success" style="margin-top: 10px;">Опублікувати</button>
+            <button type="submit" class="btn btn-success" style="margin-top: 10px;">Редагувати</button>
         </div>
     </EditForm>
-</main> 
+</main>
 @code {
 
-        AdCreateDTO ad = new AdCreateDTO();
-        string tag;
-        List<string> tagList = new();
-        List<byte[]> images = new();
-    private RenderFragment DynamicRenderedTags;
+        [Parameter] public string adId { get; set; }
+        AdEditDTO ad = new AdEditDTO();
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
-        this.ad.HouseType = "Дім";
+        ad = await adServices.GetAdForEdit(int.Parse(adId));
     }
-    async Task AddAd()
+    async Task UpdateAd()
     {
-
-        List<ImageCreateDTO> tempImgList = new();
-        List<TagDTO> tempTagList = new();
-        foreach (var img in images)
-        {
-            tempImgList.Add(new ImageCreateDTO() { ImageFile = img });
-        }
-        ad.images = tempImgList;
-        foreach (var tag in tagList)
-        {
-            tempTagList.Add(new TagDTO() { Tag_ = tag });
-        }
-        ad.tags = tempTagList;
-        var owner = await localStorage.GetItemAsync<UserProfileDTO>("savedUser");
-        ad.OwnerId = owner.Id;
-        await adServices.AddNewAd(ad);
+        await adServices.UpdateAd(ad);
         NavigationManager.NavigateTo($"MyAds/{ad.OwnerId}");
-    }
-
-
-    /*================ Image Methods ================*/
-
-    IList<string> imageDataUrls = new List<string>();
-
-    async Task OnInputFileChange(InputFileChangeEventArgs e)
-    {
-        var imageFiles = e.GetMultipleFiles();
-        var format = "image/png";
-        foreach (var imageFile in imageFiles)
-        {
-            var resizedImageFile = await imageFile.RequestImageFileAsync(format, 500, 500);
-            byte[] buffer = new byte[resizedImageFile.Size];
-            images.Add(buffer);
-            await resizedImageFile.OpenReadStream().ReadAsync(buffer);
-            var imageDataUrl = $"data:{format};base64,{Convert.ToBase64String(buffer)}";
-            imageDataUrls.Add(imageDataUrl);
-        }
-    }
-
-    /*================ Tags Methods ================*/
-    void AddTagToAd()
-    {
-        tagList.Add(tag);
-        //RenderTags();
-    }
-
-    RenderFragment CreateRenderedTags() => builder =>
-    {
-
-        foreach (var tag in tagList)
-        {
-            builder.OpenElement(1, "p");
-            builder.AddAttribute(1, "class", "tagIngerval");
-            builder.AddContent(1, $"#{tag}");
-            builder.CloseElement();
-        }
-    };
-
-    void RenderTags()
-    {
-        DynamicRenderedTags = CreateRenderedTags();
     }
 
     async Task SubmitValidForm()
     {
-        await this.AddAd();
+        await this.UpdateAd();
     }
 }

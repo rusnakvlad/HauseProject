@@ -15,11 +15,13 @@ namespace BuisnesLogicLayer.Interfaces
 
         public Task<AdInfoDTO> GetAdById(int id);
 
+        public Task<AdEditDTO> GetAdToEdit(int id);
+
         public Task AddNewAd(AdCreateDTO createAdDTO);
 
         public Task DeleteAdById(int id);
 
-        public Task UpdateAd(AdEdit editAdDTO);
+        public Task UpdateAd(AdEditDTO editAdDTO);
 
         public Task<IEnumerable<AdInfoDTO>> GetAdsByUserId(string userId);
 

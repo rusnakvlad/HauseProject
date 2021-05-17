@@ -18,10 +18,15 @@
 
             <div class="primInfo">
                 <div class="d-flex justify-content-between">
-                    <div class="primInfoTxtPrice">@ad.Price</div>
+                    <div class="primInfoTxtPrice">@ad.Price грн</div>
                     <div class="d-flex justify-content-end" style="margin-top: 5px;">
-                        <img src="@favIconSrc" @onclick="ChangeFav" style="display: none; width: 30px; height: 30px; cursor: pointer; margin-right: 10px; display: none;">
-                        <img src="@compareIconSrc" @onclick="ChangeCompare" style="display: none; width: 30px; height: 30px; cursor: pointer">
+                        @if (ad.OwnerId == userId)
+                        {
+                            <NavLink href="@goEditAdPageLink">
+                                <img src="edit.png" style="width: 30px; height: 30px; cursor: pointer; margin-right: 10px;">
+                            </NavLink>
+                            <img src="delete.png" @onclick="(() => DeleteAd(ad.Id))" style="width: 30px; height: 30px; cursor: pointer; margin-right: 10px;">
+                        }
                     </div>
                 </div>
             </div>
@@ -66,6 +71,16 @@
                     <div class="textParamAI">Місто:</div>
                     <div class="paramOfAd" style="margin-left: 20px;"><div class="adInfoTxt">@ad.City</div></div>
                 </div>
+                <br>
+                <div class="d-flex justify-content-between">
+                    <div class="textParamAI">Вулиця:</div>
+                    <div class="paramOfAd" style="margin-left: 20px;"><div class="adInfoTxt">@ad.Street</div></div>
+                </div>
+                <br>
+                <div class="d-flex justify-content-between">
+                    <div class="textParamAI">Номер Будинку:</div>
+                    <div class="paramOfAd" style="margin-left: 20px;"><div class="adInfoTxt">@ad.HouseNumber</div></div>
+                </div>
                 <!-------------------------------------------->
                 <hr style="height:1px;background-color:white; width: 100%;">
                 <!-------------------------------------------->
@@ -73,13 +88,7 @@
                     <div class="textParamAI">Площа:</div>
                     <div class="paramOfAd" style="margin-left: 20px;"><div class="adInfoTxt">@ad.AreaOfHouse квм</div></div>
                 </div>
-                <!-------------------------------------------->
-                <hr style="height:1px;background-color:white; width: 100%;">
-                <!-------------------------------------------->
-                <div class="d-flex justify-content-between">
-                    <div class="textParamAI">Кількість поверхів:</div>
-                    <div class="paramOfAd" style="margin-left: 20px;"><div class="adInfoTxt">@ad.FloorAmount</div></div>
-                </div>
+
             </div>
         </div>
 
@@ -88,7 +97,14 @@
         <div id="contParams2" style="background-color: rgba(0, 255, 255, 0); width: 400px;height: 400px;">
 
             <div class="d-grid">
+                <div class="d-flex justify-content-between">
+                    <div class="textParamAI">Кількість поверхів:</div>
+                    <div class="paramOfAd" style="margin-left: 20px;"><div class="adInfoTxt">@ad.FloorAmount</div></div>
+                </div>
 
+                <!-------------------------------------------->
+                <hr style="height:1px;background-color:white; width: 100%;">
+                <!-------------------------------------------->
                 <div class="d-flex justify-content-between">
                     <div class="textParamAI">Кількість кімнат:</div>
                     <div class="paramOfAd" style="margin-left: 20px;"><div class="adInfoTxt">@ad.RoomNumber</div></div>
@@ -148,14 +164,12 @@
                         <div class="paramOfAd" style="margin-left: 20px;"><div class="adInfoTxt">Оренда</div></div>
                     }
                 </div>
-                <!-------------------------------------------->
-                <hr style="height:1px;background-color:white; width: 100%;">
-                <!-------------------------------------------->
 
             </div>
         </div>
 
     </div>
+    <br /><br />
     <!-------------------------------------------->
     <hr style="height:1px;background-color:white; width: 100%;">
     <!-------------------------------------------->
@@ -187,11 +201,13 @@
     List<string> tags = new List<string>();
     List<string> imagesUrls = new();
 
+    public string goEditAdPageLink = "";
     protected override async Task OnInitializedAsync()
     {
         var user = await localStorage.GetItemAsync<UserProfileDTO>("savedUser");
         userId = user.Id;
         ad = await adServices.GetAdById(int.Parse(adId));
+        goEditAdPageLink = $"/AdEdit/{adId}";
         foreach (var item in ad.tags)
         {
             tags.Add(item.Tag_);
@@ -201,6 +217,8 @@
         {
             imagesUrls.Add($"data:{format};base64,{Convert.ToBase64String(item.ImageFile)}");
         }
+
+
     }
 
     void OpenImagesWindow()
@@ -208,12 +226,9 @@
         NavigationManager.NavigateTo($"/AdsImagesView/{ad.Id}");
     }
 
-    /*========================== Set/Unset favorite/compare ==========================*/
-
-    string favIconSrc = "star1.png";
-    string compareIconSrc = "compare1.png";
-
-    void ChangeFav() => favIconSrc = favIconSrc == "star1.png" ? "star2.png" : "star1.png";
-
-    void ChangeCompare() => compareIconSrc = compareIconSrc == "compare1.png" ? "compare2.png" : "compare1.png";
+    public async Task DeleteAd(int adId)
+    {
+        await adServices.DeleteAdById(adId);
+        NavigationManager.NavigateTo($"MyAds/{ad.OwnerId}");
+    }
 }

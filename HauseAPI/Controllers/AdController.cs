@@ -62,9 +62,14 @@ namespace HauseAPI.Controllers
 
         // edit ad by id
         [HttpPut]
-        public async Task EditAd([FromBody] AdEdit editAdDTO)
+        public async Task EditAd([FromBody] AdEditDTO editAdDTO)
         {
             await adServices.UpdateAd(editAdDTO);
+        }
+        [HttpGet("/Ad/GetByIdToEdit/{id}")]
+        public async Task<AdEditDTO> GetAdToEdit(int id)
+        {
+            return await adServices.GetAdToEdit(id);
         }
     }
 }

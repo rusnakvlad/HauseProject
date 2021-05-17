@@ -7,7 +7,7 @@ using DataAccesLayer.Enteties;
 
 namespace BuisnesLogicLayer.DTO
 {
-    public class AdEdit
+    public class AdEditDTO
     {
         public int ID { get; set; }
         public string OwnerId { get; set; }
@@ -27,6 +27,5 @@ namespace BuisnesLogicLayer.DTO
         public bool PurchaseOportunity { get; set; }
         public bool Status { get; set; }
         public string Description { get; set; }
-        public List<ImageEditInfoDTO> images { get; set; }
     }
 }

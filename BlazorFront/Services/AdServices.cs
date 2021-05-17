@@ -33,9 +33,9 @@ namespace BlazorFront.Services
             //var returnedUser = JsonConvert.DeserializeObject<bool>(responseBody);
         }
 
-        public Task DeleteAdById(int id)
+        public async Task DeleteAdById(int id)
         {
-            throw new NotImplementedException();
+            await httpClient.SendAsync(new HttpRequestMessage(HttpMethod.Delete, $"{id}"));
         }
 
         public async Task<AdInfoDTO> GetAdById(int id)
@@ -53,9 +53,18 @@ namespace BlazorFront.Services
             return await httpClient.GetJsonAsync<IEnumerable<AdInfoDTO>>("GetAll");
         }
 
-        public Task UpdateAd(AdEdit editAdDTO)
+        public async Task UpdateAd(AdEditDTO editAdDTO)
         {
-            throw new NotImplementedException();
+            string serializedUser = JsonConvert.SerializeObject(editAdDTO);
+            var requestMessage = new HttpRequestMessage(HttpMethod.Put, "");
+            requestMessage.Content = new StringContent(serializedUser);
+            requestMessage.Content.Headers.ContentType
+                = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
+            var response = await httpClient.SendAsync(requestMessage);
+            var responseStatusCode = response.StatusCode;
+            var responseBody = await response.Content.ReadAsStringAsync();
+
+            var returnedUser = JsonConvert.DeserializeObject<UserRegisterDTO>(responseBody);
         }
 
         public async Task<IEnumerable<AdInfoDTO>> GetAdsByOptions(AdToCompare adToCompare)
@@ -72,6 +81,11 @@ namespace BlazorFront.Services
             var returnedUser = JsonConvert.DeserializeObject<IEnumerable<AdInfoDTO>>(responseBody);
 
             return returnedUser;
+        }
+
+        public async Task<AdEditDTO> GetAdForEdit(int id)
+        {
+            return await httpClient.GetJsonAsync<AdEditDTO>($"GetByIdToEdit/{id}");
         }
     }
 }

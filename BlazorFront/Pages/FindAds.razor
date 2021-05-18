@@ -2,6 +2,7 @@
 @using BlazorFront.Services
 @using BuisnesLogicLayer.DTO
 @using DataAccesLayer.Enteties
+@using System.Linq
 @inject IAdServices adServices
 @inject IUserServices userServices
 @inject IFavoritesServices favoriteServices
@@ -10,34 +11,34 @@
 @inject Blazored.LocalStorage.ILocalStorageService localStorage
 <main id="mainContainerFA">
     <div id="ads">
-        @foreach (var ad in ads)
+        @foreach (var ad in ads.Select((value, index) => new { value, index }))
         {
             <div class="ad" style="border: rgb(104, 104, 104) 3px solid;">
                 <div id="forImg" class="d-flex justify-content-center" style="margin: 0px 0px 0px 0px; border-right:rgb(104, 104, 104) 3px solid;">
-                    <img class="imgFromAd" src="data:image/png;base64, @(Convert.ToBase64String(ad.images.FirstOrDefault().ImageFile))" width="100%" height="100%">
+                    <img class="imgFromAd" src="data:image/png;base64, @(Convert.ToBase64String(ad.value.images.FirstOrDefault().ImageFile))" width="100%" height="100%">
                 </div>
 
                 <div class="favInfo">
                     <div class="d-flex justify-content-end" style="border-bottom: #1C6EA4 1px solid;">          
-                        <img @bind-src="@IsOrNotFavorites[iterator].src" @bind-src:event="onchange" @onclick="() => ChangeFavState(userId, ad.Id)" class="favicons">            
-                        <img @bind-src="@IsOrNotCompares[iterator].src" @bind-src:event="onchange" @onclick="() => ChangeCompareState(userId, ad.Id)" class="favicons">
+                        <img @bind-src="@IsOrNotFavorites[ad.index].src" @bind-src:event="onchange" @onclick="() => ChangeFavState(userId, ad.value.Id)" class="favicons">            
+                        <img @bind-src="@IsOrNotCompares[ad.index].src" @bind-src:event="onchange" @onclick="() => ChangeCompareState(userId, ad.value.Id)" class="favicons">
                     </div>
 
                     <div class="favInfoTxt">
-                        <div style="margin-left: 10px;"><font color="gray">Площа:</font> @ad.AreaOfHouse</div>
+                        <div style="margin-left: 10px;"><font color="gray">Площа:</font> @ad.value.AreaOfHouse</div>
                     </div>
 
                     <div class="favInfoTxt">
-                        <div style="margin-left: 10px;"><font color="gray">Кількість кімнат:</font>@ad.RoomNumber</div>
+                        <div style="margin-left: 10px;"><font color="gray">Кількість кімнат:</font>@ad.value.RoomNumber</div>
                     </div>
 
                     <div class="favInfoTxt">
-                        <div style="margin-left: 10px;"><font color="gray">Рік будинку:</font> @ad.HouseYear</div>
+                        <div style="margin-left: 10px;"><font color="gray">Рік будинку:</font> @ad.value.HouseYear</div>
                     </div>
 
 
                     <div class="favInfoTxt">
-                        @if (ad.PurchaseOportunity)
+                        @if (ad.value.PurchaseOportunity)
                         {
                             <div style="margin-left: 10px;"><font color="gray">Вид угоди:</font>Купівля</div>
                         }
@@ -48,7 +49,7 @@
                     </div>
 
                     <div class="favInfoTxt">
-                        @if (ad.Balkon)
+                        @if (ad.value.Balkon)
                         {
                             <div style="margin-left: 10px;"><font color="gray">Балкон:</font>Є</div>
                         }
@@ -59,15 +60,14 @@
                     </div>
 
                     <div class="favInfoTxt">
-                        <div style="margin-left: 10px;"><font color="gray">Ціна:</font> <b>@ad.Price</b></div>
+                        <div style="margin-left: 10px;"><font color="gray">Ціна:</font> <b>@ad.value.Price</b></div>
                     </div>
 
-                    <button @onclick="() => GoToAd(ad.Id)">Перейти</button>
+                    <button @onclick="() => GoToAd(ad.value.Id)">Перейти</button>
                 </div>
 
 
             </div>
-            iterator++;
         }
     </div>
 
@@ -80,20 +80,17 @@
 
         <div class="paramBody">
             Від
-            <input @bind="adToCompare.MinPrice" type="text" class="col-sm-4 col-form-label">
+            <input @bind="adToCompare.MinPrice" type="number" class="col-sm-4 col-form-label">
             до
-            <input @bind="adToCompare.MaxAreaOfHouse" type="text" class="col-sm-4 col-form-label">
+            <input @bind="adToCompare.MaxPrice" type="number" class="col-sm-4 col-form-label">
             грн
         </div>
-        <!-------------------------------------------->
-        <div style="height: 1px; background-color:#bb7b27; width: 80%; margin-top: 25px;margin-left: 40px;"></div>
-        <!-------------------------------------------->
-        <div class="paramHeader">
-            Місцезнаходження
-        </div>
-        <div class="paramBody">
-            <input type="text" class="col-sm-10 col-form-label">
-        </div>
+        <!--<div class="paramHeader">
+        Місцезнаходження
+    </div>
+    <div class="paramBody">
+        <input type="text" class="col-sm-10 col-form-label">
+    </div>-->
         <!-------------------------------------------->
         <div style="height: 1px; background-color:#bb7b27; width: 80%; margin-top: 25px;margin-left: 40px;"></div>
         <!-------------------------------------------->
@@ -103,9 +100,9 @@
 
         <div class="paramBody">
             Від
-            <input @bind="adToCompare.MinAreaOfHouse" type="text" class="col-sm-4 col-form-label">
+            <input @bind="adToCompare.MinAreaOfHouse" type="number" class="col-sm-4 col-form-label">
             до
-            <input @bind="adToCompare.MaxAreaOfHouse" type="text" class="col-sm-4 col-form-label">
+            <input @bind="adToCompare.MaxAreaOfHouse" type="number" class="col-sm-4 col-form-label">
             квм
         </div>
         <!-------------------------------------------->
@@ -117,21 +114,26 @@
 
         <div class="paramBody">
 
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                <label class="form-check-label" for="flexCheckDefault">Дім</label>
-            </div>
-
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                <label class="form-check-label" for="flexCheckDefault">Квартира</label>
-            </div>
-
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                <label class="form-check-label" for="flexCheckDefault">Без різниці</label>
-            </div>
-
+            <fieldset id="radioGroup1">
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="flexRadioDefault1" id="flexRadioDefault1" @onclick="(() => adToCompare.HouseType = dim)">
+                    <label class="form-check-label" for="flexRadioDefault1">
+                        Дім
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="flexRadioDefault1" id="flexRadioDefault2" @onclick="(() => adToCompare.HouseType = kvartira)">
+                    <label class="form-check-label" for="flexRadioDefault2">
+                        Квартира
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="flexRadioDefault1" checked id="flexRadioDefault3" @onclick="(() => adToCompare.HouseTypeNoMatter = !adToCompare.HouseTypeNoMatter)">
+                    <label class="form-check-label" for="flexRadioDefault3">
+                        Без різниці
+                    </label>
+                </div>
+            </fieldset>
         </div>
         <!-------------------------------------------->
         <div style="height: 1px; background-color:#bb7b27; width: 80%; margin-top: 25px;margin-left: 40px;"></div>
@@ -142,9 +144,9 @@
 
         <div class="paramBody">
             Від
-            <input @bind="adToCompare.MinFloorAmount" type="text" class="col-sm-4 col-form-label">
+            <input @bind="adToCompare.MinFloorAmount" type="number" class="col-sm-4 col-form-label">
             до
-            <input @bind="adToCompare.MaxFloorAmount" type="text" class="col-sm-4 col-form-label">
+            <input @bind="adToCompare.MaxFloorAmount" type="number" class="col-sm-4 col-form-label">
         </div>
         <!-------------------------------------------->
         <div style="height: 1px; background-color:#bb7b27; width: 80%; margin-top: 25px;margin-left: 40px;"></div>
@@ -155,9 +157,9 @@
 
         <div class="paramBody">
             Від
-            <input @bind="adToCompare.MinRoomNumber" type="text" class="col-sm-4 col-form-label">
+            <input @bind="adToCompare.MinRoomNumber" type="number" class="col-sm-4 col-form-label">
             до
-            <input @bind="adToCompare.MaxRoomNumber" type="text" class="col-sm-4 col-form-label">
+            <input @bind="adToCompare.MaxRoomNumber" type="number" class="col-sm-4 col-form-label">
         </div>
         <!-------------------------------------------->
         <div style="height: 1px; background-color:#bb7b27; width: 80%; margin-top: 25px;margin-left: 40px;"></div>
@@ -167,21 +169,26 @@
         </div>
 
         <div class="paramBody">
-
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                <label class="form-check-label" for="flexCheckDefault">Є</label>
-            </div>
-
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                <label class="form-check-label" for="flexCheckDefault">Нема</label>
-            </div>
-
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                <label class="form-check-label" for="flexCheckDefault">Без різниці</label>
-            </div>
+            <fieldset id="radioGroup2">
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="flexRadioDefault2" id="flexRadioDefault1" @onclick="(() => adToCompare.Pool = true)">
+                    <label class="form-check-label" for="flexRadioDefault1">
+                        Є
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="flexRadioDefault2" id="flexRadioDefault2" @onclick="(() => adToCompare.Pool = false)">
+                    <label class="form-check-label" for="flexRadioDefault2">
+                        Нема
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="flexRadioDefault2" checked id="flexRadioDefault3" @onclick="(() => adToCompare.PoolNoMatter = !adToCompare.PoolNoMatter)">
+                    <label class="form-check-label" for="flexRadioDefault3">
+                        Без різниці
+                    </label>
+                </div>
+                </fieldset>
         </div>
         <!-------------------------------------------->
         <div style="height: 1px; background-color:#bb7b27; width: 80%; margin-top: 25px;margin-left: 40px;"></div>
@@ -192,15 +199,15 @@
 
         <div class="paramBody">
             Від
-            <input @bind="adToCompare.MinHouseYear" type="text" class="col-sm-4 col-form-label">
+            <input @bind="adToCompare.MinHouseYear" type="number" class="col-sm-4 col-form-label">
             до
-            <input @bind="adToCompare.MaxHouseYear" type="text" class="col-sm-4 col-form-label">
+            <input @bind="adToCompare.MaxHouseYear" type="number" class="col-sm-4 col-form-label">
         </div>
         <!--
-        <div class="form-check" style="margin-left: 5px;">
-            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-            <label class="form-check-label" for="flexCheckDefault"><b>Без різниці</b></label>
-        </div>-->
+    <div class="form-check" style="margin-left: 5px;">
+        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+        <label class="form-check-label" for="flexCheckDefault"><b>Без різниці</b></label>
+    </div>-->
         <!-------------------------------------------->
         <div style="height: 1px; background-color:#bb7b27; width: 80%; margin-top: 25px;margin-left: 40px;"></div>
         <!-------------------------------------------->
@@ -211,19 +218,24 @@
         <div class="paramBody">
 
             <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                <label class="form-check-label" for="flexCheckDefault">Продажа</label>
+                <input class="form-check-input" type="radio" name="flexRadioDefault3" id="flexRadioDefault1" @onclick="(() => adToCompare.PurchaseOportunity = true)">
+                <label class="form-check-label" for="flexRadioDefault1">
+                    Продажа
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="flexRadioDefault3" id="flexRadioDefault2" @onclick="(() => adToCompare.PurchaseOportunity = false)">
+                <label class="form-check-label" for="flexRadioDefault2">
+                    Оренда
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="flexRadioDefault3" checked id="flexRadioDefault3" @onclick="(() => adToCompare.PurchaseOportunityNoMatter = !adToCompare.PurchaseOportunityNoMatter)">
+                <label class="form-check-label" for="flexRadioDefault3">
+                    Без різниці
+                </label>
             </div>
 
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                <label class="form-check-label" for="flexCheckDefault">Купівля</label>
-            </div>
-
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                <label class="form-check-label" for="flexCheckDefault">Без різниці</label>
-            </div>
         </div>
         <!-------------------------------------------->
         <div style="height: 1px; background-color:#bb7b27; width: 80%; margin-top: 25px;margin-left: 40px;"></div>
@@ -231,31 +243,34 @@
         <div class="paramHeader">
             Статус
         </div>
-
         <div class="paramBody">
-
             <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                <label class="form-check-label" for="flexCheckDefault">Вільно</label>
+                <input class="form-check-input" type="radio" name="flexRadioDefault4" id="flexRadioDefault1" @onclick="(() => adToCompare.Status = true)">
+                <label class="form-check-label" for="flexRadioDefault1">
+                    Вільно
+                </label>
             </div>
-
             <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                <label class="form-check-label" for="flexCheckDefault">Зайнято</label>
+                <input class="form-check-input" type="radio" name="flexRadioDefault4" id="flexRadioDefault2" @onclick="(() => adToCompare.Status = false)">
+                <label class="form-check-label" for="flexRadioDefault2">
+                    Зайнято
+                </label>
             </div>
-
             <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                <label class="form-check-label" for="flexCheckDefault">Без різниці</label>
+                <input class="form-check-input" type="radio" name="flexRadioDefault4" checked id="flexRadioDefault3" @onclick="(() => adToCompare.StatusNoMatter = !adToCompare.StatusNoMatter)">
+                <label class="form-check-label" for="flexRadioDefault3">
+                    Без різниці
+                </label>
+            </div>
+            </div>
+            <!-------------------------------------------->
+            <div class="d-flex justify-content-center">
+                <button type="submit" class="btn btn-secondary" style="margin-top: 10px;margin-bottom:10px" @onclick="FindAdsByParams">Шукати</button>
             </div>
         </div>
-        <!-------------------------------------------->
-
-    </div>
 </main>
 
 @code {
-    public int iterator = 0;
     [Parameter] public string userId { get; set; }
 
     public IEnumerable<AdInfoDTO> ads = new List<AdInfoDTO>();
@@ -267,17 +282,30 @@
     public IEnumerable<ForCompareDTO> adsCompares = new List<ForCompareDTO>();
     List<CompareIcon> IsOrNotCompares = new();
 
+    string dim = "Дім";
+    string kvartira = "Квартира";
 
-    protected override async Task OnInitializedAsync()
+    protected override void OnInitialized()
     {
-        ads = await adServices.GetAllAds();
+        adToCompare.BalkonNoMatter = true;
+        adToCompare.HouseTypeNoMatter = true;
+        adToCompare.PoolNoMatter = true;
+        adToCompare.PurchaseOportunityNoMatter = true;
+        adToCompare.StatusNoMatter = true;
+    }
+    async Task FindAdsByParams()
+    {
+        ads = new List<AdInfoDTO>();
+        IsOrNotCompares = new();
+        IsOrNotFavorites = new();
+        ads = await adServices.GetAdsByOptions(adToCompare);
         adsFavorites = await favoriteServices.GetAllFavoritesByUserId(userId);
         adsCompares = await forCompareServices.GetAllComparesByUserId(userId);
-        foreach(var ad in ads)
+        foreach (var ad in ads)
         {
             if (adsFavorites.Any(adfav => adfav.Id == ad.Id))
             {
-                IsOrNotFavorites.Add(new FavStarIcon("star2.png",ad.Id));
+                IsOrNotFavorites.Add(new FavStarIcon("star2.png", ad.Id));
             }
             else
             {
@@ -298,7 +326,6 @@
 
     void GoToAd(int adId)
     {
-        iterator = 0;
         NavigationManager.NavigateTo($"/AdInfo/{adId}");
     }
 
@@ -314,19 +341,16 @@
                 if (IsOrNotFavorites[i].src == "star1.png") // if is not favorite
                 {
                     IsOrNotFavorites[i].src = "star2.png";
-                    iterator = 0;
                     await favoriteServices.SetFavorite(userId, adId); // ser favorite
                 }
                 else if (IsOrNotFavorites[i].src == "star2.png")
                 {
                     IsOrNotFavorites[i].src = "star1.png";
-                    iterator = 0;
                     await favoriteServices.RemoveFavoriteByUserIdAndAdId(userId, adId);
                 }
                 break;
             }
         }
-        iterator = 0;
     }
 
     async Task ChangeCompareState(string userId, int adId)
@@ -338,19 +362,16 @@
                 if (IsOrNotCompares[i].src == "compare1.png") // if is not comparasion
                 {
                     IsOrNotCompares[i].src = "compare2.png";
-                    iterator = 0;
                     await forCompareServices.SetForCompare(userId, adId); // set comparasion
                 }
                 else if (IsOrNotCompares[i].src == "compare2.png")
                 {
                     IsOrNotCompares[i].src = "compare1.png";
-                    iterator = 0;
                     await forCompareServices.RemoveCopareByUserIdAndAdId(userId, adId);
                 }
                 break;
             }
         }
-        iterator = 0;
     }
 
 

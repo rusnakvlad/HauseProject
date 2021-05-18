@@ -74,57 +74,57 @@ namespace DataAccesLayer.Repositories
             {
                 if (adToCompare.MaxPrice != 0)
                 {
-                    if (adToCompare.MaxPrice < ad.Price) break;
+                    if (adToCompare.MaxPrice < ad.Price) continue;
                 }
 
-                if(adToCompare.Region != "")
-                {
-                    if (adToCompare.Region != ad.Region) break;
-                }
+                //if(adToCompare.Region != "")
+                //{
+                //    if (adToCompare.Region != ad.Region) continue;
+                //}
 
-                if (adToCompare.District != "")
-                {
-                    if (adToCompare.District != ad.District) break;
-                }
+                //if (adToCompare.District != "")
+                //{
+                //    if (adToCompare.District != ad.District) continue;
+                //}
 
-                if (adToCompare.City != "")
-                {
-                    if (adToCompare.City != ad.City) break;
-                }
+                //if (adToCompare.City != "")
+                //{
+                //    if (adToCompare.City != ad.City) continue;
+                //}
 
                 if (adToCompare.HouseType != "" && !adToCompare.HouseTypeNoMatter)
                 {
-                    if (adToCompare.HouseType != ad.HouseType) break;
+                    if (adToCompare.HouseType != ad.HouseType) continue;
                 }
 
                 if (adToCompare.MaxAreaOfHouse != 0)
                 {
-                    if (adToCompare.MaxAreaOfHouse < ad.AreaOfHouse) break;
+                    if (adToCompare.MaxAreaOfHouse < ad.AreaOfHouse) continue;
                 }
 
                 if (adToCompare.MaxFloorAmount != 0)
                 {
-                    if (adToCompare.MaxFloorAmount < ad.FloorAmount) break;
+                    if (adToCompare.MaxFloorAmount < ad.FloorAmount) continue;
                 }
 
                 if (adToCompare.MaxRoomNumber != 0)
                 {
-                    if (adToCompare.MaxRoomNumber < ad.RoomNumber) break;
+                    if (adToCompare.MaxRoomNumber < ad.RoomNumber) continue;
                 }
 
                 if (!adToCompare.PoolNoMatter)
                 {
-                    if (adToCompare.Pool != ad.Pool) break;
+                    if (adToCompare.Pool != ad.Pool) continue;
                 }
 
                 if (!adToCompare.BalkonNoMatter)
                 {
-                    if (adToCompare.Balkon != ad.Balkon) break;
+                    if (adToCompare.Balkon != ad.Balkon) continue;
                 }
 
                 if (!adToCompare.PurchaseOportunityNoMatter)
                 {
-                    if (adToCompare.PurchaseOportunity != ad.PurchaseOportunity) break;
+                    if (adToCompare.PurchaseOportunity != ad.PurchaseOportunity) continue;
                 }
                 resutlAds.Add(ad);
             }

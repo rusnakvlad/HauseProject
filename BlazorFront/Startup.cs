@@ -38,6 +38,7 @@ namespace BlazorFront
             services.AddScoped<UserValidator>();
             services.AddScoped<AdValidator>();
             services.AddScoped<CommentValidator>();
+            services.AddScoped<AdEditValidator>();
             #endregion
 
             #region HttpClients

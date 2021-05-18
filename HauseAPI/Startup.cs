@@ -25,6 +25,8 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using DataAccesLayer.Enteties;
 using AutoMapper;
 using BuisnesLogicLayer.MappersConfigurations;
+using BuisnesLogicLayer.Validation;
+using FluentValidation;
 
 namespace HauseAPI
 {
@@ -63,7 +65,12 @@ namespace HauseAPI
             services.AddTransient<IImageServices, ImageServices>();
             #endregion
 
-            
+            #region Validators
+            services.AddTransient<IValidator<AdCreateDTO>, AdValidator>();
+            services.AddTransient<IValidator<AdEditDTO>, AdEditValidator>();
+            services.AddTransient<IValidator<UserRegisterDTO>, UserValidator>();
+            services.AddTransient<IValidator<CommentCreateDTO>, CommentValidator>();
+            #endregion
 
             services.AddDbContext<AppDBContext>();
 

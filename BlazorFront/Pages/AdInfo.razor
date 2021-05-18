@@ -88,7 +88,20 @@
                     <div class="textParamAI">Площа:</div>
                     <div class="paramOfAd" style="margin-left: 20px;"><div class="adInfoTxt">@ad.AreaOfHouse квм</div></div>
                 </div>
-
+                <!-------------------------------------------->
+                <hr style="height:1px;background-color:white; width: 100%;">
+                <!-------------------------------------------->
+                <div class="d-flex justify-content-between">
+                    <div class="textParamAI">Статус:</div>
+                    @if (ad.Status)
+                    {
+                        <div class="paramOfAd" style="margin-left: 20px;"><div class="adInfoTxt">Вільно</div></div>
+                    }
+                    else
+                    {
+                        <div class="paramOfAd" style="margin-left: 20px;"><div class="adInfoTxt">Зайнято</div></div>
+                    }
+                </div>
             </div>
         </div>
 

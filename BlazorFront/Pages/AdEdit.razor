@@ -163,12 +163,23 @@
                             </select>
                         </div>
                     </div>
-
+                    <!-------------------------------------------->
+                    <hr style="height:1px;background-color:white; width: 100%;">
+                    <!-------------------------------------------->
+                    <div class="d-flex justify-content-between">
+                        <div class="textParam">Вид угоди:</div>
+                        <div class="paramOfAd" style="margin-left: 20px;">
+                            <select class="form-control" @onchange="@(() => ad.Status = !ad.Status)">
+                                <option>Зайнято</option> <!--Flase-->
+                                <option>Вільно</option> <!--True-->
+                            </select>
+                        </div>
+                    </div>
                 </div>
             </div>
 
         </div>
-        <br /> <br /> <br />
+        <br /> <br /> <br /> <br /> <br /> <br />
         <div id="container-3" class="d-grid">
             <!-------------------------------------------->
             <hr style="height:1px;background-color:white; width: 100%;">

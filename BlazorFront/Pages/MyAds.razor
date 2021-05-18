@@ -18,34 +18,34 @@
 
 <div class="favAds" style="margin: 0px 300px 0px 300px;">
 
-    @foreach (var ad in ads)
+    @foreach (var ad in ads.Select((value, index) => new { value, index }))
     {
         <div class="ad" style="border: rgb(104, 104, 104) 3px solid;">
             <div id="forImg" class="d-flex justify-content-center" style="margin: 0px 0px 0px 0px; border-right:rgb(104, 104, 104) 3px solid;">
-                <img class="imgFromAd" src="data:image/png;base64, @(Convert.ToBase64String(ad.images.FirstOrDefault().ImageFile))" width="100%" height="100%">
+                <img class="imgFromAd" src="data:image/png;base64, @(Convert.ToBase64String(ad.value.images.FirstOrDefault().ImageFile))" width="100%" height="100%">
             </div>
 
             <div class="favInfo">
                 <div class="d-flex justify-content-end" style="border-bottom: #1C6EA4 1px solid;">
-                    <img @bind-src="@IsOrNotFavorites[iterator].src" @bind-src:event="onchange" @onclick="() => ChangeFavState(userId, ad.Id)" class="favicons">
-                    <img @bind-src="@IsOrNotCompares[iterator].src" @bind-src:event="onchange" @onclick="() => ChangeCompareState(userId, ad.Id)" class="favicons">
+                    <img @bind-src="@IsOrNotFavorites[ad.index].src" @bind-src:event="onchange" @onclick="() => ChangeFavState(userId, ad.value.Id)" class="favicons">
+                    <img @bind-src="@IsOrNotCompares[ad.index].src" @bind-src:event="onchange" @onclick="() => ChangeCompareState(userId, ad.value.Id)" class="favicons">
                 </div>
 
                 <div class="favInfoTxt">
-                    <div style="margin-left: 10px;"><font color="gray">Площа:</font> @ad.AreaOfHouse</div>
+                    <div style="margin-left: 10px;"><font color="gray">Площа:</font> @ad.value.AreaOfHouse</div>
                 </div>
 
                 <div class="favInfoTxt">
-                    <div style="margin-left: 10px;"><font color="gray">Кількість кімнат:</font>@ad.RoomNumber</div>
+                    <div style="margin-left: 10px;"><font color="gray">Кількість кімнат:</font>@ad.value.RoomNumber</div>
                 </div>
 
                 <div class="favInfoTxt">
-                    <div style="margin-left: 10px;"><font color="gray">Рік будинку:</font> @ad.HouseYear</div>
+                    <div style="margin-left: 10px;"><font color="gray">Рік будинку:</font> @ad.value.HouseYear</div>
                 </div>
 
 
                 <div class="favInfoTxt">
-                    @if (ad.PurchaseOportunity)
+                    @if (ad.value.PurchaseOportunity)
                     {
                         <div style="margin-left: 10px;"><font color="gray">Вид угоди:</font>Купівля</div>
                     }
@@ -56,7 +56,7 @@
                 </div>
 
                 <div class="favInfoTxt">
-                    @if (ad.Balkon)
+                    @if (ad.value.Balkon)
                     {
                         <div style="margin-left: 10px;"><font color="gray">Балкон:</font>Є</div>
                     }
@@ -67,10 +67,10 @@
                 </div>
 
                 <div class="favInfoTxt">
-                    <div style="margin-left: 10px;"><font color="gray">Ціна:</font> <b>@ad.Price</b></div>
+                    <div style="margin-left: 10px;"><font color="gray">Ціна:</font> <b>@ad.value.Price</b></div>
                 </div>
 
-                <button @onclick="() => GoToAd(ad.Id)">Перейти</button>
+                <button @onclick="() => GoToAd(ad.value.Id)">Перейти</button>
             </div>
 
         </div>

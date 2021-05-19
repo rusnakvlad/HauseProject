@@ -27,6 +27,10 @@ using AutoMapper;
 using BuisnesLogicLayer.MappersConfigurations;
 using BuisnesLogicLayer.Validation;
 using FluentValidation;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using BuisnesLogicLayer.JWTs;
 
 namespace HauseAPI
 {
@@ -55,7 +59,6 @@ namespace HauseAPI
 
             services.AddTransient<IUnitOfWork, UnitOfWork>();
 
-
             #region Services
             services.AddTransient<IAdServices, AdServices>();
             services.AddTransient<IUserServices, UserServices>();
@@ -72,12 +75,39 @@ namespace HauseAPI
             services.AddTransient<IValidator<CommentCreateDTO>, CommentValidator>();
             #endregion
 
-            services.AddDbContext<AppDBContext>();
+            services.AddDbContext<AppDBContext>(opts => opts.UseSqlServer(Configuration["ConnectionString:connectDB"]));
 
             services.AddControllers();
+                     
+            // For Mapper
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-            services.AddIdentity<User, IdentityRole>().AddEntityFrameworkStores<AppDBContext>();
 
+            // For Identity
+            services.AddIdentity<User, IdentityRole>()
+                .AddEntityFrameworkStores<AppDBContext>()
+                .AddDefaultTokenProviders();
+
+            // Adding Authentication
+            services.AddAuthentication(options => {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            // Adding JWT Bearer
+            .AddJwtBearer(options =>
+            {
+                options.SaveToken = true;
+                options.RequireHttpsMetadata = false;
+                options.TokenValidationParameters = new TokenValidationParameters()
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidAudience = JwtOptions.AUDIENCE,
+                    ValidIssuer = JwtOptions.ISSUER,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(JwtOptions.KEY))
+
+                };
+            });
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "HauseAPI", Version = "v1" });

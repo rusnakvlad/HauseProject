@@ -61,10 +61,21 @@ namespace HauseAPI.Controllers
             return await userServices.UpdateUser(userEditDTO);
         }
 
-        [HttpGet("LogIn/{email}/{password}")]
-        public async Task<UserProfileDTO> LogInUser (string email, string password)
+        //[HttpGet("LogIn/{email}/{password}")]
+        //public async Task<UserProfileDTO> LogInUser (string email, string password)
+        //{
+        //    return await userServices.LogIn(new UserLogInDTO() { Email = email,Password = password});
+        //}
+        [HttpPost("LogIn")]
+        public async Task<UserTokenDTO> LogInUser([FromBody] UserLogInDTO login)
         {
-            return await userServices.LogIn(new UserLogInDTO() { Email = email,Password = password});
+            return await userServices.LogIn(new UserLogInDTO() { Email = login.Email, Password = login.Password });
+        }
+
+        [HttpPost("BetByToken")]
+        public async Task<UserProfileDTO> GetUserByAccessToken([FromBody] UserTokenDTO token)
+        {
+            return await userServices.GetUserByAccessToken(token);
         }
     }
 }

@@ -7,6 +7,7 @@ using BuisnesLogicLayer.Interfaces;
 using BuisnesLogicLayer.Services;
 using BuisnesLogicLayer.DTO;
 using DataAccesLayer.Enteties;
+using Microsoft.AspNetCore.Authorization;
 
 namespace HauseAPI.Controllers
 {
@@ -33,20 +34,22 @@ namespace HauseAPI.Controllers
         }
 
         // get all ads by user id
-        [HttpGet("/Ad/UserId/{userId}")]
+        [Authorize]
+        [HttpGet("UserId/{userId}")]
         public async Task<IEnumerable<AdInfoDTO>> GetAllAdsByUserId(string userId)
         {
             return await adServices.GetAdsByUserId(userId);
         }
 
         // get ad by id
-        [HttpGet("/Ad/GetById/{id}")]
+        [HttpGet("GetById/{id}")]
         public async Task<AdInfoDTO> GetAddDTOByID(int id)
         {
             return await adServices.GetAdById(id);
         }
 
         // add new ad
+        [Authorize]
         [HttpPost]
         public async Task AddNewAdd([FromBody] AdCreateDTO createAdDTO)
         {
@@ -54,19 +57,24 @@ namespace HauseAPI.Controllers
         }
 
         // delete ad by id
-        [HttpDelete("/Ad/{id}")]
+        [Authorize]
+        [HttpDelete("{id}")]
         public async Task DeleteAdById(int id)
         {
             await adServices.DeleteAdById(id);
         }
 
         // edit ad by id
+        [Authorize]
         [HttpPut]
         public async Task EditAd([FromBody] AdEditDTO editAdDTO)
         {
             await adServices.UpdateAd(editAdDTO);
         }
-        [HttpGet("/Ad/GetByIdToEdit/{id}")]
+
+        // get add to edit dto
+        [Authorize]
+        [HttpGet("GetByIdToEdit/{id}")]
         public async Task<AdEditDTO> GetAdToEdit(int id)
         {
             return await adServices.GetAdToEdit(id);

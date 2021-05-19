@@ -16,8 +16,8 @@ namespace BuisnesLogicLayer.Interfaces
         public Task<bool> DeleteUserById(string id);
         public Task<bool> UpdateUser(UserEditDTO userEditDTO);
         public Task<UserProfileDTO> GetUserProfileByEmail(string email);
-
-        public Task<UserProfileDTO> LogIn(UserLogInDTO user);
+        public Task<UserProfileDTO> GetUserByAccessToken(UserTokenDTO token);
+        public Task<UserTokenDTO> LogIn(UserLogInDTO user);
         public void LogOut();
     }
 }

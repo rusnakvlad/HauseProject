@@ -20,17 +20,17 @@ namespace DataAccesLayer.EF
         public DbSet<Image> Images { get; set; }
         // On creating an instance of ApplicationContext, program check if there is
         // a data base with the name from connection string, and if not create this DB
-        public AppDBContext()
+        public AppDBContext(DbContextOptions<AppDBContext> options) : base(options)
         {
             // Database.EnsureDeleted(); // delete DB with old diagram
             // Database.EnsureCreated(); // create DB with new diagram   
         }
 
         // Make connection to DB using method UseSqlServer
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseSqlServer("Server = (localdb)\\mssqllocaldb; Database = UAHP; Trusted_Connection = True; MultipleActiveResultSets=true");
-        }
+        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        //{
+        //    //optionsBuilder.UseSqlServer("Server = (localdb)\\mssqllocaldb; Database = UAHP; Trusted_Connection = True; MultipleActiveResultSets=true");
+        //}
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

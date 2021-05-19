@@ -66,5 +66,10 @@ namespace BlazorFront.Services
         {
             return await httpClient.GetJsonAsync<UserProfileDTO>("GetById/" + Id);
         }
+
+        public Task<UserProfileDTO> GetUserByAccessToken(string accesToken)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

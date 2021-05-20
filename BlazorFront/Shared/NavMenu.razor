@@ -74,9 +74,10 @@
     string goMyProfileLink = "";
     protected override async Task OnInitializedAsync()
     {
-        if (await localStorage.ContainKeyAsync("savedUser"))
+        if (await localStorage.ContainKeyAsync("accessToken"))
         {
-            user = await localStorage.GetItemAsync<UserProfileDTO>("savedUser");
+            var token = await localStorage.GetItemAsync<string>("accessToken");
+            user = await userServices.GetUserByAccessToken(token);
             goMyAdsLink = $"MyAds/{user.Id}";
             goFavoritesLink = $"Favorites/{user.Id}";
             gofindAdsLink = $"FindAds/{user.Id}";

@@ -6,6 +6,8 @@ using Newtonsoft.Json;
 using System.Net.Http;
 using BuisnesLogicLayer.DTO;
 using Microsoft.AspNetCore.Components;
+using System.Net.Http.Headers;
+
 namespace BlazorFront.Services
 {
     public class UserServices : IUserServices
@@ -56,9 +58,20 @@ namespace BlazorFront.Services
             return returnedUser.Email != null ? true : false;
         }
 
-        public async Task<UserProfileDTO> LogIn(UserLogInDTO user)
+        public async Task<UserTokenDTO> LogIn(UserLogInDTO user)
         {
-            return await httpClient.GetJsonAsync<UserProfileDTO>("LogIn/" + user.Email + "/" + user.Password);
+            string serializedUser = JsonConvert.SerializeObject(user);
+            var requestMessage = new HttpRequestMessage(HttpMethod.Post, "Login");
+            requestMessage.Content = new StringContent(serializedUser);
+            requestMessage.Content.Headers.ContentType
+                = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
+            var response = await httpClient.SendAsync(requestMessage);
+            var responseStatusCode = response.StatusCode;
+            var responseBody = await response.Content.ReadAsStringAsync();
+
+            var token = JsonConvert.DeserializeObject<UserTokenDTO>(responseBody);
+
+            return token != null ? token : null;
 
         }
 
@@ -67,9 +80,21 @@ namespace BlazorFront.Services
             return await httpClient.GetJsonAsync<UserProfileDTO>("GetById/" + Id);
         }
 
-        public Task<UserProfileDTO> GetUserByAccessToken(string accesToken)
+        public async Task<UserProfileDTO> GetUserByAccessToken(string accessToken)
         {
-            throw new NotImplementedException();
+            string serializedUser = JsonConvert.SerializeObject(accessToken);
+            var requestMessage = new HttpRequestMessage(HttpMethod.Post, "GetByToken");
+            requestMessage.Content = new StringContent(serializedUser);
+            requestMessage.Content.Headers.ContentType
+                = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
+            requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+            var response = await httpClient.SendAsync(requestMessage);
+            var responseStatusCode = response.StatusCode;
+            var responseBody = await response.Content.ReadAsStringAsync();
+
+            var returnedUser = JsonConvert.DeserializeObject<UserProfileDTO>(responseBody);
+
+            return returnedUser != null ? returnedUser : null;
         }
     }
 }

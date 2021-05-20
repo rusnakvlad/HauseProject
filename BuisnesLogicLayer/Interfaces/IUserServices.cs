@@ -22,7 +22,7 @@ namespace BuisnesLogicLayer.Interfaces
 
         public Task<UserProfileDTO> GetUserProfileByEmail(string email);
 
-        public Task<UserProfileDTO> GetUserByAccessToken(UserTokenDTO token);
+        public Task<UserProfileDTO> GetUserByAccessToken(string token);
 
         public Task<UserTokenDTO> RefreshUserToken(UserTokenDTO token);
 

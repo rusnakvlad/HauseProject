@@ -67,7 +67,8 @@ namespace BuisnesLogicLayer.Services
                 var refreshToken = TokenManager.GenerateRfreshToken();
                 // add refresh token to a user
                 await Database.UserRefreshTokenRepository.UpdateToken(new UsersRefreshToken() { UserId = mappedUser.Id, Token = refreshToken });
-                return TokenManager.GenerateToken(mappedUser,refreshToken);
+                var token = TokenManager.GenerateToken(mappedUser,refreshToken);
+                return token;
             }
             return null;
         }
@@ -100,7 +101,7 @@ namespace BuisnesLogicLayer.Services
             return mappedUser;
         }
 
-        public async Task<UserProfileDTO> GetUserByAccessToken(UserTokenDTO token)
+        public async Task<UserProfileDTO> GetUserByAccessToken(string token)
         {
             try
             {
@@ -115,7 +116,7 @@ namespace BuisnesLogicLayer.Services
                     ValidateAudience = false
                 };
 
-                var principle = tokenHandler.ValidateToken(token.AccessToken, tokenVakidationParameters, out SecurityToken securityToken);
+                var principle = tokenHandler.ValidateToken(token, tokenVakidationParameters, out SecurityToken securityToken);
 
                 if(securityToken is JwtSecurityToken jwtSecurityToken && jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256,StringComparison.InvariantCultureIgnoreCase))
                 {

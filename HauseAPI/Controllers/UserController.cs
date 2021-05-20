@@ -8,6 +8,7 @@ using BuisnesLogicLayer.Interfaces;
 using DataAccesLayer.Enteties;
 using BuisnesLogicLayer.DTO;
 using DataAccesLayer.EF;
+using Microsoft.AspNetCore.Authorization;
 
 namespace HauseAPI.Controllers
 {
@@ -27,6 +28,7 @@ namespace HauseAPI.Controllers
         }
 
         // Get User Profile by id
+        [Authorize]
         [HttpGet("GetById/{id}")]
         public async Task<UserProfileDTO> GetUserProfileDTOById(string id)
         {
@@ -34,6 +36,7 @@ namespace HauseAPI.Controllers
         }
 
         // Get User Profile by id
+        [Authorize]
         [HttpGet("Email/{email}")]
         public async Task<UserProfileDTO> GetUserProfileDTOByEmail(string email)
         {
@@ -48,6 +51,7 @@ namespace HauseAPI.Controllers
         }
 
         // Delete user by id
+        [Authorize]
         [HttpDelete("{id}")]
         public async Task<bool> DeleteUserById(string id)
         {
@@ -55,6 +59,7 @@ namespace HauseAPI.Controllers
         }
 
         // Edit user
+        [Authorize]
         [HttpPut("UpdateUser")]
         public async Task<bool> EditUser([FromBody] UserEditDTO userEditDTO)
         {
@@ -68,7 +73,7 @@ namespace HauseAPI.Controllers
         }
 
         [HttpPost("GetByToken")]
-        public async Task<UserProfileDTO> GetUserByAccessToken([FromBody] UserTokenDTO token)
+        public async Task<UserProfileDTO> GetUserByAccessToken([FromBody] string token)
         {
             return await userServices.GetUserByAccessToken(token);
         }

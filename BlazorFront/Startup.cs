@@ -14,6 +14,8 @@ using Microsoft.AspNetCore.Http;
 using System.Net.Http;
 using Blazored.LocalStorage;
 using BlazorFront.Validation;
+using BlazorFront.AuthServices;
+using Microsoft.AspNetCore.Components.Authorization;
 
 namespace BlazorFront
 {
@@ -33,6 +35,8 @@ namespace BlazorFront
             services.AddRazorPages();
             services.AddServerSideBlazor();
             services.AddBlazoredLocalStorage();
+
+            services.AddScoped<AuthenticationStateProvider, CustomAuthStateProvider>();
 
             #region ValidationServices
             services.AddScoped<UserValidator>();

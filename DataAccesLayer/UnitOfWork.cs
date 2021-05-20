@@ -13,7 +13,8 @@ namespace DataAccesLayer
     {
         public UnitOfWork(IAdRepository adRepository, ICommentRepository commentRepository,
             IFavoriteRepository favoriteRepository, IForCompareRepository forCompareRepository,
-            IImageRepository imageRepository, ITagRepository tagRepository, IUserRepository userRepository
+            IImageRepository imageRepository, ITagRepository tagRepository, IUserRepository userRepository,
+            IUserRefreshTokenRepository userRefreshTokenRepository
             /*,UserManager<User> userManager,RoleManager<IdentityRole> roleManager,SignInManager<User> signInManager*/)
         {
             UserRepository = userRepository;
@@ -24,6 +25,7 @@ namespace DataAccesLayer
             ImageRepository = imageRepository;
             TagRepository = tagRepository;
             UserRepository = userRepository;
+            UserRefreshTokenRepository = userRefreshTokenRepository;
             /*UserManager = userManager;
             RoleManager = roleManager;
             SignInManager = signInManager;*/
@@ -42,6 +44,7 @@ namespace DataAccesLayer
 
         public IUserRepository UserRepository { get; set; }
 
+        public IUserRefreshTokenRepository UserRefreshTokenRepository { get; set; }
        /* public UserManager<User> UserManager { get; set; }
         public RoleManager<IdentityRole> RoleManager { get; set; }
         public SignInManager<User> SignInManager { get; set; }*/

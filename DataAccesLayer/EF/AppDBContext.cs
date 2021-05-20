@@ -45,6 +45,7 @@ namespace DataAccesLayer.EF
             modelBuilder.ApplyConfiguration(new TagConfiguration());
             modelBuilder.ApplyConfiguration(new ImageConfiguration());
             modelBuilder.ApplyConfiguration(new IdentityRoleConfiguration());
+            modelBuilder.ApplyConfiguration(new UserRefreshTokenConfiguration());
         }
     }
 }

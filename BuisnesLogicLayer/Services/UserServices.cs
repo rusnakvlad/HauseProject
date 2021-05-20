@@ -16,7 +16,7 @@ using BuisnesLogicLayer.JWTs;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
-
+using Microsoft.AspNetCore.Mvc;
 namespace BuisnesLogicLayer.Services
 {
     public class UserServices : IUserServices
@@ -65,6 +65,8 @@ namespace BuisnesLogicLayer.Services
             {
                 var mappedUser = mapper.Map<User, UserProfileDTO>(user);
                 var refreshToken = TokenManager.GenerateRfreshToken();
+                // add refresh token to a user
+                await Database.UserRefreshTokenRepository.UpdateToken(new UsersRefreshToken() { UserId = mappedUser.Id, Token = refreshToken });
                 return TokenManager.GenerateToken(mappedUser,refreshToken);
             }
             return null;
@@ -128,6 +130,22 @@ namespace BuisnesLogicLayer.Services
             }
 
             return new UserProfileDTO();
+        }
+
+        public async Task<UserTokenDTO> RefreshUserToken(UserTokenDTO token)
+        {
+            var principal = TokenManager.GetPrincipalFromExpiredToken(token.AccessToken);
+            var userId = principal.Claims.FirstOrDefault(c => c.Type == "jti").Value;
+            var user = await Database.UserRepository.GetById(userId);
+            var currentUserRToken = await Database.UserRefreshTokenRepository.GetTokenByUserId(userId);
+            if (user == null || currentUserRToken == null || currentUserRToken.Token != token.RefreshToken) return null;
+
+
+            var mappedUser = mapper.Map<User, UserProfileDTO>(user);
+            var newRefreshToken = TokenManager.GenerateRfreshToken();
+            await Database.UserRefreshTokenRepository.UpdateToken(new UsersRefreshToken() { UserId = mappedUser.Id, Token = newRefreshToken });
+            var newToken = TokenManager.GenerateToken(mappedUser, newRefreshToken);
+            return newToken;
         }
     }
 }

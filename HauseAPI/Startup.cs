@@ -55,6 +55,7 @@ namespace HauseAPI
             services.AddTransient<IImageRepository, ImageRepository>();
             services.AddTransient<ITagRepository, TagRepository>();
             services.AddTransient<ICommentRepository, CommentRepository>();
+            services.AddTransient<IUserRefreshTokenRepository, UserRefreshTokenRepository>();
             #endregion
 
             services.AddTransient<IUnitOfWork, UnitOfWork>();
@@ -108,6 +109,17 @@ namespace HauseAPI
                     ValidateLifetime = true,
                     LifetimeValidator = JwtOptions.ValidateLifeTime
                 };
+                options.Events = new JwtBearerEvents
+                {
+                    OnAuthenticationFailed = context =>
+                    {
+                        if (context.Exception.GetType() == typeof(SecurityTokenExpiredException))
+                        {
+                            context.Response.Headers.Add("Token-Expired", "true");
+                        }
+                        return Task.CompletedTask;
+                    }
+                };
             });
             services.AddSwaggerGen(c =>
             {
@@ -116,7 +128,7 @@ namespace HauseAPI
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env,IUserServices userServices)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
 
             if (env.IsDevelopment())

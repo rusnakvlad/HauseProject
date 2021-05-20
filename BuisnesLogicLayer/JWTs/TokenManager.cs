@@ -58,7 +58,7 @@ namespace BuisnesLogicLayer.JWTs
                 ValidateAudience = false, //you might want to validate the audience and issuer depending on your use case
                 ValidateIssuer = false,
                 ValidateIssuerSigningKey = true,
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("the server key used to sign the JWT token is here, use more than 16 chars")),
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(JwtOptions.KEY)),
                 ValidateLifetime = false //here we are saying that we don't care about the token's expiration date
             };
 
@@ -70,13 +70,6 @@ namespace BuisnesLogicLayer.JWTs
                 throw new SecurityTokenException("Invalid token");
 
             return principal;
-        }
-
-        public static UserTokenDTO GetRefreshToken(UserTokenDTO token)
-        {
-            var principal = GetPrincipalFromExpiredToken(token.AccessToken);
-            var username = principal.Identity.Name;
-            throw new Exception();
         }
     }
 }

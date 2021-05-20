@@ -8,6 +8,7 @@ namespace BuisnesLogicLayer.DTO
 {
     public class UserTokenDTO
     {
-        public string Token { get; set; }
+        public string AccessToken { get; set; }
+        public string RefreshToken { get; set; }
     }
 }

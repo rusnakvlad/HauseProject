@@ -7,12 +7,13 @@ using System.Threading.Tasks;
 using BuisnesLogicLayer.DTO;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
+using System.Security.Cryptography;
 
 namespace BuisnesLogicLayer.JWTs
 {
     public static class TokenManager
     {
-        public static UserTokenDTO BuildToken(UserProfileDTO userProfile)
+        public static UserTokenDTO GenerateToken(UserProfileDTO userProfile, string refreshToken)
         {
             var claims = new List<Claim>
             {
@@ -36,7 +37,46 @@ namespace BuisnesLogicLayer.JWTs
                 expires: expiration,
                 signingCredentials: creds);
 
-            return new UserTokenDTO() { Token = new JwtSecurityTokenHandler().WriteToken(token) };
+            return new UserTokenDTO() { AccessToken = new JwtSecurityTokenHandler().WriteToken(token), RefreshToken = refreshToken };
+            
+        }
+
+        public static string GenerateRfreshToken()
+        {
+            var randomNumber = new byte[32];
+            using (var rng = RandomNumberGenerator.Create())
+            {
+                rng.GetBytes(randomNumber);
+                return Convert.ToBase64String(randomNumber);
+            }
+        }
+
+        public static ClaimsPrincipal GetPrincipalFromExpiredToken(string token)
+        {
+            var tokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateAudience = false, //you might want to validate the audience and issuer depending on your use case
+                ValidateIssuer = false,
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("the server key used to sign the JWT token is here, use more than 16 chars")),
+                ValidateLifetime = false //here we are saying that we don't care about the token's expiration date
+            };
+
+            var tokenHandler = new JwtSecurityTokenHandler();
+            SecurityToken securityToken;
+            var principal = tokenHandler.ValidateToken(token, tokenValidationParameters, out securityToken);
+            var jwtSecurityToken = securityToken as JwtSecurityToken;
+            if (jwtSecurityToken == null || !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCultureIgnoreCase))
+                throw new SecurityTokenException("Invalid token");
+
+            return principal;
+        }
+
+        public static UserTokenDTO GetRefreshToken(UserTokenDTO token)
+        {
+            var principal = GetPrincipalFromExpiredToken(token.AccessToken);
+            var username = principal.Identity.Name;
+            throw new Exception();
         }
     }
 }

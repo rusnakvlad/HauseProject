@@ -14,6 +14,7 @@ namespace DataAccesLayer.Enteties
         public IEnumerable<Comment> comments { get; set; }
         public IEnumerable<Favorite> favorites { get; set; }
         public IEnumerable<ForCompare> forCompares { get; set; }
+        public UsersRefreshToken refreshToken { get; set; }
         //=============================================================//
 
         public string Name { get; set; }

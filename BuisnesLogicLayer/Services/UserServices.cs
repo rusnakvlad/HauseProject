@@ -64,7 +64,8 @@ namespace BuisnesLogicLayer.Services
             if(user != null)
             {
                 var mappedUser = mapper.Map<User, UserProfileDTO>(user);
-                return TokenManager.BuildToken(mappedUser);
+                var refreshToken = TokenManager.GenerateRfreshToken();
+                return TokenManager.GenerateToken(mappedUser,refreshToken);
             }
             return null;
         }
@@ -112,7 +113,7 @@ namespace BuisnesLogicLayer.Services
                     ValidateAudience = false
                 };
 
-                var principle = tokenHandler.ValidateToken(token.Token, tokenVakidationParameters, out SecurityToken securityToken);
+                var principle = tokenHandler.ValidateToken(token.AccessToken, tokenVakidationParameters, out SecurityToken securityToken);
 
                 if(securityToken is JwtSecurityToken jwtSecurityToken && jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256,StringComparison.InvariantCultureIgnoreCase))
                 {

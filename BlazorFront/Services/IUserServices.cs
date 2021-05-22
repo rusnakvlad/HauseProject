@@ -19,5 +19,7 @@ namespace BlazorFront.Services
 
         public Task<UserProfileDTO> GetUserByAccessToken(string accessToken);
 
+        public Task<UserTokenDTO> RefreshToken(UserTokenDTO token);
+
     }
 }

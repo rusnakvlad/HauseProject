@@ -37,6 +37,7 @@ namespace BlazorFront
             services.AddBlazoredLocalStorage();
 
             services.AddScoped<AuthenticationStateProvider, CustomAuthStateProvider>();
+            services.AddTransient<ITokenServices, TokenServices>();
 
             #region ValidationServices
             services.AddScoped<UserValidator>();

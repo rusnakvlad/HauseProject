@@ -25,8 +25,7 @@ namespace BlazorFront.AuthServices
         public override async Task<AuthenticationState> GetAuthenticationStateAsync()
         {
             var accesToken = await localStorageService.GetItemAsync<string>("accessToken");
-            UserTokenDTO token = new();
-            token.AccessToken = accesToken;
+
             ClaimsIdentity identity;
 
             if(accesToken != null)
@@ -41,7 +40,8 @@ namespace BlazorFront.AuthServices
 
             var claimsPrincipal = new ClaimsPrincipal(identity);
 
-            return await Task.FromResult(new AuthenticationState(claimsPrincipal));
+            var authState = await Task.FromResult(new AuthenticationState(claimsPrincipal));
+            return await Task.FromResult(authState);
         }
 
         // Mark a user as Authenticated for program
@@ -59,7 +59,7 @@ namespace BlazorFront.AuthServices
         }
 
         // Get ClaimsIdentity
-        private ClaimsIdentity GetClaimsIdentity(UserProfileDTO userProfile)
+        public ClaimsIdentity GetClaimsIdentity(UserProfileDTO userProfile)
         {
             var claimsIdentity = new ClaimsIdentity();
 
@@ -84,6 +84,7 @@ namespace BlazorFront.AuthServices
         // Mark a user as Logout
         public async Task MarkUserAsLoggedOut()
         {
+            await localStorageService.RemoveItemAsync("refreshToken");
             await localStorageService.RemoveItemAsync("accessToken");
 
             var identity = new ClaimsIdentity();

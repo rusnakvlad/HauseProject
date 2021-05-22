@@ -85,9 +85,10 @@ namespace BlazorFront.Services
             string serializedUser = JsonConvert.SerializeObject(accessToken);
             var requestMessage = new HttpRequestMessage(HttpMethod.Post, "GetByToken");
             requestMessage.Content = new StringContent(serializedUser);
-            requestMessage.Content.Headers.ContentType
-                = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
+            requestMessage.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+
             requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+
             var response = await httpClient.SendAsync(requestMessage);
             var responseStatusCode = response.StatusCode;
             var responseBody = await response.Content.ReadAsStringAsync();
@@ -95,6 +96,21 @@ namespace BlazorFront.Services
             var returnedUser = JsonConvert.DeserializeObject<UserProfileDTO>(responseBody);
 
             return returnedUser != null ? returnedUser : null;
+        }
+
+        public async Task<UserTokenDTO> RefreshToken(UserTokenDTO token)
+        {
+            string serializedToken = JsonConvert.SerializeObject(token);
+            var requestMessage = new HttpRequestMessage(HttpMethod.Post, "RefreshToken");
+            requestMessage.Content = new StringContent(serializedToken);
+            requestMessage.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            var response = await httpClient.SendAsync(requestMessage);
+            var responseStatusCode = response.StatusCode;
+            var responseBody = await response.Content.ReadAsStringAsync();
+
+            var returnedToken = JsonConvert.DeserializeObject<UserTokenDTO>(responseBody);
+
+            return returnedToken != null ? returnedToken : null;
         }
     }
 }

@@ -39,22 +39,21 @@ namespace BlazorFront.Services
 
             var response = await httpClient.SendAsync(requestMessage);
 
+            IEnumerable<AdShortInfoDTO> savedResult = new List<AdShortInfoDTO>();
             var errorMessage = new Regex("(?<=error_description=\").*(?=;)").Match(response.Headers.WwwAuthenticate.ToString());
             if (errorMessage.Value == "The token lifetime is invalid" && response.StatusCode.ToString() == "Unauthorized")
             {
                 string refreshToken = await localStorageService.GetItemAsync<string>("refreshToken");
                 await tokenServices.RefreshToken(new UserTokenDTO() { AccessToken = accessToken, RefreshToken = refreshToken });
-                await GetAllFavoritesByUserId(userId); // call method again after 
+                savedResult = await GetAllFavoritesByUserId(userId); // call method again after refresh token
             }
             else
             {
                 var responseBody = await response.Content.ReadAsStringAsync();
-
-                var returnedAd = JsonConvert.DeserializeObject<IEnumerable<AdShortInfoDTO>>(responseBody);
-
-                return returnedAd;
+                return JsonConvert.DeserializeObject<IEnumerable<AdShortInfoDTO>>(responseBody);
             }
-            return null;
+            return savedResult;
+
         }
 
         public async Task RemoveFavoriteByUserIdAndAdId(string userId, int adId)
@@ -68,7 +67,15 @@ namespace BlazorFront.Services
             requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
 
             var response = await httpClient.SendAsync(requestMessage);
-            var responseStatusCode = response.StatusCode;
+
+            var errorMessage = new Regex("(?<=error_description=\").*(?=;)").Match(response.Headers.WwwAuthenticate.ToString());
+            if (errorMessage.Value == "The token lifetime is invalid" && response.StatusCode.ToString() == "Unauthorized")
+            {
+                string refreshToken = await localStorageService.GetItemAsync<string>("refreshToken");
+                await tokenServices.RefreshToken(new UserTokenDTO() { AccessToken = accessToken, RefreshToken = refreshToken });
+                await RemoveFavoriteByUserIdAndAdId(userId, adId);
+            }
+
             var responseBody = await response.Content.ReadAsStringAsync();
         }
 
@@ -83,7 +90,14 @@ namespace BlazorFront.Services
             requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
 
             var response = await httpClient.SendAsync(requestMessage);
-            var responseStatusCode = response.StatusCode;
+
+            var errorMessage = new Regex("(?<=error_description=\").*(?=;)").Match(response.Headers.WwwAuthenticate.ToString());
+            if (errorMessage.Value == "The token lifetime is invalid" && response.StatusCode.ToString() == "Unauthorized")
+            {
+                string refreshToken = await localStorageService.GetItemAsync<string>("refreshToken");
+                await tokenServices.RefreshToken(new UserTokenDTO() { AccessToken = accessToken, RefreshToken = refreshToken });
+                await SetFavorite(userId, adId);
+            }
             var responseBody = await response.Content.ReadAsStringAsync();
         }
     }

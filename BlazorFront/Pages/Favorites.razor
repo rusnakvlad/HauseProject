@@ -97,7 +97,7 @@
     {
         ads = await favoriteServices.GetAllFavoritesByUserId(userId);
 
-        adsFavorites = await favoriteServices.GetAllFavoritesByUserId(userId);
+        adsFavorites = ads; //await favoriteServices.GetAllFavoritesByUserId(userId);
         adsCompares = await forCompareServices.GetAllComparesByUserId(userId);
         foreach (var ad in ads)
         {

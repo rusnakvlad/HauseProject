@@ -71,7 +71,8 @@ namespace HauseAPI.Controllers
         {
             return await userServices.LogIn(new UserLogInDTO() { Email = login.Email, Password = login.Password });
         }
-
+        
+        //[Authorize]
         [HttpPost("GetByToken")]
         public async Task<UserProfileDTO> GetUserByAccessToken([FromBody] string token)
         {

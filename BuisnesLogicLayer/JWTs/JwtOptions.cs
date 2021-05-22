@@ -12,7 +12,7 @@ namespace BuisnesLogicLayer.JWTs
         public const string ISSUER = "https://localhost:44365"; 
         public const string AUDIENCE = "https://localhost:44328"; 
         public const string KEY = "ThEHouseSeCRetKeyOfJwTtoUseItONReQuEStwiTHaUtHoriZE";   
-        public const int LIFETIME = 2; // Lifetime in minutes
+        public const int LIFETIME = 1; // Lifetime in minutes
 
         public static bool ValidateLifeTime( DateTime? notBefore, DateTime? expires, SecurityToken tokenToValidate, TokenValidationParameters @param )
         {

@@ -36,24 +36,22 @@ namespace BlazorFront.Services
             string accessToken = await localStorageService.GetItemAsync<string>("accessToken");
             requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
 
-            var response = await httpClient.SendAsync(requestMessage); 
+            var response = await httpClient.SendAsync(requestMessage);
 
+            IEnumerable<ForCompareDTO> savedResult = new List<ForCompareDTO>();
             var errorMessage = new Regex("(?<=error_description=\").*(?=;)").Match(response.Headers.WwwAuthenticate.ToString());
             if (errorMessage.Value == "The token lifetime is invalid" && response.StatusCode.ToString() == "Unauthorized")
             {
                 string refreshToken = await localStorageService.GetItemAsync<string>("refreshToken");
                 await tokenServices.RefreshToken(new UserTokenDTO() { AccessToken = accessToken, RefreshToken = refreshToken });
-                await GetAllComparesByUserId(userId); // call method again after 
+                savedResult = await GetAllComparesByUserId(userId); // call method again after refresh token
             }
             else
             {
                 var responseBody = await response.Content.ReadAsStringAsync();
-
-                var returnedAd = JsonConvert.DeserializeObject<IEnumerable<ForCompareDTO>>(responseBody);
-
-                return returnedAd;
+                return JsonConvert.DeserializeObject<IEnumerable<ForCompareDTO>>(responseBody);
             }
-            return null;
+            return savedResult;
         }
 
         public async Task RemoveCopareByUserIdAndAdId(string userId, int AdId)
@@ -67,7 +65,14 @@ namespace BlazorFront.Services
             requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
 
             var response = await httpClient.SendAsync(requestMessage);
-            var responseStatusCode = response.StatusCode;
+
+            var errorMessage = new Regex("(?<=error_description=\").*(?=;)").Match(response.Headers.WwwAuthenticate.ToString());
+            if (errorMessage.Value == "The token lifetime is invalid" && response.StatusCode.ToString() == "Unauthorized")
+            {
+                string refreshToken = await localStorageService.GetItemAsync<string>("refreshToken");
+                await tokenServices.RefreshToken(new UserTokenDTO() { AccessToken = accessToken, RefreshToken = refreshToken });
+                await RemoveCopareByUserIdAndAdId(userId, AdId);
+            }
             var responseBody = await response.Content.ReadAsStringAsync();
         }
 
@@ -82,7 +87,13 @@ namespace BlazorFront.Services
             requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
 
             var response = await httpClient.SendAsync(requestMessage);
-            var responseStatusCode = response.StatusCode;
+            var errorMessage = new Regex("(?<=error_description=\").*(?=;)").Match(response.Headers.WwwAuthenticate.ToString());
+            if (errorMessage.Value == "The token lifetime is invalid" && response.StatusCode.ToString() == "Unauthorized")
+            {
+                string refreshToken = await localStorageService.GetItemAsync<string>("refreshToken");
+                await tokenServices.RefreshToken(new UserTokenDTO() { AccessToken = accessToken, RefreshToken = refreshToken });
+                await SetForCompare(userId, adId);
+            }
             var responseBody = await response.Content.ReadAsStringAsync();
         }
     }

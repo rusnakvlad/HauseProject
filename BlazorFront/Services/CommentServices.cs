@@ -9,6 +9,8 @@ using DataAccesLayer.Enteties;
 using Microsoft.AspNetCore.Components;
 using Blazored.LocalStorage;
 using System.Net.Http.Headers;
+using BlazorFront.AuthServices;
+using System.Text.RegularExpressions;
 
 namespace BlazorFront.Services
 {
@@ -16,10 +18,12 @@ namespace BlazorFront.Services
     {
         private HttpClient httpClient { get; }
         public ILocalStorageService localStorageService { get; }
-        public CommentServices(HttpClient httpClient, ILocalStorageService localStorageService)
+        public ITokenServices tokenServices;
+        public CommentServices(HttpClient httpClient, ILocalStorageService localStorageService, ITokenServices tokenServices)
         {
             this.httpClient = httpClient;
             this.localStorageService = localStorageService;
+            this.tokenServices = tokenServices;
         }
 
         public async Task CreateComment(CommentCreateDTO commentCreate) // Authorized
@@ -33,8 +37,15 @@ namespace BlazorFront.Services
             requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
 
             var response = await httpClient.SendAsync(requestMessage);
-            var responseStatusCode = response.StatusCode;
             var responseBody = await response.Content.ReadAsStringAsync();
+
+            var errorMessage = new Regex("(?<=error_description=\").*(?=;)").Match(response.Headers.WwwAuthenticate.ToString());
+            if (errorMessage.Value == "The token lifetime is invalid" && response.StatusCode.ToString() == "Unauthorized")
+            {
+                string refreshToken = await localStorageService.GetItemAsync<string>("refreshToken");
+                await tokenServices.RefreshToken(new UserTokenDTO() { AccessToken = accessToken, RefreshToken = refreshToken });
+                await CreateComment(commentCreate);
+            }
         }
 
         public async Task DeleteCommentById(int id) // Authorized
@@ -50,8 +61,14 @@ namespace BlazorFront.Services
             requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
 
             var response = await httpClient.SendAsync(requestMessage);
-            var responseStatusCode = response.StatusCode;
             var responseBody = await response.Content.ReadAsStringAsync();
+            var errorMessage = new Regex("(?<=error_description=\").*(?=;)").Match(response.Headers.WwwAuthenticate.ToString());
+            if (errorMessage.Value == "The token lifetime is invalid" && response.StatusCode.ToString() == "Unauthorized")
+            {
+                string refreshToken = await localStorageService.GetItemAsync<string>("refreshToken");
+                await tokenServices.RefreshToken(new UserTokenDTO() { AccessToken = accessToken, RefreshToken = refreshToken });
+                await DeleteCommentById(id);
+            }
         }
 
         public async Task EditComment(CommentInfoAndEditIDTO commentInfoAndEdit) // Authorized
@@ -65,8 +82,15 @@ namespace BlazorFront.Services
             requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
 
             var response = await httpClient.SendAsync(requestMessage);
-            var responseStatusCode = response.StatusCode;
             var responseBody = await response.Content.ReadAsStringAsync();
+
+            var errorMessage = new Regex("(?<=error_description=\").*(?=;)").Match(response.Headers.WwwAuthenticate.ToString());
+            if (errorMessage.Value == "The token lifetime is invalid" && response.StatusCode.ToString() == "Unauthorized")
+            {
+                string refreshToken = await localStorageService.GetItemAsync<string>("refreshToken");
+                await tokenServices.RefreshToken(new UserTokenDTO() { AccessToken = accessToken, RefreshToken = refreshToken });
+                await EditComment(commentInfoAndEdit);
+            }
         }
 
         public async Task<IEnumerable<CommentInfoAndEditIDTO>> GetCommentsByAdId(int adId)

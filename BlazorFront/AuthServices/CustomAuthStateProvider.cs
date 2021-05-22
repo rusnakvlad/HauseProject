@@ -25,7 +25,6 @@ namespace BlazorFront.AuthServices
         public override async Task<AuthenticationState> GetAuthenticationStateAsync()
         {
             var accesToken = await localStorageService.GetItemAsync<string>("accessToken");
-
             ClaimsIdentity identity;
 
             if(accesToken != null)
